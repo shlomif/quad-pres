@@ -1,0 +1,11 @@
+lang-settings
+perl
+stop-on-error
+stop-on-error/template
+stop-on-error/template/slides
+stop-on-error/template/slides/src
+body-dir
+credit
+credit/template
+credit/template/src
+html-correctness
