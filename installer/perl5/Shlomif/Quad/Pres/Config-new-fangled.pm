@@ -10,8 +10,6 @@ use vars qw(@ISA);
 
 use Config::IniFiles;
 
-use Cwd;
-
 sub initialize
 {
     my $self = shift;
@@ -42,60 +40,32 @@ sub initialize
     return 0;
 }
 
-sub get_val
-{
-    my $self = shift;
-
-    return $self->{'cfg'}->val(@_);
-}
-
 sub get_server_dest_dir
 {
     my $self = shift;
 
-    return $self->get_val("quadpres", "server_dest_dir");
+    return $self->{'cfg'}->val("quadpres", "server_dest_dir");
 }
 
 sub get_setgid_group
 {
     my $self = shift;
 
-    return $self->get_val("quadpres", "setgid_group");
+    return $self->{'cfg'}->val("quadpres", "setgid_group");
 }
 
-sub get_upload_path
+sub get_rsync_upload_path
 {
     my $self = shift;
 
-    return $self->get_val("upload", "upload_path");
-}
-
-sub get_upload_util
-{
-    my $self = shift;
-
-    return $self->get_val("upload", "util");
-}
-
-sub get_upload_cmdline
-{
-    my $self = shift;
-
-    return $self->get_val("upload", "cmdline");
+    return $self->{'cfg'}->val("rsync", "upload_path");
 }
 
 sub get_version_control
 {
     my $self = shift;
 
-    return $self->get_val("quadpres", "version_control");
-}
-
-sub get_hard_disk_dest_dir
-{
-    my $self = shift;
-
-    return $self->get_val("hard-disk", "dest_dir");
+    return $self->{'cfg'}->val("quadpres", "version_control");
 }
 
 1;
