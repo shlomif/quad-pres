@@ -162,7 +162,7 @@ foreach my $c (@controls)
     {
         if ($document_name eq "")
         {
-            print "<p><a href=\"http://vipe.technion.ac.il/~shlomif/quadpres/made_with.html\"><i>Made with Quad-Pres</i></a></p>";
+            print "<p><a href=\"http://quad-pres.berlios.de/made_with.html\"><i>Made with Quad-Pres</i></a></p>";
         }
     }
 }:>
