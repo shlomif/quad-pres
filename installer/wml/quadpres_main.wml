@@ -1,0 +1,127 @@
+<:{
+
+    use Shlomif::Quad::Pres;
+    use Contents;
+
+    # I guess each embedded perl code has its own scope 
+    #my ($text, $qp, $subject);
+
+    sub get_everything
+    {
+    
+        my $contents = Contents::get_contents();
+        
+        my $document_name = "$(FILENAME)" ;
+        
+        $document_name =~ s/^\.//;
+        $document_name =~ s!\.wml$!!;
+        $document_name =~ s/index\.html//;
+        $document_name =~ s/^\///;
+
+        my $render_type = "server";
+
+        $qp = Shlomif::Quad::Pres->new($contents, $document_name, $render_type);
+
+        $text = $qp->get_navigation_bar();
+
+        $subject = $qp->get_subject();
+
+        $contents_tree = $qp->get_contents();
+
+        $title = $qp->get_title();
+   }
+
+    @controls = 
+        (
+            { 'title' => "Contents", 'link' => "top", 'func' => "get_contents_url"},
+            { 'title' => "Up", 'link' => "up", 'func' => "get_up_url"},
+            { 'title' => "Prev", 'link' => "prev", 'func' => "get_prev_url"},
+            { 'title' => "Next", 'link' => "next", 'func' => "get_next_url"},
+            { 'title' => "First", 'link' => "first", 'func' => "get_contents_url", 'hide' => 1, },
+            { 'title' => "Last", 'link' => "last", 'func' => "get_last_url", 'hide' => 1, },
+             );
+   
+
+   &get_everything();
+
+   foreach my $c (@controls)
+   {
+       my $func = $c->{'func'};
+       $c->{'url'} = $qp->get_control_url($qp->$func());
+   }
+
+}:>
+<define-tag qp:nexturl><:{
+    print $qp->get_control_url($qp->get_next_url());
+}:></define-tag>
+<define-tag qp:prevurl><:{
+    print $qp->get_control_url($qp->get_prev_url());
+}:></define-tag>
+<define-tag qp:upurl><:{
+    print $qp->get_control_url($qp->get_up_url());
+}:></define-tag>
+<define-tag qp:contentsurl><:{
+    print $qp->get_control_url($qp->get_contents_url());
+}:></define-tag>
+<define-tag qp:navbarlink>
+
+<if <match "%0" "^ *$" action="report" /> "<a href="%0" class="nav">%1</a>" "<b>%1</b>" />
+</define-tag>
+
+<define-tag qp:head:links>
+<:{
+
+foreach my $c (@controls)
+{
+    my $func = $c->{'func'};
+    my $url = $c->{'url'};
+    my $title = $c->{'title'};
+    
+    next if ($url eq "");
+    print "<link rel=\"" . $c->{'link'} . "\" href=\"$url\" />\n";
+}
+
+}:>
+</define-tag>
+
+<define-tag qp:subject>
+<:{
+    if (!defined($subject))
+    {
+        &get_everything();
+    }
+
+    print $subject;
+    #print $text;
+}:>
+</define-tag>
+
+<define-tag qp:title>
+<:{
+    if (!defined($title))
+    {
+        &get_everything();
+    }
+
+    print $title;
+}:>
+</define-tag>
+
+<define-tag qpcontents>
+<:{
+    if (!defined($contents_tree))
+    {
+        &get_everything();
+    }
+
+    print $contents_tree;
+}:>
+</define-tag>
+
+#include "themes/$(THEME)/template.wml"
+
+<define-tag points endtag="required">
+<ul class="point">
+%body
+</ul>
+</define-tag>
