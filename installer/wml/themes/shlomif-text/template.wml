@@ -39,7 +39,7 @@
 </define-tag>
 
 <qp:html:header />
-<body>
+<qp:html:bodystart />
 <qpnavigationbar withkey="1" />
 <h1><qp:title /></h1>
 {#BODY#}
