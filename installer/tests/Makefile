@@ -1,4 +1,4 @@
-all: check
+all:
 
 BASH_TESTS = html-correctness stop-on-error lang-settings body-dir
 
