@@ -5,6 +5,13 @@
 
 <table><tr><:{
 
+# Assign a default to $translate_control_text
+$translate_control_text ||= 
+    sub {
+        my $title = shift;
+        return $title;
+    };
+
     my $with_key = "<get-var withkey />";
 
     if (!defined($text))
@@ -23,13 +30,17 @@
         my $url = $c->{'url'};
         my $title = $c->{'title'};
         print "<td>\n";
+
+        # The translated title.
+        my $trans_title = $translate_control_text->($title);
+        
         if ($url eq "")
         {
-            print "<b>$title</b>";
+            print "<b>$trans_title</b>";
         }
         else
         {
-            print "<a href=\"$url\" class=\"nav\"" . ($with_key ? (" accesskey=\"" . lc(substr($title,0,1)) . "\"") : "") . ">$title</a>";
+            print "<a href=\"$url\" class=\"nav\"" . ($with_key ? (" accesskey=\"" . lc(substr($title,0,1)) . "\"") : "") . ">$trans_title</a>";
         }
         print "</td>\n";
     }

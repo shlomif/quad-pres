@@ -45,7 +45,7 @@
             { 'title' => "Next", 'link' => "next", 'func' => "get_next_url"},
             { 'title' => "First", 'link' => "first", 'func' => "get_contents_url", 'hide' => 1, },
             { 'title' => "Last", 'link' => "last", 'func' => "get_last_url", 'hide' => 1, },
-             );
+        );
    
 
    &get_everything();
