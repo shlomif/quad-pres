@@ -66,6 +66,34 @@ reg_cmd('setup');
 reg_cmd('upload');
 reg_cmd('add');
 
+sub run_command
+{
+    my $self = shift;
+
+    my %args = (@_);
+
+    my $command = $args{command};
+    my $error_text = $args{error_text};
+
+    my $cmd_ret;
+
+    if (ref($command) eq "ARRAY")
+    {
+        $cmd_ret = system(@$command);
+    }
+    else
+    {
+        $cmd_ret = system($command);
+    }
+
+    if ($cmd_ret != 0)
+    {
+        throw $error_class -text => $error_text;
+    }
+
+    return 0;
+}
+
 sub run
 {
     my $self = shift;
@@ -363,18 +391,16 @@ sub perform_render_command
     $self->chdir_to_base();
 
     my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
-    
-    my $cmd_ret = system("$scripts_dir/Render_all_contents.pl");
 
-    if ($cmd_ret != 0)
-    {
-        throw $error_class -text => "Rendering Failed!";
-    }
+    $self->run_command(
+        'command' => "$scripts_dir/Render_all_contents.pl",
+        'error_text' => "Rendering Failed!",
+    );
 
-    if ($render_hard_disk_html)
-    {
-        system("$scripts_dir/html-server-to-hd.pl");
-    }
+    $self->run_command(
+        'command' => "$scripts_dir/html-server-to-hd.pl",
+        'error_text' => "Conversion to Hard-disk format failed",
+    );
 }
 
 sub perform_clear_command
@@ -405,7 +431,10 @@ sub perform_clear_command
 
     my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
     
-    system("$scripts_dir/clear-tree.pl");
+    $self->run_command(
+        'command' => "$scripts_dir/clear-tree.pl",
+        'error_text' => "Calling the clear-tree helper script failed!",
+    );
 }
 
 sub perform_upload_command
@@ -416,7 +445,10 @@ sub perform_upload_command
 
     my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
 
-    system("$scripts_dir/upload.pl");
+    $self->run_command(
+        command => "$scripts_dir/upload.pl",
+        error_text => "Upload Failed!",
+        );
 }
 
 sub add_filename_to_path
