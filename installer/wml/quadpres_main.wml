@@ -111,7 +111,7 @@ foreach my $c (@controls)
 
 <default-var "lang" "en-US" />
 <default-var "charset" "iso-8859-1" />
-<default-var "main_dir" "ltr" />
+<default-var "body_dir" "ltr" />
 
 <define-tag qp:html:header>
 <?xml version="1.0" encoding="<get-var charset />"?>
@@ -129,7 +129,7 @@ foreach my $c (@controls)
 </define-tag>
 
 <define-tag qp:html:bodystart>
-<ifeq "<get-var "base_dir" />" "rtl" 
+<ifeq "<get-var "body_dir" />" "rtl" 
     "<body dir="rtl">"
     "<body>"
     />

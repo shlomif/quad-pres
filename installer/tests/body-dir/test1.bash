@@ -18,13 +18,17 @@ let t++
 local theme
 theme="$1"
 shift
-echo "Test No. $t : Theme=$theme"
+local dir
+dir="$1"
+shift
+echo "Test No. $t : Theme=$theme dir=$dir"
 
 test_dir=testhtml$t
 quadp setup $test_dir --dest-dir=`pwd`/${test_dir}-output
 sed -i "s/-DTHEME=[-a-zA-Z_]\+/-DTHEME=${theme}/" $test_dir/.wmlrc
 
 cat > $test_dir/src/index.html.wml <<EOF
+<set-var body_dir="$dir" />
 #include 'template.wml'
 
 <p>
@@ -39,9 +43,22 @@ if ! tidy -errors $output_file ; then
     echo "File does not validate!" 1>&2 
     exit 
 fi
+
+body_str="<body>"
+if test "$dir" == "rtl" ; then
+    body_str="<body dir=\"rtl\">"
+fi
+
+if ! grep -F "$body_str" $output_file > /dev/null ; then
+    echo "File does not contain the correct body!" 1>&2
+    exit
+fi
+
 }
 
 for theme in $(cd ../../installation/share/quad-pres/wml/themes/ && ls) ; do
-    perform_test "$theme"
+    for dir in ltr rtl ; do        
+        perform_test "$theme" "$dir"
+    done
 done
 
