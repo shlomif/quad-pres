@@ -1,0 +1,76 @@
+#include '../template.wml'
+<subject "Quad-Pres" />
+
+<p>
+Quad-Pres stands for "Quick and Dirty Presentations" and is a Perl and 
+<a href="http://thewml.org/">Web Meta Language</a> based framework to
+create HTML presentations.
+</p>
+
+<p>
+You can find documentation and instructions in 
+<a href="http://vipe.technion.ac.il/~shlomif/lecture/Quad-Pres/slides/">this lecture</a> I prepared. If you
+have any other questions contact me at 
+<a href="mailto:shlomif@vipe.technion.ac.il">
+shlomif@vipe.technion.ac.il
+</a>.
+</p>
+
+<h2>Features</h2>
+
+<ol>
+<li>
+Uses <a href="http://thewml.org/">Web Meta Language</a>.
+</li>
+<li>
+Organizes the lecture into a hierarchy of sections and subections.
+</li>
+<li>
+Generates tables of contents, and navigation links.
+</li>
+<li>
+Links to a common <a href="http://www.w3.org/Style/CSS/">CSS</a> StyleSheet.
+</li>
+<li>
+A common HTML header and footer.
+</li>
+<li>
+Can be generated into a web-server directory or dynamically served using a 
+CGI script in the presentation directory.
+</li>
+<li>
+Written in pure Perl and so is very portable.
+</li>
+<li>
+The generated code is compliant to XHTML 1.0.
+</li>
+</ol>
+
+<h2>Examples</h2>
+
+<ul>
+<li>
+<a href="CatB-Quad-Pres-Lecture.tar.gz">A Quad-Pres Lecture about "the 
+Cathedral and the Bazaar" series</a>
+</li>
+<li>
+<a href="W2L-Basic-Use-Lecture.tar.gz">A Lecture about Linux Basic Use</a>
+</li>
+</ul>
+
+<p>
+<a href="http://vipe.technion.ac.il/~shlomif/lecture/">
+Here are the final forms of the sample lectures</a>.
+</p>
+
+<h2>News</h2>
+
+<h3>7-Feb-2003</h3>
+
+<p>
+Quad-Pres version 0.8.0 was released. As opposed to previous versions, this
+version is now installed in a central place in the system, so there
+is no duplicacy in the lectures. It also generates a script in the lecture's 
+source directory that can serve the lecture dynamically to a web page.
+</p>
+

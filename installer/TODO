@@ -1,0 +1,7 @@
+Pressing:
+---------
+
+* Make the template of the theme accept some relevant parameters.
+
+* Inspect for a WML macro of set-if-not-already-set or write my own.
+

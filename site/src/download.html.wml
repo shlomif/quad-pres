@@ -1,0 +1,21 @@
+#include '../template.wml'
+<subject "Quad-Pres - Download" />
+
+<h2>Stable</h2>
+
+<p>
+<a href="quad-pres-0.8.0.tar.gz">Version 0.8.0</a>
+</p>
+
+<h2>Development</h2>
+
+<p>
+<a href="quad-pres-$(DEVEL_VERSION).tar.gz">Version $(DEVEL_VERSION)</a>
+</p>
+
+<h2>Notes</h2>
+
+<p>
+To compile as an RPM, run the command <tt>rpm -tb</tt> on the archive.
+</p>
+

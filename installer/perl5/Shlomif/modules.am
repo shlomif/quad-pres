@@ -1,0 +1,4 @@
+
+modulesdir = $(pkgdatadir)/perl5
+
+

@@ -1,0 +1,68 @@
+
+<define-tag qpnavigationbar>
+<preserve withkey />
+<set-var %attributes />
+
+<table><tr><:{
+
+    my $with_key = "<get-var withkey />";
+
+    if (!defined($text))
+    {    
+        get_everything();
+    }
+    
+
+    foreach my $c (@controls)
+    {
+        if ($c->{'hide'})
+        {
+            next;
+        }
+            
+        my $url = $c->{'url'};
+        my $title = $c->{'title'};
+        print "<td>\n";
+        if ($url eq "")
+        {
+            print "<b>$title</b>";
+        }
+        else
+        {
+            print "<a href=\"$url\" class=\"nav\"" . ($with_key ? (" accesskey=\"" . lc(substr($title,0,1)) . "\"") : "") . ">$title</a>";
+        }
+        print "</td>\n";
+    }
+}:>
+</tr></table>
+<restore withkey />
+</define-tag>
+
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+<link rel="stylesheet" href="<qp:contentsurl />style.css" type="text/css" />
+<qp:head:links />
+<title>{#SUBJECT_LOC#}</title>
+</head>
+<body>
+<qpnavigationbar withkey="1" />
+<h1><qp:title /></h1>
+{#BODY#}
+<hr />
+<qpnavigationbar />
+</body>
+</html>
+
+{#SUBJECT_LOC#:
+<qp:subject />
+:##}
+
+# by default we are in the body
+{#BODY#:
+
+

@@ -1,0 +1,42 @@
+1. Installing from Source
+
+The Trio of Commands:
+
+./configure
+make
+make install (possibly as root)
+
+Should compile and install this program. Add a --prefix=[prefix] command
+to ./configure to install it under a different location in the tree. For
+more information on ./configure's flags type ./configure --help.
+
+2. Compiling an RPM.
+
+Type "rpm -tb" followed by the tar.gz archive filename to create an
+RPM of the program. You can then install it by using "rpm -U".
+
+3. Requirements:
+
+* A UNIX-compatible System.
+
+* Web Meta Language - http://thewml.org/
+
+* Perl 5
+
+* The Following Perl 5 CPAN Modules:
+    - Config::IniFiles
+    - Error
+    - MIME::Types
+    - HTML::Hard::Disk
+
+    And these, that are normally distributed with Perl:
+    
+    - CGI    
+    - Data::Dumper    
+    - File::Find
+    - Getopt::Long    
+    - Pod::Usage
+
+All of them can be installed by installing Bundle::QuadPres using
+the CPAN interface.
+

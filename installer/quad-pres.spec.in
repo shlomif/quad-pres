@@ -1,0 +1,65 @@
+Name: quad-pres
+Version: @VERSION@
+Release: 1
+Copyright: BSD
+Group: Publishing
+Source: http://vipe.technion.ac.il/~shlomif/quadpres/quad-pres-%{version}.tar.gz
+Buildroot: %{_tmppath}/quad-pres-root
+URL: http://vipe.technion.ac.il/~shlomif/quadpres
+Serial: 1
+BuildArch: noarch
+Summary: The Quad-Pres Presentation Preparation System
+
+%description
+Quad-Pres is a system for preparing HTML presentations. It is based on Web Meta
+Language and Perl 5.
+
+%prep
+%setup
+
+
+%build
+
+./configure --prefix=%_prefix --mandir=%{_mandir}
+make RPM_OPT_FLAGS="$RPM_OPT_FLAGS" 
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install prefix=$RPM_BUILD_ROOT/%{_prefix} mandir=$RPM_BUILD_ROOT/%{_mandir}
+
+%files
+%defattr(-,root,root)
+%doc AUTHORS ChangeLog COPYING README TODO
+%_bindir/quadp
+%_mandir/*/*
+%dir %_datadir/quad-pres
+%dir %_datadir/quad-pres/perl5
+%dir %_datadir/quad-pres/perl5/Shlomif
+%dir %_datadir/quad-pres/perl5/Shlomif/Arad
+%_datadir/quad-pres/perl5/Shlomif/Arad/*
+%dir %_datadir/quad-pres/perl5/Shlomif/Gamla
+%_datadir/quad-pres/perl5/Shlomif/Gamla/*
+%dir %_datadir/quad-pres/perl5/Shlomif/Quad
+%_datadir/quad-pres/perl5/Shlomif/Quad/Pres.pm
+%dir %_datadir/quad-pres/perl5/Shlomif/Quad/Pres
+%_datadir/quad-pres/perl5/Shlomif/Quad/Pres/*
+%dir %_datadir/quad-pres/template
+%_datadir/quad-pres/template/*
+%dir %_datadir/quad-pres/wml
+%_datadir/quad-pres/wml/*
+%dir %_datadir/quad-pres/wml/themes
+%_datadir/quad-pres/wml/themes/*/*
+%dir %_datadir/quad-pres/scripts
+%_datadir/quad-pres/scripts/*
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%changelog
+* Mon Feb 03 2002 Shlomi Fish <shlomif@vipe.technion.ac.il> 0.7.17-1
+- Initial SPEC Version.
+- Modified the texts.
+- Removed the cd to the man dir. 
+- Added the scripts directory.
+
+
