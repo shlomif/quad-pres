@@ -44,6 +44,13 @@ Written in pure Perl and so is very portable.
 <li>
 The generated code is compliant to XHTML 1.0.
 </li>
+<li>
+Support multiple themes that customize the look and feel of the slides.
+</li>
+<li>
+Supports setting several parameters to the pages: doctype strictness, 
+language, character set, body direction.
+</li>
 </ol>
 
 <h2>Examples</h2>
@@ -64,6 +71,13 @@ Here are the final forms of the sample lectures</a>.
 </p>
 
 <h2>News</h2>
+
+<h3>20-Oct-2003</h3>
+
+<p>
+Released version 0.10.3 up on the heels of 0.10.1, with some important
+fixes.
+</p>
 
 <h3>16-Oct-2003</h3>
 

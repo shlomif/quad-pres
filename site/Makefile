@@ -1,13 +1,13 @@
 
 TARGET = dest
 
-PAGES = index
+PAGES = index made_with
 
 SOURCES = $(addprefix src/,$(addsuffix .html.wml,$(PAGES)))
 
 DESTS = $(patsubst src/%.html.wml,$(TARGET)/%.html,$(SOURCES))
 
-RAW_FILES = style.css images/pa051.jpg quad-pres-0.10.1.tar.gz quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lecture.tar.gz W2L-Basic-Use-Lecture.tar.gz
+RAW_FILES = style.css images/pa051.jpg quad-pres-0.10.3.tar.gz quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lecture.tar.gz W2L-Basic-Use-Lecture.tar.gz
 RAW_FILES_SOURCES = $(addprefix src/,$(RAW_FILES))
 RAW_FILES_DEST = $(addprefix $(TARGET)/,$(RAW_FILES))
 
@@ -67,8 +67,10 @@ $(PACKAGES_DESTS) :: $(PACKAGES_DIR)/% : ./temp/lk-module-compiler-final/%
 $(DEVEL_PACKAGE) : $(DEVEL_PACKAGE_DIR)/$(DEVEL_PACKAGE_FILENAME) $(DEVEL_VERSION_FILE)
 	cp -f $< $@
 
-upload: all
-	#(cd dest && $(RSYNC) -r * shlomif@vipe.technion.ac.il:public_html/quadpres/)
+#upload_vipe:
+#	(cd dest && $(RSYNC) -r * shlomif@vipe.technion.ac.il:public_html/quadpres/)
+
+upload: all	
 	(cd dest && $(RSYNC) -r * shlomif@shell.berlios.de:/home/groups/quad-pres/htdocs/)
 
 ARC_NAME = CLAN-$(shell date +%Y-%m-%d).tar.gz
