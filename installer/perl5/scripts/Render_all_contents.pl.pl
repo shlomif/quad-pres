@@ -157,8 +157,8 @@ sub traverse_callback
 my $quadpres_obj = 
     Shlomif::Quad::Pres->new(
         $contents, 
-        "/",
-        "server"
+        'doc_id' => "/",
+        'mode' => "server",
     );
 
 $quadpres_obj->traverse_tree(\&traverse_callback);

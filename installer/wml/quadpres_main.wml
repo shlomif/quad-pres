@@ -17,12 +17,16 @@
         
         $document_name =~ s/^\.//;
         $document_name =~ s!\.wml$!!;
-        $document_name =~ s/index\.html//;
+        $document_name =~ s/index\.html$//;
         $document_name =~ s/^\///;
 
         my $render_type = "server";
 
-        $qp = Shlomif::Quad::Pres->new($contents, $document_name, $render_type);
+        $qp = Shlomif::Quad::Pres->new(
+            $contents, 
+            'doc_id' => $document_name, 
+            'mode' => $render_type
+            );
 
         $text = $qp->get_navigation_bar();
 
