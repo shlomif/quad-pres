@@ -1,17 +1,22 @@
 all: check
 
-check: stop-error perl test-html-correctness test-lang-settings 
+BASH_TESTS = html-correctness stop-on-error lang-settings 
 
-test-lang-settings: 
-	bash test-lang-settings.bash
+BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 
-stop-error:
-	cd stop-on-error && bash test1.bash
+$(BASH_TESTS_TARGETS) :: test-% :
+	cd $(patsubst test-%,%,$@) && bash test1.bash
 
-perl: perl-getopt
+PERL_TESTS = Getopt
 
-perl-getopt:
-	perl perl/Getopt.pl
+PERL_TESTS_TARGETS = $(addprefix perl-test-,$(PERL_TESTS))
 
-test-html-correctness:
-	cd html-correctness && bash test1.bash
+$(PERL_TESTS_TARGETS) :: perl-test-% :
+	perl perl/$(patsubst perl-test-%,%,$@).pl
+
+bash-tests: $(BASH_TESTS_TARGETS)
+
+perl-tests: $(PERL_TESTS_TARGETS)
+
+check: bash-tests perl-tests 
+
