@@ -7,11 +7,10 @@ Pressing:
 
 * Implement a header tag for all the themes.
 
-* Make sure the args are passed to the commands explictly instead of via
-@ARGV.
-
 Long Term:
 ----------
+
+* Enable reading parameters from the user $HOME/.quadpres directory
 
 * Multiple stages for slides.
 
@@ -21,5 +20,10 @@ Long Term:
 * Integration with Subversion.
 
 * Write more tests.
+
+* Write a path signature for the title:
+
+    Gimp Lecture ==> Areal Effects ==> Blur ==>
+    Motion Blur
 
 

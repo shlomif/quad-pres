@@ -235,7 +235,7 @@ EOF
 
     open WMLRC, ">$src_dir_name/.wmlrc";
 
-    print WMLRC "-DROOT~src --passoption=2,-X -DTHEME=shlomif-text\n";
+    print WMLRC "-DROOT~src --passoption=2,-X3074 -DTHEME=shlomif-text\n";
 
     close WMLRC;
 
