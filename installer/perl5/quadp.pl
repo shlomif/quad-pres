@@ -4,7 +4,10 @@ use strict;
 
 use Shlomif::Quad::Pres::CmdLine;
 
-my $cmd_line = Shlomif::Quad::Pres::CmdLine->new();
+my $cmd_line = 
+    Shlomif::Quad::Pres::CmdLine->new(
+        'cmd_line' => [@ARGV],
+        );
 
 exit($cmd_line->run());
 
