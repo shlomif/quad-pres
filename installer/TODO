@@ -3,8 +3,6 @@ Pressing:
 
 * Make the template of the theme accept some relevant parameters.
 
-* Make sure that quadp render stops after the first error.
-
 * Document the charset and language tags.
 
 * Implement a header tag for all the themes.

@@ -8,7 +8,6 @@ use vars qw(@ISA);
 
 @ISA=qw(Shlomif::Gamla::Object);
 
-use Getopt::Long;
 use English;
 use Pod::Usage;
 use Cwd;
@@ -18,6 +17,7 @@ use File::Copy;
 
 use Shlomif::Quad::Pres::Path;
 use Shlomif::Quad::Pres::Exception;
+use Shlomif::Quad::Pres::Getopt;
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
 
@@ -26,7 +26,15 @@ sub initialize
 {
     my $self = shift;
 
-    my $path_man = $self->{'path_man'} = Shlomif::Quad::Pres::Path->new();
+    $self->{'path_man'} = Shlomif::Quad::Pres::Path->new();
+
+    my (%args);
+    
+    %args = (@_);
+
+    my $cmd_line = $self->{'cmd_line'} = $args{'cmd_line'};
+
+    $self->{'getopt'} = Shlomif::Quad::Pres::Getopt->new($cmd_line);
 
     return 0;
 }
@@ -77,14 +85,31 @@ sub run
     };
 }
 
+sub get_getopt
+{
+    my $self = shift;
+
+    return $self->{'getopt'};
+}
+
+sub get_cmdline
+{
+    my $self = shift;
+
+    return $self->{'cmd_line'};
+}
+
 sub real_run
 {
     my $self = shift;
 
     my ($help, $man);
+
+    my $getopt = $self->get_getopt();
+    my $cmd_line = $self->get_cmdline();
     
-    Getopt::Long::Configure('require_order');
-    GetOptions(
+    $getopt->configure('require_order');
+    $getopt->getoptions(
         'help|h|?' => \$help,
         'man' => \$man,
     ) or pod2usage(2);
@@ -92,9 +117,9 @@ sub real_run
     pod2usage(1) if $help;
     pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
-    pod2usage(1) if (scalar(@ARGV) == 0);
+    pod2usage(1) if (scalar(@$cmd_line) == 0);
 
-    my $command = shift(@ARGV);
+    my $command = shift(@$cmd_line);
 
     if (! exists($cmd_aliases{$command}))
     {
@@ -121,11 +146,14 @@ sub perform_setup_command
 {
     my $self = shift;
 
-    if (! @ARGV)
+    my $cmd_line = $self->get_cmdline();
+    my $getopt = $self->get_getopt();
+
+    if (! @$cmd_line)
     {
         throw $error_class -text => "setup must be followed by a directory name";
     }
-    my $src_dir_name = shift(@ARGV);
+    my $src_dir_name = shift(@$cmd_line);
 
     if ($src_dir_name =~ /^-/)
     {
@@ -139,7 +167,7 @@ sub perform_setup_command
         "upload_path" => "",
     );
 
-    GetOptions(
+    $getopt->getoptions(
         'dest-dir=s' => \$args{"server_dest_dir"},
         'setgid-group=s' => \$args{"setgid_group"},
         'upload-path=s' => \$args{"upload_path"},
@@ -311,7 +339,10 @@ sub perform_render_command
 {
     my $self = shift;
 
-    if (! @ARGV)
+    my $cmd_line = $self->get_cmdline();
+    my $getopt = $self->get_getopt();
+
+    if (! @$cmd_line)
     {
         throw $error_class -text => "render must be followed by filenames or flags";
     }
@@ -319,7 +350,7 @@ sub perform_render_command
     my $render_all = 0;
     my $render_hard_disk_html = 0;
     
-    GetOptions(
+    $getopt->getoptions(
         'a|all!' => \$render_all,
         'hd|hard-disk!' => \$render_hard_disk_html,
     );
@@ -350,18 +381,21 @@ sub perform_clear_command
 {
     my $self = shift;
 
-    if (! @ARGV)
+    my $cmd_line = $self->get_cmdline();
+    my $getopt = $self->get_getopt();
+
+    if (! @$cmd_line)
     {
         throw $error_class -text => "clear must be followed by filenames or flags";
     }
     
-    my $render_all = 0;
+    my $clear_all = 0;
     
-    GetOptions(
-        'a|all!' => \$render_all
+    $getopt->getoptions(
+        'a|all!' => \$clear_all
     );
     
-    if (! $render_all)
+    if (! $clear_all)
     {
         throw $error_class -text => "Don't know how to clear anything but all yet.";
     }
@@ -538,10 +572,12 @@ sub dump_contents
 sub perform_add_command
 {
     my $self = shift;
+
+    my $cmd_line = $self->get_cmdline();
     
     $self->chdir_to_base();
 
-    my $filename = shift(@ARGV);
+    my $filename = shift(@$cmd_line);
 
     my @path = @{$self->{'invocation_path'}};
 
