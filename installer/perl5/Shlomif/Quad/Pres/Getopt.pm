@@ -5,7 +5,7 @@ package Shlomif::Quad::Pres::Getopt;
 #
 # It's a kludge, but it works.
 
-require Getopt::Long '2.24';
+use Getopt::Long '2.24';
 
 sub new
 {
@@ -51,14 +51,17 @@ sub getoptions
     my $self = shift;
 
     my (@params) = (@_);
+    my (@ret);
 
     my $getopt = $self->get_getopt();
 
     {
         local @ARGV = @{$self->{'args'}};
-        return $getopt->getoptions(@params);
+        @ret = $getopt->getoptions(@params);
         @{$self->{'args'}} = @ARGV;
     }
+
+    return @ret;
 }
 
 1;
