@@ -1,3 +1,5 @@
+#include "wml_helpers.wml"
+
 <:{
 
     use Shlomif::Quad::Pres;
@@ -117,6 +119,9 @@ foreach my $c (@controls)
     print $contents_tree;
 }:>
 </define-tag>
+
+<default-var "lang" "en-US" />
+<default-var "charset" "iso-8859-1" />
 
 #include "themes/$(THEME)/template.wml"
 

@@ -1,0 +1,7 @@
+<define-tag default-var>
+<if <var-exists "%0" /> 
+    ""
+    <set-var %0="%1" />
+    />
+</define-tag>
+
