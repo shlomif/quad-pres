@@ -20,6 +20,10 @@ credit/template/src/index.html.wml
 credit/template/src/two.html.wml
 credit/template/Contents.pm
 credit/test1.bash
+workflow/template/src/index.html.wml
+workflow/template/src/two.html.wml
+workflow/template/Contents.pm
+workflow/test1.bash
 html-correctness/test1.bash
 Makefile
 MANIFEST
