@@ -1,10 +1,11 @@
 Pressing:
 ---------
 
-* Write a test for the group/gid patch.
-
 Long Term:
 ----------
+
+* Refactor the tests suite to refer to $quadpres_root/ instead
+of ../installation/.
 
 * Enable reading parameters from the user $HOME/.quadpres directory
 
