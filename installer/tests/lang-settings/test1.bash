@@ -43,11 +43,11 @@ echo "Got \"$wanted\" as a result"
 output_file=$test_dir-output/index.html
 if ! tidy -errors $output_file ; then
     echo "File does not validate!" 1>&2 
-    exit 
+    exit 1
 fi
 if ! perl ../verify-lang-settings.pl $wanted < $output_file ; then
     echo "File has improper language encodings" 1>&2 
-    exit
+    exit 1
 fi
 }
 

@@ -1,8 +1,7 @@
 #include 'template.wml'
 
-<ol
-
+<ol>
 <li>
-Hello.
+Hi there!
 </li>
 </ol>
