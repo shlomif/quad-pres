@@ -177,6 +177,55 @@ The first section would have the relative URL C<first/> and the first
 subpage the relativel URL C<first/page1.html>. There is an image 
 C<first/hello.png>
 
+=head1 Format of the template.wml file
+
+The template.wml file is the master Web Meta Language template file for the 
+slides. Within it one can put definitions of macros that are used in several
+slides of the lecture. The file contains one statement:
+
+    #include "quadpres_main.wml"
+
+This makes sure all the slides will have a common look and feel, as well
+as have several pre-defined WML macros that ship with quad pres.
+
+Before this statement, one can put defaults for the page. To do so, put
+the following statement at the beginning of the file:
+
+    #include "wml_helpers.wml"
+
+And then use the C<<< <default-var / > >>> statement to issue a default
+for it. Available defaults include:
+
+=over 8
+
+=item qp_lang
+
+The XML language for the file. Defaults to en-US
+
+=item qp_charset
+
+The XML/HTML character set for the file. Defaults to iso8859-1.
+
+=item qp_body_dir
+
+Whether the body directory is Left-to-Right (LTR) or Right-to-Left (RTL).
+Set to either C<ltr> or C<rtl>. Default is C<ltr>
+
+=item qp_doctype_strictnesss
+
+Whether the file is XHTML 1.0 Strict or XHTML 1.0 Transitional. Set to 
+either C<strict> or something else. Default is C<strict>
+
+=back
+
+Here's an example for a C<template.wml> file that sets some parameters:
+
+    #include "wml_helpers.wml"
+    <default-var "qp_lang" "fr-FR" />
+    <default-var "qp_charset" "utf-8" />
+    
+    #include "quadpres_main.wml"
+
 =head1 Format of an Individual Page
 
 The first statement in a page should be 
@@ -186,6 +235,9 @@ The first statement in a page should be
 Afterwards one can put the HTML markup placed inside the slide.. Use the 
 C<E<lt>qpcontents /E<gt>> tag to denote a table of contents for inside this 
 sub-section onwards.
+
+Beforehand this initial statement one can put settings for the page in a 
+similar fashion described in the section "Format of the template.wml file".
 
 =head1 SEE ALSO
 

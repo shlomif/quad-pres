@@ -3,8 +3,6 @@ Pressing:
 
 * Document the charset and language and dir tags.
 
-* Deal with the address:email tag of the alon theme
-
 Long Term:
 ----------
 
@@ -25,4 +23,7 @@ Long Term:
     Motion Blur
 
 * Create a nice graphical button for the "Made with Quad-Pres" link.
+
+* Create a unified approach for setting credits for the lecture: E-mail,
+homepage URL, writer's name, etc.
 

@@ -109,14 +109,14 @@ foreach my $c (@controls)
 }:>
 </define-tag>
 
-<default-var "lang" "en-US" />
-<default-var "charset" "iso-8859-1" />
-<default-var "body_dir" "ltr" />
-<default-var "doctype_strictness" "strict" />
+<default-var "qp_lang" "en-US" />
+<default-var "qp_charset" "iso-8859-1" />
+<default-var "qp_body_dir" "ltr" />
+<default-var "qp_doctype_strictness" "strict" />
 
 <define-tag qp:html:header>
-<?xml version="1.0" encoding="<get-var charset />"?>
-<ifeq "<get-var doctype_strictness />" "strict"
+<?xml version="1.0" encoding="<get-var qp_charset />"?>
+<ifeq "<get-var qp_doctype_strictness />" "strict"
     <@[<!DOCTYPE html
          PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
          "DTD/xhtml1-strict.dtd">]@>
@@ -124,9 +124,9 @@ foreach my $c (@controls)
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">]@>
 />
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<get-var lang />" lang="<get-var lang />">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<get-var qp_lang />" lang="<get-var qp_lang />">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=<get-var charset />" />
+<meta http-equiv="content-type" content="text/html; charset=<get-var qp_charset />" />
 <link rel="stylesheet" href="<qp:contentsurl />style.css" type="text/css" />
 <qp:head:links />
 
@@ -135,7 +135,7 @@ foreach my $c (@controls)
 </define-tag>
 
 <define-tag qp:html:bodystart>
-<ifeq "<get-var "body_dir" />" "rtl" 
+<ifeq "<get-var "qp_body_dir" />" "rtl" 
     "<body dir="rtl">"
     "<body>"
     />
@@ -154,7 +154,7 @@ foreach my $c (@controls)
 
 <define-tag qp:html:footer>
 <:{
-    if ("<get-var avoid_credit />" eq "yes")
+    if ("<get-var qp_avoid_credit />" eq "yes")
     {
         # Do Nothing
     }
