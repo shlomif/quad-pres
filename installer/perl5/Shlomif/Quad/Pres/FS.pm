@@ -42,7 +42,8 @@ sub set_group
 
     my $gid;
 
-    if (defined($group))
+    # Check if the group is not empty.
+    if (defined($group) && ($group !~ /^\s*$/))
     {
         if ($group =~ /^\d+$/)
         {
@@ -56,9 +57,9 @@ sub set_group
                 $gid = $group_info[2];
             }
         }
-    }
 
-    $self->{'gid'} = $gid;
+        $self->{'gid'} = $gid;
+    }
 
     return 0;    
 }
