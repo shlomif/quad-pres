@@ -1,13 +1,9 @@
 Pressing:
 ---------
 
-* Make the template of the theme accept some relevant parameters.
-
 * Document the charset and language and dir tags.
 
 * Deal with the address:email tag of the alon theme
-
-* Add the Made with Quad-Pres button to the front page's footer.
 
 Long Term:
 ----------
@@ -28,4 +24,5 @@ Long Term:
     Gimp Lecture ==> Areal Effects ==> Blur ==>
     Motion Blur
 
+* Create a nice graphical button for the "Made with Quad-Pres" link.
 
