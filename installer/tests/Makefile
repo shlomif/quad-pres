@@ -1,6 +1,6 @@
 all: check
 
-BASH_TESTS = html-correctness stop-on-error lang-settings 
+BASH_TESTS = html-correctness stop-on-error lang-settings body-dir
 
 BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 
