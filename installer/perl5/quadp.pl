@@ -239,6 +239,17 @@ sub-section onwards.
 Beforehand this initial statement one can put settings for the page in a 
 similar fashion described in the section "Format of the template.wml file".
 
+=head1 Choosing a Theme
+
+Quad-Pres ships with various themes that can modify its look and feel.
+To set a theme for the lecture, edit the C<.wmlrc> file in the 
+presentation's directory and change the C<-DTHEME=shlomif-text> directive
+to define some other theme. Look in the Quad-Pres installation directory
+under C<share/quad-pres/wml/themes> for a list of themes. (each theme is 
+a directory there).
+
+More themes can be created on your own based on the examples there.
+
 =head1 SEE ALSO
 
 The Quad-Pres Homepage:
