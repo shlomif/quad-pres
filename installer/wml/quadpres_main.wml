@@ -13,7 +13,7 @@
     
         my $contents = Contents::get_contents();
         
-        my $document_name = "$(FILENAME)" ;
+        $document_name = "$(FILENAME)" ;
         
         $document_name =~ s/^\.//;
         $document_name =~ s!\.wml$!!;
@@ -112,12 +112,18 @@ foreach my $c (@controls)
 <default-var "lang" "en-US" />
 <default-var "charset" "iso-8859-1" />
 <default-var "body_dir" "ltr" />
+<default-var "doctype_strictness" "strict" />
 
 <define-tag qp:html:header>
 <?xml version="1.0" encoding="<get-var charset />"?>
-<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "DTD/xhtml1-strict.dtd">
+<ifeq "<get-var doctype_strictness />" "strict"
+    "<!DOCTYPE html
+         PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "DTD/xhtml1-strict.dtd">"
+    "<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">"
+        />
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<get-var lang />" lang="<get-var lang />">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=<get-var charset />" />
@@ -143,6 +149,22 @@ foreach my $c (@controls)
     }
 
     print $contents_tree;
+}:>
+</define-tag>
+
+<define-tag qp:html:footer>
+<:{
+    if ("<get-var avoid_credit />" eq "yes")
+    {
+        # Do Nothing
+    }
+    else
+    {
+        if ($document_name eq "")
+        {
+            print "<p><a href=\"http://vipe.technion.ac.il/~shlomif/quadpres/made_with.html\"><i>Made with Quad-Pres</i></a></p>";
+        }
+    }
 }:>
 </define-tag>
 

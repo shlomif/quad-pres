@@ -45,6 +45,7 @@
 {#BODY#}
 <hr />
 <qpnavigationbar />
+<qp:html:footer />
 </body>
 </html>
 

@@ -11,6 +11,7 @@
 # where it fits in.
 # <address:email />
 </address>
+<qp:html:footer />
 </body>
 </html>
 
