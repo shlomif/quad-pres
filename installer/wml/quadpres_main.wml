@@ -1,6 +1,14 @@
 #include "wml_helpers.wml"
 
 <:{
+sub uniprint
+{
+    binmode *STDOUT, ":utf8";
+    print STDOUT @_;
+    binmode *STDOUT, ":bytes";
+}
+}:>
+<:{
 
     use Shlomif::Quad::Pres;
     use Contents;
@@ -84,7 +92,7 @@ foreach my $c (@controls)
     my $title = $c->{'title'};
     
     next if ($url eq "");
-    print "<link rel=\"" . $c->{'link'} . "\" href=\"$url\" />\n";
+    uniprint("<link rel=\"" . $c->{'link'} . "\" href=\"$url\" />\n");
 }
 
 }:>
@@ -97,7 +105,8 @@ foreach my $c (@controls)
         &get_everything();
     }
 
-    print $subject;
+
+    uniprint $subject;
     #print $text;
 }:>
 </define-tag>
@@ -109,7 +118,7 @@ foreach my $c (@controls)
         &get_everything();
     }
 
-    print $title;
+    uniprint $title;
 }:>
 </define-tag>
 
@@ -152,7 +161,7 @@ foreach my $c (@controls)
         &get_everything();
     }
 
-    print $contents_tree;
+    uniprint $contents_tree;
 }:>
 </define-tag>
 
@@ -166,7 +175,7 @@ foreach my $c (@controls)
     {
         if ($document_name eq "")
         {
-            print "<p><a href=\"http://vipe.technion.ac.il/~shlomif/quadpres/made_with.html\"><i>Made with Quad-Pres</i></a></p>";
+            uniprint "<p><a href=\"http://quad-pres.berlios.de/made_with.html\"><i>Made with Quad-Pres</i></a></p>";
         }
     }
 }:>

@@ -29,20 +29,20 @@ $translate_control_text ||=
             
         my $url = $c->{'url'};
         my $title = $c->{'title'};
-        print "<td>\n";
+        uniprint "<td>\n";
 
         # The translated title.
         my $trans_title = $translate_control_text->($title);
         
         if ($url eq "")
         {
-            print "<b>$trans_title</b>";
+            uniprint "<b>$trans_title</b>";
         }
         else
         {
-            print "<a href=\"$url\" class=\"nav\"" . ($with_key ? (" accesskey=\"" . lc(substr($title,0,1)) . "\"") : "") . ">$trans_title</a>";
+            uniprint "<a href=\"$url\" class=\"nav\"" . ($with_key ? (" accesskey=\"" . lc(substr($title,0,1)) . "\"") : "") . ">$trans_title</a>";
         }
-        print "</td>\n";
+        uniprint "</td>\n";
     }
 }:>
 </tr></table>

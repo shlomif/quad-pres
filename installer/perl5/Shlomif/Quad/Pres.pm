@@ -490,7 +490,7 @@ sub get_title
     my $indexes_str = join(".", @coords_plus_1);
     if (scalar(@coords))
     {
-        $indexes_str .= " ";
+        $indexes_str .= ". ";
     }
 
     return $indexes_str . $self->get_subject();    
@@ -567,7 +567,7 @@ sub get_contents_helper
         "\" class=\"" . $contents_style_class . "\">";
     my @coords_plus_1 = (map { $_+1; } @coords);
     $text .= join(".", @coords_plus_1);
-    $text .= " ";
+    $text .= ". ";
     $text .= $branch->{'title'};
     $text .= "</a>\n";
     if (exists($branch->{'subs'}))
