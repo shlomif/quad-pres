@@ -1,22 +1,15 @@
 Pressing:
 ---------
 
-* Document the -hd (convert to hard disk) flag if it's not already documented.
-
-* Check to make sure the RPM Spec compiles nicely.
-
-* Make sure the bundle includes HTML::Links::Localize.
-
-* Write a regression test for checking that the upload feature works.
+Pressing After 0.10.x:
+----------------------
 
 * Write a unit test for the run_command function.
 
-* Add the made_with.html file to the site.
-
 * Add a feature to add a dot after the number in the title.
 
-* Replace the links in my home-site, Advogato, etc. with the new BerliOS 
-site URL.
+* Find a way to integrate the creation of the manifests in the test
+directory with the rest of the packaging process, and verify its correctness.
 
 Long Term:
 ----------
