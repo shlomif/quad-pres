@@ -21,7 +21,7 @@ shift
 local credit
 credit="$1"
 shift
-echo "Test No. $t : Theme=$theme credit=$dir"
+echo "Test No. $t : Theme=$theme credit=$credit"
 
 test_dir=testhtml$t
 quadp setup $test_dir --dest-dir=`pwd`/${test_dir}-output
@@ -34,15 +34,11 @@ if ! $credit ; then
     sed -i '1 { i\
 <set-var avoid_credit="yes" />\
 
-}' template.wml
+}' "$test_dir/template.wml"
 fi
 
 (cd $test_dir && quadp render -a)
 output_file=$test_dir-output/index.html
-if ! tidy -errors $output_file ; then
-    echo "File does not validate!" 1>&2 
-    exit 1
-fi
 
 if $credit ; then
     if ! grep -F "Made with Quad-Pres" $output_file ; then

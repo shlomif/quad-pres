@@ -41,7 +41,7 @@ EOF
 output_file=$test_dir-output/index.html
 if ! tidy -errors $output_file ; then
     echo "File does not validate!" 1>&2 
-    exit 
+    exit 1
 fi
 
 body_str="<body>"
@@ -51,8 +51,8 @@ fi
 
 if ! grep -F "$body_str" $output_file > /dev/null ; then
     echo "File does not contain the correct body!" 1>&2
-    exit
-fi
+    exit 1
+fi 
 
 }
 

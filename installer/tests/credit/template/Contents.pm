@@ -9,7 +9,7 @@ my $contents =
     [
         {
             'url' => "two.html",
-            'title' => "Error",
+            'title' => "Child Node",
         },
     ],
     'images' =>
