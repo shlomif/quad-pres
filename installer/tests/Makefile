@@ -1,6 +1,6 @@
 all: check
 
-check: stop-error perl test-lang-settings 
+check: stop-error perl test-html-correctness test-lang-settings 
 
 test-lang-settings: 
 	bash test-lang-settings.bash
@@ -12,4 +12,6 @@ perl: perl-getopt
 
 perl-getopt:
 	perl perl/Getopt.pl
-	
+
+test-html-correctness:
+	cd html-correctness && bash test1.bash
