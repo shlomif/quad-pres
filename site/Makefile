@@ -7,7 +7,7 @@ SOURCES = $(addprefix src/,$(addsuffix .html.wml,$(PAGES)))
 
 DESTS = $(patsubst src/%.html.wml,$(TARGET)/%.html,$(SOURCES))
 
-RAW_FILES = style.css images/pa051.jpg quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lecture.tar.gz W2L-Basic-Use-Lecture.tar.gz
+RAW_FILES = style.css images/pa051.jpg quad-pres-0.10.1.tar.gz quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lecture.tar.gz W2L-Basic-Use-Lecture.tar.gz
 RAW_FILES_SOURCES = $(addprefix src/,$(RAW_FILES))
 RAW_FILES_DEST = $(addprefix $(TARGET)/,$(RAW_FILES))
 
@@ -68,7 +68,8 @@ $(DEVEL_PACKAGE) : $(DEVEL_PACKAGE_DIR)/$(DEVEL_PACKAGE_FILENAME) $(DEVEL_VERSIO
 	cp -f $< $@
 
 upload: all
-	(cd dest && $(RSYNC) -r * shlomif@vipe.technion.ac.il:public_html/quadpres/)
+	#(cd dest && $(RSYNC) -r * shlomif@vipe.technion.ac.il:public_html/quadpres/)
+	(cd dest && $(RSYNC) -r * shlomif@shell.berlios.de:/home/groups/quad-pres/htdocs/)
 
 ARC_NAME = CLAN-$(shell date +%Y-%m-%d).tar.gz
 

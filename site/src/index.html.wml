@@ -65,6 +65,16 @@ Here are the final forms of the sample lectures</a>.
 
 <h2>News</h2>
 
+<h3>16-Oct-2003</h3>
+
+<p>
+Quad-Pres version 0.10.1 was released. This version features a multi-theme
+feature, that enable to customize the look and feel of the slides. Moreover,
+it is possible to specify several parameters as language, character set,
+and body direction. Other than that, a test suite was written to verify that
+some features of the program are not broken.
+</p>
+
 <h3>7-Feb-2003</h3>
 
 <p>
