@@ -397,10 +397,13 @@ sub perform_render_command
         'error_text' => "Rendering Failed!",
     );
 
-    $self->run_command(
-        'command' => "$scripts_dir/html-server-to-hd.pl",
-        'error_text' => "Conversion to Hard-disk format failed",
-    );
+    if ($render_hard_disk_html)
+    {
+        $self->run_command(
+            'command' => "$scripts_dir/html-server-to-hd.pl",
+            'error_text' => "Conversion to Hard-disk format failed",
+        );
+    }
 }
 
 sub perform_clear_command
