@@ -37,11 +37,11 @@ sub get_header
 
     return "#include \"wml_helpers.wml\"\n" . 
             ($lang ? 
-                "<default-var \"lang\" \"$lang\" />\n" : 
+                "<default-var \"qp_lang\" \"$lang\" />\n" : 
                 ""
             ) .
             ($charset ? 
-                "<default-var \"charset\" \"$charset\" />\n" : 
+                "<default-var \"qp_charset\" \"$charset\" />\n" : 
                 ""
             );
 }

@@ -32,7 +32,7 @@ cp -R ../template/src/*.html.wml $test_dir/src
 
 if ! $credit ; then
     sed -i '1 { i\
-<set-var avoid_credit="yes" />\
+<set-var qp_avoid_credit="yes" />\
 
 }' "$test_dir/template.wml"
 fi

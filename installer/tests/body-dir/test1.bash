@@ -28,7 +28,7 @@ quadp setup $test_dir --dest-dir=`pwd`/${test_dir}-output
 sed -i "s/-DTHEME=[-a-zA-Z_]\+/-DTHEME=${theme}/" $test_dir/.wmlrc
 
 cat > $test_dir/src/index.html.wml <<EOF
-<set-var body_dir="$dir" />
+<set-var qp_body_dir="$dir" />
 #include 'template.wml'
 
 <p>
