@@ -9,6 +9,9 @@ Pressing:
 
 * Implement a header tag for all the themes.
 
+* Make sure the args are passed to the commands explictly instead of via
+@ARGV.
+
 Long Term:
 ----------
 
