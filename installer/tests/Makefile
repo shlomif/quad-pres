@@ -1,6 +1,6 @@
 all:
 
-BASH_TESTS = html-correctness stop-on-error lang-settings body-dir
+BASH_TESTS = html-correctness stop-on-error lang-settings body-dir credit
 
 BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 
@@ -18,5 +18,5 @@ bash-tests: $(BASH_TESTS_TARGETS)
 
 perl-tests: $(PERL_TESTS_TARGETS)
 
-check: bash-tests perl-tests 
+check: perl-tests bash-tests 
 

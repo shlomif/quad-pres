@@ -18,47 +18,53 @@ let t++
 local theme
 theme="$1"
 shift
-local dir
-dir="$1"
+local credit
+credit="$1"
 shift
-echo "Test No. $t : Theme=$theme dir=$dir"
+echo "Test No. $t : Theme=$theme credit=$dir"
 
 test_dir=testhtml$t
 quadp setup $test_dir --dest-dir=`pwd`/${test_dir}-output
 sed -i "s/-DTHEME=[-a-zA-Z_]\+/-DTHEME=${theme}/" $test_dir/.wmlrc
 
-cat > $test_dir/src/index.html.wml <<EOF
-<set-var body_dir="$dir" />
-#include 'template.wml'
+cp -R ../template/Contents.pm $test_dir
+cp -R ../template/src/*.html.wml $test_dir/src
 
-<p>
-Hello world!
-</p>
+if ! $credit ; then
+    sed -i '1 { i\
+<set-var avoid_credit="yes" />\
 
-EOF
+}' template.wml
+fi
 
 (cd $test_dir && quadp render -a)
 output_file=$test_dir-output/index.html
 if ! tidy -errors $output_file ; then
     echo "File does not validate!" 1>&2 
-    exit 
+    exit 1
 fi
 
-body_str="<body>"
-if test "$dir" == "rtl" ; then
-    body_str="<body dir=\"rtl\">"
+if $credit ; then
+    if ! grep -F "Made with Quad-Pres" $output_file ; then
+        echo "There is no credit notice!" 1>&2
+        exit 1
+    fi
+else
+    if grep -F "Made with Quad-Pres" $output_file ; then
+        echo "There is a credit notice while there should not be!" 1>&2
+        exit 1
+    fi
 fi
 
-if ! grep -F "$body_str" $output_file > /dev/null ; then
-    echo "File does not contain the correct body!" 1>&2
-    exit
+if grep -F "Made with Quad-Pres" $test_dir-output/two.html ; then
+    echo "There is a credit notice while there should not be in the non-root file" 1>&2
+    exit 1
 fi
-
 }
 
 for theme in $(cd ../../installation/share/quad-pres/wml/themes/ && ls) ; do
-    for dir in ltr rtl ; do        
-        perform_test "$theme" "$dir"
+    for credit in "true" "false" ; do
+        perform_test "$theme" "$credit"
     done
 done
 
