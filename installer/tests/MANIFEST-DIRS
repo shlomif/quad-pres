@@ -8,4 +8,7 @@ body-dir
 credit
 credit/template
 credit/template/src
+workflow
+workflow/template
+workflow/template/src
 html-correctness
