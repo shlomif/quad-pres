@@ -4,6 +4,8 @@ use strict;
 
 use File::Copy;
 
+use XML::LibXML;
+
 my $files_or_dirs = shift || "-f";
 
 $files_or_dirs = ($files_or_dirs eq "-f");
@@ -22,22 +24,30 @@ sub process_dir
         push @dirs, $dir;
     }
 
-    open I, "<$source_dir/${dir_slash}.svn/entries" or
-        die "Cannot open \"$source_dir/${dir_slash}.svn/entries\"" ;
-
     my (@entries);
-    while (<I>)
+    
     {
-        if (/name=\"([^\"]*)\"/)
+        my $parser = XML::LibXML->new();
+
+        my $dom = $parser->parse_file("$source_dir/${dir_slash}.svn/entries");
+
+        my @svn_entries = $dom->getDocumentElement()->getChildrenByTagName("entry");
+
+        foreach (@svn_entries)
         {
-            my $filename = $1;
-            if ($filename ne "svn:this_dir")
+            my $deleted = $_->getAttribute("deleted");
+            if (defined($deleted) && ($deleted eq "true"))
             {
-                push @entries, $filename;
+                next;
             }
+            my $name = $_->getAttribute("name");
+            if ($name eq "svn:this_dir")
+            {
+                next;
+            }
+            push @entries, $name;
         }
     }
-    close(I);
 
     foreach my $entry (@entries)
     {
