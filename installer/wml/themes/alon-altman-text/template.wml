@@ -1,5 +1,5 @@
 <qp:html:header />
-<body>
+<qp:html:bodystart />
 <h1><qp:title /></h1>
 <div class="nav">
 <a href="<qp:contentsurl />">[Top]</a> <a href="<qp:prevurl />">[Previous]</a> <a href="<qp:nexturl />">[Next]</a>
@@ -7,7 +7,9 @@
 {#BODY#}
 <address>
 <a href="http://validator.w3.org/check/referer">Valid HTML!</a><br />
-<address:email />
+# Removed - I'll have to see what to do about it because I don't know
+# where it fits in.
+# <address:email />
 </address>
 </body>
 </html>
