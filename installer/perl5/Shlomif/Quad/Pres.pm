@@ -19,8 +19,14 @@ sub initialize
     my $self = shift;
 
     $self->{'contents'} = shift;
-    my $doc_id = shift;
-    $self->{'mode'} = shift;
+    
+    my %args = (@_);
+    
+    my $doc_id = $args{'doc_id'};
+    
+    $self->{'mode'} = ($args{'mode'} || "server");
+
+    $self->{'stage_idx'} = ($args{'stage_idx'} || 0);
     
     $self->get_doc_id($doc_id);
     
@@ -365,7 +371,7 @@ sub get_control_url
 
     return
         $this_url->get_relative_url(
-                $other_url, 
+                $other_url,
                 $self->{'doc_id_slash_terminated'}
             );
 }
