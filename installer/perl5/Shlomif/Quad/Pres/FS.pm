@@ -68,6 +68,11 @@ sub my_chown
     my $self = shift;
     
     my $path = shift;
+
+    if (!exists($self->{gid}))
+    {
+        return;
+    }
     
     chown(-1,$self->{'gid'}, $path);
 }
