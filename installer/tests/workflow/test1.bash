@@ -12,55 +12,60 @@ cd "in-out"
 # Check that the default charset and lang are OK.
 t=0
 
+check_files()
+{
+    local output_dir
+    output_dir="$1"
+    shift
+    if [ \( \! -e $output_dir/index.html \) -o \( \! -e $output_dir/two.html \) ] ; then
+        echo "The requested file do not exist in the output directory" 1>&2
+        exit 1
+    fi
+}
+
 perform_test()
 {
 let t++
-local theme
-theme="$1"
-shift
-local credit
-credit="$1"
-shift
 echo "Test No. $t : Theme=$theme credit=$credit"
 
 test_dir=testhtml$t
-quadp setup $test_dir --dest-dir=`pwd`/${test_dir}-output
-sed -i "s/-DTHEME=[-a-zA-Z_]\+/-DTHEME=${theme}/" $test_dir/.wmlrc
+output_dir="$test_dir-output"
+quadp setup $test_dir --dest-dir="`pwd`/$output_dir"
 
 cp -R ../template/Contents.pm $test_dir
 cp -R ../template/src/*.html.wml $test_dir/src
 
-if ! $credit ; then
-    sed -i '1 { i\
-<set-var qp_avoid_credit="yes" />\
-
-}' "$test_dir/template.wml"
-fi
-
-(cd $test_dir && quadp render -a)
-output_file=$test_dir-output/index.html
-
-if $credit ; then
-    if ! grep -F "Made with Quad-Pres" $output_file ; then
-        echo "There is no credit notice!" 1>&2
-        exit 1
-    fi
-else
-    if grep -F "Made with Quad-Pres" $output_file ; then
-        echo "There is a credit notice while there should not be!" 1>&2
-        exit 1
-    fi
-fi
-
-if grep -F "Made with Quad-Pres" $test_dir-output/two.html ; then
-    echo "There is a credit notice while there should not be in the non-root file" 1>&2
+if ! (cd $test_dir && quadp render -a) ; then
+    echo "quadp render -a Failed!" 1>&2
     exit 1
 fi
-}
 
-for theme in $(cd ../../installation/share/quad-pres/wml/themes/ && ls) ; do
-    for credit in "true" "false" ; do
-        perform_test "$theme" "$credit"
-    done
-done
+check_files $test_dir-output
+
+sed -i '/^upload_path=/s!=!='"`pwd`"'/upload!' $test_dir/quadpres.ini
+
+if ! (cd $test_dir && quadp upload -a) ; then
+    echo "quadp upload Failed!" 1>&2
+    exit 1
+fi
+
+
+A="$(diff -u -r upload "$output_dir" | wc -l)"
+if test "$A" -ne 0 ; then
+    echo "Uploading failed!" 1>&2
+    exit 1
+fi
+
+if ! (cd $test_dir && quadp render -a -hd) ; then
+    echo "quadp Hard-Disk rendering Failed!" 1>&2
+    exit 1
+fi
+
+check_files "$test_dir/hard-disk-html"
+}
+echo "Workflow Test"
+
+
+perform_test
+
 

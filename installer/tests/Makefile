@@ -1,6 +1,6 @@
 all:
 
-BASH_TESTS = html-correctness stop-on-error lang-settings body-dir credit
+BASH_TESTS = workflow html-correctness stop-on-error lang-settings body-dir credit
 
 BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 
