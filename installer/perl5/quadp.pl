@@ -6,7 +6,7 @@ use Shlomif::Quad::Pres::CmdLine;
 
 my $cmd_line = Shlomif::Quad::Pres::CmdLine->new();
 
-$cmd_line->run();
+exit($cmd_line->run());
 
 __END__
 

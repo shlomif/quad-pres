@@ -121,7 +121,12 @@ sub traverse_callback
         my $cmd = "$scripts_dir/render-file.pl \"$src_filename_modified\" > \"$filename\"\n";
             
         print $cmd, "\n";
-        (system($cmd) == 0) or die "Aborting.";
+        if (system($cmd) != 0) 
+        {
+            # Clean-up the file so it will have to be regenerated
+            unlink($filename);
+            die "Aborting.";
+        }
     }
 
     if (exists($branch->{'images'}))

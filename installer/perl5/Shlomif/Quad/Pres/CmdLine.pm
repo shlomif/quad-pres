@@ -67,7 +67,7 @@ sub run
     }
     catch $error_class with {
         my $e = shift;
-        print STDERR $e->text(), "\n";
+        print STDERR "Quad-Pres Error: ", $e->text(), "\n";
         return (-1);        
     }
     otherwise {
@@ -333,7 +333,12 @@ sub perform_render_command
 
     my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
     
-    system("$scripts_dir/Render_all_contents.pl");
+    my $cmd_ret = system("$scripts_dir/Render_all_contents.pl");
+
+    if ($cmd_ret != 0)
+    {
+        throw $error_class -text => "Rendering Failed!";
+    }
 
     if ($render_hard_disk_html)
     {
