@@ -18,5 +18,10 @@ prepare_check:
 purecheck:
 	@PATH=`pwd`/tests/installation/bin:$$PATH ; \
 	export PERL5LIB=`pwd`/tests/installation/share/quad-pres/perl5/ ; \
-	make -C tests
+	make -C tests check
+
+dist-hook:
+	mkdir $(distdir)/tests
+	cat $(srcdir)/tests/MANIFEST-DIRS | (while read T ; do mkdir -p $(distdir)/tests/"$$T" ; done)
+	cat $(srcdir)/tests/MANIFEST | (while read T ; do cp -p $(srcdir)/tests/"$$T" $(distdir)/tests/"$$T" ; done)
 

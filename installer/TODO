@@ -3,9 +3,11 @@ Pressing:
 
 * Make the template of the theme accept some relevant parameters.
 
-* Document the charset and language tags.
+* Document the charset and language and dir tags.
 
 * Deal with the address:email tag of the alon theme
+
+* Add an option to pack the tests inside the directory.
 
 Long Term:
 ----------
