@@ -3,5 +3,22 @@ Pressing:
 
 * Make the template of the theme accept some relevant parameters.
 
-* Inspect for a WML macro of set-if-not-already-set or write my own.
+* Make sure that quadp render stops after the first error.
+
+* Document the charset and language tags.
+
+* Implement a header tag for all the themes.
+
+Long Term:
+----------
+
+* Multiple stages for slides.
+
+* quadp copy, quadp rm, quadp mv commands.
+    - quadp order meta-command
+
+* Integration with Subversion.
+
+* Write more tests.
+
 
