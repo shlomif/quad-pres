@@ -38,13 +38,13 @@
 <restore withkey />
 </define-tag>
 
-
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="<get-var charset />"?>
 <!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<get-var lang />" lang="<get-var lang />">
 <head>
+<meta http-equiv="content-type" content="text/html; charset=<get-var charset />" />
 <link rel="stylesheet" href="<qp:contentsurl />style.css" type="text/css" />
 <qp:head:links />
 <title>{#SUBJECT_LOC#}</title>

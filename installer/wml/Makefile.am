@@ -4,7 +4,7 @@ SUBDIRS = themes
 
 wmlfilesdir = $(wmldir)
 
-WML_FILES = quadpres_main.wml
+WML_FILES = quadpres_main.wml wml_helpers.wml
 
 wmlfiles_DATA = $(WML_FILES)
 
