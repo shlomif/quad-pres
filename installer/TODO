@@ -8,6 +8,14 @@ on every "quadp render -a" (even without -hd).
 
 * Document the $translate_control_text function.
 
+* Fix the Last Behaviour:
+
+http://vipe.technion.ac.il/~shlomif/lecture/Perl/Newbies/lecture4/system-funcs/
+
+<->
+
+http://vipe.technion.ac.il/~shlomif/lecture/Perl/Newbies/lecture4/system-funcs/stat.html
+
 Pressing After 0.10.x:
 ----------------------
 
