@@ -358,7 +358,7 @@ sub get_control_url
 
     if (!defined($other_url))
     {
-        return "";
+        return "./";
     }
     
     my $this_url = $self->{'doc_id'};
