@@ -32,6 +32,10 @@ lecture.
 Long Term:
 ----------
 
+* Add a way to generate archives of:
+    - The Hard disk HTML slides.
+    - The source.
+
 * Refactor the tests suite to refer to $quadpres_root/ instead
 of ../installation/.
 
