@@ -40,6 +40,13 @@ opts.Add('DESTDIR',
 opts.Update(env)
 opts.Save(config_file, env)
 
+# Paths
+prefix = env['PREFIX']
+datadir = prefix + '/share'
+pkgdatadir = datadir + '/quad-pres'
+modulesdir = pkgdatadir + '/perl5'
+qpscriptsdir = pkgdatadir + '/scripts'
+
 def build_script_file(env, target, source):
     filename = str(target[0])
     f = open(filename+".pl", 'rt');
@@ -48,23 +55,34 @@ def build_script_file(env, target, source):
     new_lines = []
     for l in lines:
         # TODO : Replace it with something better, based on PREFIX, etc.
-        new_lines.append(l.replace('{QP_MODULES_DIR}', '/home/shlomi/apps/test/quadpres//share/quad-pres/perl5'))
+        new_lines.append(l.replace('{QP_MODULES_DIR}', modulesdir))
     lines = new_lines
     f = open("PATH_PERL.setting")
     path_perl = f.read()
     f.close()
-    lines[0].replace('/usr/bin/perl', path_perl)
+    lines[0] = lines[0].replace('/usr/bin/perl', path_perl)
     f = open(filename, 'wt')
     f.writelines(lines)
     f.close()
     os.chmod(filename, 0755)
 
-env.Alias('build', 
-    env.Command("perl5/scripts/clear-tree.pl", 
-        ["perl5/scripts/clear-tree.pl.pl", "PATH_PERL.setting"], 
-        build_script_file
-   )
-)
+perl5_scripts = ["clear-tree.pl", "fix-gvim-html.pl", "html-server-to-hd.pl",
+    "Render_all_contents.pl", "render-file.pl", "upload.pl"]
+
+perl5_scripts_dir = "perl5/scripts"
+
+for script in perl5_scripts:
+    s_path = perl5_scripts_dir + "/" + script
+    env.Alias('build',
+        env.Command(s_path,
+            [s_path+".pl", "PATH_PERL.setting", "quad-pres.conf"],
+            build_script_file
+       )
+    )
+    env.Alias('install',
+        env.Install(qpscriptsdir, env.File(script, perl5_scripts_dir))
+    )
 
 # Set the default target to build.
 env.Default('build');
+
