@@ -42,6 +42,7 @@ opts.Save(config_file, env)
 
 # Paths
 prefix = env['PREFIX']
+bindir = prefix + '/bin'
 datadir = prefix + '/share'
 pkgdatadir = datadir + '/quad-pres'
 modulesdir = pkgdatadir + '/perl5'
@@ -66,6 +67,14 @@ def build_script_file(env, target, source):
     f.close()
     os.chmod(filename, 0755)
 
+def script_alias(s_path):
+    env.Alias('build',
+        env.Command(s_path,
+            [s_path+".pl", "PATH_PERL.setting", "quad-pres.conf"],
+            build_script_file
+       )
+    )
+
 perl5_scripts = ["clear-tree.pl", "fix-gvim-html.pl", "html-server-to-hd.pl",
     "Render_all_contents.pl", "render-file.pl", "upload.pl"]
 
@@ -73,15 +82,16 @@ perl5_scripts_dir = "perl5/scripts"
 
 for script in perl5_scripts:
     s_path = perl5_scripts_dir + "/" + script
-    env.Alias('build',
-        env.Command(s_path,
-            [s_path+".pl", "PATH_PERL.setting", "quad-pres.conf"],
-            build_script_file
-       )
-    )
+    script_alias(s_path)
     env.Alias('install',
         env.Install(qpscriptsdir, env.File(script, perl5_scripts_dir))
     )
+
+# Build and install the quadp program
+script_alias("perl5/quadp")
+env.Alias('install',
+    env.Install(bindir, env.File("quadp", "perl5"))
+)
 
 # Set the default target to build.
 env.Default('build');
