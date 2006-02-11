@@ -93,6 +93,32 @@ env.Alias('install',
     env.Install(bindir, env.File("quadp", "perl5"))
 )
 
+perl5_modules = [
+'Shlomif/Arad/Object.pm',
+'Shlomif/Gamla/Object.pm',
+'Shlomif/Quad/Pres/CGI.pm',
+'Shlomif/Quad/Pres/CmdLine.pm',
+'Shlomif/Quad/Pres/Config-new-fangled.pm',
+'Shlomif/Quad/Pres/Config.pm',
+'Shlomif/Quad/Pres/Exception.pm',
+'Shlomif/Quad/Pres/FS.pm',
+'Shlomif/Quad/Pres/Getopt.pm',
+'Shlomif/Quad/Pres/Path.pm',
+'Shlomif/Quad/Pres.pm',
+'Shlomif/Quad/Pres/Url.pm',
+]
+
+# TODO : Generate Path.pm
+
+for module in perl5_modules:
+    path_comps = module.split("/")
+    module_home = str.join("/", path_comps[0:-1])
+    env.Alias('install', 
+        env.Install(modulesdir + "/" + module_home,
+            env.File(path_comps[-1], "perl5/" + module_home)
+            )
+        )
+
 # Set the default target to build.
 env.Default('build');
 
