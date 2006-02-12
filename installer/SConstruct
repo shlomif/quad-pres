@@ -93,6 +93,22 @@ env.Alias('install',
     env.Install(bindir, env.File("quadp", "perl5"))
 )
 
+def build_path_pm(env, target, source):
+    filename = str(target[0])
+    f = open(filename+".pl", 'rt')
+    data = f.read()
+    f.close()
+    f = open(filename, 'wt')
+    f.write(data.replace('{QP_PKG_DATA_DIR}', pkgdatadir))
+    f.close()
+
+env.Alias('build',
+        env.Command("perl5/Shlomif/Quad/Pres/Path.pm",
+            ["perl5/Shlomif/Quad/Pres/Path.pm.pl", "quad-pres.conf"],
+            build_path_pm
+       )
+    )
+
 perl5_modules = [
 'Shlomif/Arad/Object.pm',
 'Shlomif/Gamla/Object.pm',
@@ -107,8 +123,6 @@ perl5_modules = [
 'Shlomif/Quad/Pres.pm',
 'Shlomif/Quad/Pres/Url.pm',
 ]
-
-# TODO : Generate Path.pm
 
 for module in perl5_modules:
     path_comps = module.split("/")
