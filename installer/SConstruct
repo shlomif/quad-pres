@@ -47,6 +47,7 @@ datadir = prefix + '/share'
 pkgdatadir = datadir + '/quad-pres'
 modulesdir = pkgdatadir + '/perl5'
 qpscriptsdir = pkgdatadir + '/scripts'
+wml_files_dir = pkgdatadir + '/wml'
 
 def build_script_file(env, target, source):
     filename = str(target[0])
@@ -114,7 +115,6 @@ perl5_modules = [
 'Shlomif/Gamla/Object.pm',
 'Shlomif/Quad/Pres/CGI.pm',
 'Shlomif/Quad/Pres/CmdLine.pm',
-'Shlomif/Quad/Pres/Config-new-fangled.pm',
 'Shlomif/Quad/Pres/Config.pm',
 'Shlomif/Quad/Pres/Exception.pm',
 'Shlomif/Quad/Pres/FS.pm',
@@ -124,15 +124,28 @@ perl5_modules = [
 'Shlomif/Quad/Pres/Url.pm',
 ]
 
-for module in perl5_modules:
-    path_comps = module.split("/")
-    module_home = str.join("/", path_comps[0:-1])
+def plain_install(file, dist_dir, target_dir):
+    path_comps = file.split("/")
+    file_home = str.join("/", path_comps[0:-1])
     env.Alias('install', 
-        env.Install(modulesdir + "/" + module_home,
-            env.File(path_comps[-1], "perl5/" + module_home)
+        env.Install(target_dir + "/" + file_home,
+            env.File(path_comps[-1], dist_dir + "/" + file_home)
             )
         )
+    
+for module in perl5_modules:
+    plain_install(module, "perl5", modulesdir)
 
+wml_files = [
+'quadpres_main.wml',
+'themes/alon-altman-text/template.wml',
+'themes/shlomif-text/template.wml',
+'wml_helpers.wml',
+]
+
+for file in wml_files:
+    plain_install(file, "wml", wml_files_dir);
+    
 # Set the default target to build.
 env.Default('build');
 
