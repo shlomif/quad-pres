@@ -48,6 +48,7 @@ pkgdatadir = datadir + '/quad-pres'
 modulesdir = pkgdatadir + '/perl5'
 qpscriptsdir = pkgdatadir + '/scripts'
 wml_files_dir = pkgdatadir + '/wml'
+template_dir = pkgdatadir + '/template'
 
 def build_script_file(env, target, source):
     filename = str(target[0])
@@ -145,7 +146,15 @@ wml_files = [
 
 for file in wml_files:
     plain_install(file, "wml", wml_files_dir);
-    
+ 
+template_files = [
+'style.css',
+'template.html.wml',
+]
+
+for file in template_files:
+    plain_install(file, "template", template_dir);
+
 # Set the default target to build.
 env.Default('build');
 
