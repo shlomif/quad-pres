@@ -37,6 +37,11 @@ opts.Add(PathOption('PREFIX',
 opts.Add('DESTDIR', 
         'Prefix to append to the installation directory (without affecting the paths in the files) - Default: empty',
     '')
+opts.Add(PathOption('MANDIR',
+    'Directory to install the man pages in (Default: $PREFIX/man)',
+    '$PREFIX/man'))
+
+
 opts.Update(env)
 opts.Save(config_file, env)
 
@@ -49,6 +54,9 @@ modulesdir = pkgdatadir + '/perl5'
 qpscriptsdir = pkgdatadir + '/scripts'
 wml_files_dir = pkgdatadir + '/wml'
 template_dir = pkgdatadir + '/template'
+
+mandir = env['MANDIR']
+man1dir = mandir + '/man1'
 
 def build_script_file(env, target, source):
     filename = str(target[0])
@@ -155,6 +163,19 @@ template_files = [
 for file in template_files:
     plain_install(file, "template", template_dir);
 
+# Build and install the man page
+env.Alias('build',
+    env.Command("perl5/quadp.1",
+        "perl5/quadp",
+        "pod2man --section=1 --center=\"Quad-Pres\" $SOURCES > $TARGET",
+    )
+)
+
+env.Alias('install',
+    env.Install(man1dir, env.File("quadp.1", "perl5"))
+    )
+
 # Set the default target to build.
 env.Default('build');
+
 
