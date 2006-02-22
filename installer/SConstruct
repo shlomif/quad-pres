@@ -46,7 +46,7 @@ opts.Update(env)
 opts.Save(config_file, env)
 
 # Paths
-prefix = env['PREFIX']
+prefix = '$PREFIX'
 bindir = prefix + '/bin'
 datadir = prefix + '/share'
 pkgdatadir = datadir + '/quad-pres'
@@ -90,18 +90,18 @@ perl5_scripts = ["clear-tree.pl", "fix-gvim-html.pl", "html-server-to-hd.pl",
 
 perl5_scripts_dir = "perl5/scripts"
 
+def destdir_install(dir, file):
+    env.Alias('install', env.Install('$DESTDIR' + dir, file))
+
 for script in perl5_scripts:
     s_path = perl5_scripts_dir + "/" + script
     script_alias(s_path)
-    env.Alias('install',
-        env.Install(qpscriptsdir, env.File(script, perl5_scripts_dir))
-    )
+    destdir_install(qpscriptsdir, env.File(script, perl5_scripts_dir))
 
 # Build and install the quadp program
 script_alias("perl5/quadp")
-env.Alias('install',
-    env.Install(bindir, env.File("quadp", "perl5"))
-)
+destdir_install(bindir, env.File("quadp", "perl5"))
+
 
 def build_path_pm(env, target, source):
     filename = str(target[0])
@@ -136,10 +136,8 @@ perl5_modules = [
 def plain_install(file, dist_dir, target_dir):
     path_comps = file.split("/")
     file_home = str.join("/", path_comps[0:-1])
-    env.Alias('install', 
-        env.Install(target_dir + "/" + file_home,
-            env.File(path_comps[-1], dist_dir + "/" + file_home)
-            )
+    destdir_install(target_dir + "/" + file_home,
+        env.File(path_comps[-1], dist_dir + "/" + file_home)
         )
     
 for module in perl5_modules:
@@ -171,9 +169,7 @@ env.Alias('build',
     )
 )
 
-env.Alias('install',
-    env.Install(man1dir, env.File("quadp.1", "perl5"))
-    )
+destdir_install(man1dir, env.File("quadp.1", "perl5"))
 
 # Set the default target to build.
 env.Default('build');
