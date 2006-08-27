@@ -6,14 +6,6 @@ Pressing:
 * Fix the bug that the hard-disk-html directory is automatically generated
 on every "quadp render -a" (even without -hd).
 
-* Fix the Last Behaviour:
-
-http://vipe.technion.ac.il/~shlomif/lecture/Perl/Newbies/lecture4/system-funcs/
-
-<->
-
-http://vipe.technion.ac.il/~shlomif/lecture/Perl/Newbies/lecture4/system-funcs/stat.html
-
 Pressing After 0.10.x:
 ----------------------
 
