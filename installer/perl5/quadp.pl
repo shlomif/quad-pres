@@ -226,6 +226,11 @@ Here's an example for a C<template.wml> file that sets some parameters:
     
     #include "quadpres_main.wml"
 
+The C<$translate_control_text> is a reference to a Perl subroutine that
+can be used to translate the labels on the controls. It accepts a single
+string of the values C<"Next">, C<"Prev">, C<"Up"> or C<"Contents"> and
+should return the translated value.
+
 =head1 Format of an Individual Page
 
 The first statement in a page should be 
@@ -256,6 +261,11 @@ The file C<quadpres.ini> is a standard INI file. However if there is a
 configuration option that starts with the prefix C<tt_> it is interpreted
 as a small Template Toolkit template, whose value overrides that of the
 normal non-C<tt_>'ed value.
+
+=head2 Pre-defined Template Variables
+
+Currently only the C<ENV> variable is defined as a hash containing the
+environment variables. 
 
 =head1 SEE ALSO
 

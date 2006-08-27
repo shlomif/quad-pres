@@ -5,8 +5,8 @@
 
 <table><tr><:{
 
-# Assign a default to $translate_control_text
-$translate_control_text ||= 
+    # Assign a default to $translate_control_text
+    $translate_control_text ||= 
     sub {
         my $title = shift;
         return $title;

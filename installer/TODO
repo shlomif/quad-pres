@@ -6,8 +6,6 @@ Pressing:
 * Fix the bug that the hard-disk-html directory is automatically generated
 on every "quadp render -a" (even without -hd).
 
-* Document the $translate_control_text function.
-
 * Fix the Last Behaviour:
 
 http://vipe.technion.ac.il/~shlomif/lecture/Perl/Newbies/lecture4/system-funcs/
