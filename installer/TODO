@@ -3,9 +3,6 @@ Pressing:
 
 * Add an upgrade script for the lectures.
 
-* Fix the bug that the hard-disk-html directory is automatically generated
-on every "quadp render -a" (even without -hd).
-
 Pressing After 0.10.x:
 ----------------------
 
