@@ -8,9 +8,10 @@ use vars qw(@ISA);
 
 @ISA=qw(Shlomif::Gamla::Object);
 
-use Config::IniFiles;
-
 use Cwd;
+
+use Config::IniFiles;
+use Template;
 
 sub initialize
 {
@@ -42,11 +43,63 @@ sub initialize
     return 0;
 }
 
+sub _get_raw_val
+{
+    my $self = shift;
+    return $self->{'cfg'}->val(@_);
+}
+
+sub _get_tt_driver
+{
+    return Template->new({});
+}
+
+sub _get_tt_vars
+{
+    my $vars =
+    {
+        'ENV' => \%ENV,
+    };
+
+    return $vars;
+}
+
+sub _get_tt_val
+{
+    my ($self, $section, $key, $value) = @_;
+
+    my $template = $self->_get_raw_val($section, "tt_$key", $value);
+
+    if (!defined($template))
+    {
+        return undef;
+    }
+
+    my $output = "";
+    $self->_get_tt_driver()->process(
+        \$template,
+        $self->_get_tt_vars(),
+        \$output,
+    );
+
+    return $output;
+}
+
 sub get_val
 {
     my $self = shift;
 
-    return $self->{'cfg'}->val(@_);
+    # TODO : I'm assuming it's always scalar context here.
+    my $tt_value = $self->_get_tt_val(@_);
+
+    if (defined($tt_value))
+    {
+        return $tt_value;
+    }
+    else
+    {
+        return $self->_get_raw_val(@_);
+    }
 }
 
 sub get_server_dest_dir

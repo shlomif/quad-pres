@@ -250,6 +250,13 @@ a directory there).
 
 More themes can be created on your own based on the examples there.
 
+=head1 quadpres.ini
+
+The file C<quadpres.ini> is a standard INI file. However if there is a 
+configuration option that starts with the prefix C<tt_> it is interpreted
+as a small Template Toolkit template, whose value overrides that of the
+normal non-C<tt_>'ed value.
+
 =head1 SEE ALSO
 
 The Quad-Pres Homepage:
