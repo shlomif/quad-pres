@@ -3,14 +3,18 @@
 
 <h2>Stable</h2>
 
+<define-tag version_link>
+<a href="http://download.berlios.de/quad-pres/quad-pres-%0.tar.gz">Version 
+%0</a>
+</define-tag>
 <p>
-<a href="quad-pres-0.10.3.tar.gz">Version 0.10.3</a>
+<version_link "0.12.0" />
 </p>
 
 <h2>Development</h2>
 
 <p>
-<a href="quad-pres-$(DEVEL_VERSION).tar.gz">Version $(DEVEL_VERSION)</a>
+<version_link "$(DEVEL_VERSION)" />
 </p>
 
 <h2>Notes</h2>
@@ -21,11 +25,16 @@ To compile as an RPM, run the command <tt>rpm -tb</tt> on the archive.
 
 <h2>Old Versions</h2>
 
-<p>
-<a href="quad-pres-0.8.0.tar.gz">Version 0.8.0</a>
-</p>
+<ul>
+<li>
+<version_link "0.8.0" />
+</li>
+<li>
+<version_link "0.10.3" />
+</li>
+</ul>
 
 <p>
-Other versions can be extracted from the Subversion repository.
+Other versions can be extracted from <a href="https://svn.berlios.de/svnroot/repos/quad-pres/">the Subversion repository</a>.
 </p>
 
