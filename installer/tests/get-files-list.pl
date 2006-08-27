@@ -40,12 +40,12 @@ sub process_dir
             {
                 next;
             }
-            my $name = $_->getAttribute("name");
-            if ($name eq "svn:this_dir")
+            if ($_->hasAttribute("url"))
             {
                 next;
             }
-            push @entries, $name;
+
+            push @entries, $_->getAttribute("name");
         }
     }
 
