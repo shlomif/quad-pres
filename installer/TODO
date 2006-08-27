@@ -1,8 +1,3 @@
-Pressing:
----------
-
-* Add an upgrade script for the lectures.
-
 Pressing After 0.10.x:
 ----------------------
 
@@ -46,4 +41,6 @@ of ../installation/.
 
 * Create a unified approach for setting credits for the lecture: E-mail,
 homepage URL, writer's name, etc.
+
+* Add an upgrade script for the lectures.
 
