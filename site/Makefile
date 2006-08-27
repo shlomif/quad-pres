@@ -7,21 +7,13 @@ SOURCES = $(addprefix src/,$(addsuffix .html.wml,$(PAGES)))
 
 DESTS = $(patsubst src/%.html.wml,$(TARGET)/%.html,$(SOURCES))
 
-RAW_FILES = style.css images/pa051.jpg quad-pres-0.10.3.tar.gz quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lecture.tar.gz W2L-Basic-Use-Lecture.tar.gz
+RAW_FILES = style.css images/pa051.jpg quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lecture.tar.gz W2L-Basic-Use-Lecture.tar.gz
 RAW_FILES_SOURCES = $(addprefix src/,$(RAW_FILES))
 RAW_FILES_DEST = $(addprefix $(TARGET)/,$(RAW_FILES))
 
 PODS = $(addprefix docs/,roadmap spec whitepaper version-0.2-spec)
 PODS_DESTS_HTMLS = $(patsubst %,$(TARGET)/%.html,$(PODS))
 PODS_DESTS_PODS = $(patsubst %,$(TARGET)/%.pod,$(PODS))
-
-FROM_REPOS_DIR = from-repos
-DEVEL_PACKAGE_DIR = $(FROM_REPOS_DIR)/devel
-
-DEVEL_VERSION_FILE = $(DEVEL_PACKAGE_DIR)/ver.txt
-DEVEL_VERSION = $(shell cat $(DEVEL_VERSION_FILE))
-DEVEL_PACKAGE_FILENAME=quad-pres-$(DEVEL_VERSION).tar.gz
-DEVEL_PACKAGE = dest/$(DEVEL_PACKAGE_FILENAME)
 
 PACKAGES_DIR = $(TARGET)/download/arcs
 # PACKAGES = $(shell cd temp && cd lk-module-compiler-final && ls)
@@ -37,7 +29,7 @@ WML_FLAGS += --passoption=2,-X --passoption=7,"-S imgsize" -DROOT~.
 RSYNC = rsync --progress --verbose --rsh=ssh 
 
 # all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) $(PODS_DESTS) $(PODS_DESTS_HTMLS) $(PACKAGES_DESTS)
-all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) $(DEVEL_PACKAGE) dest/download.html
+all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) dest/download.html
 
 
 dest:
@@ -62,9 +54,6 @@ $(PODS_DESTS_HTMLS) :: $(TARGET)/%.html : src/%.pod
 	pod2html $< > $@
 
 $(PACKAGES_DESTS) :: $(PACKAGES_DIR)/% : ./temp/lk-module-compiler-final/%
-	cp -f $< $@
-
-$(DEVEL_PACKAGE) : $(DEVEL_PACKAGE_DIR)/$(DEVEL_PACKAGE_FILENAME) $(DEVEL_VERSION_FILE)
 	cp -f $< $@
 
 #upload_vipe:
