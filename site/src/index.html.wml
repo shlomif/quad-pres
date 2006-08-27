@@ -72,6 +72,31 @@ Here are the final forms of the sample lectures</a>.
 
 <h2>News</h2>
 
+<h3>27-Aug-2006</h3>
+
+<p>
+A new stable version - 0.12.0 - was released today. Changes in this version
+are:
+</p>
+
+<ol>
+<li>
+Added the Template-Toolkit configurable configuration directives.
+</li>
+<li>
+Added the $translate_control_text subroutine.
+</li>
+<li>
+Fixed some unicode problems.
+</li>
+<li>
+Some other bug-fixes.
+</li>
+<li>
+Added an automated test suite.
+</li>
+</ol>
+
 <h3>20-Oct-2003</h3>
 
 <p>
