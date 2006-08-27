@@ -1,3 +1,12 @@
+Version 0.12.0 - shlomif - Sun Aug 27 22:44:28 IDT 2006 
 
-This file is meant to settle automake - there's nothing here.
+	* Added the Template-Toolkit configurable configuration directives.
+
+	* Added the $translate_control_text subroutine.
+
+	* Fixed some unicode problems.
+
+	* Some other bug-fixes.
+
+	* Added an automated test suite.
 
