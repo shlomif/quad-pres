@@ -420,6 +420,13 @@ sub perform_render_command
     }
 }
 
+sub _get_file_mtime
+{
+    my ($self,$path) = @_;
+
+    return (stat($path))[9];
+}
+
 sub _render_all_contents
 {
     my $self = shift;
@@ -457,13 +464,8 @@ sub _render_all_contents
 
     my $render_all = 0;
 
-    my $get_file_mtime = sub {
-        my $path = shift;
 
-        return (stat($path))[9];
-    };
-
-    my (@main_files_mtimes) = map { $get_file_mtime->($_) } ("Contents.pm", "template.wml");
+    my (@main_files_mtimes) = map { $self->_get_file_mtime($_) } ("Contents.pm", "template.wml");
 
     my $traverse_callback = sub {
         my (%arguments) = (@_);
@@ -517,8 +519,8 @@ sub _render_all_contents
             close(I);
         }
         
-        my $src_mtime = $get_file_mtime->($src_filename);
-        my $dest_mtime = $get_file_mtime->($filename);
+        my $src_mtime = $self->_get_file_mtime($src_filename);
+        my $dest_mtime = $self->_get_file_mtime($filename);
 
         if ((! -e $filename) || 
             (grep 
@@ -548,8 +550,8 @@ sub _render_all_contents
                 $filename = $dest_dir . "/" . $p . "/" . $image ;
                 $src_filename = $src_dir . "/" . $p . "/" . $image ;
 
-                my $src_mtime = $get_file_mtime->($src_filename);
-                my $dest_mtime = $get_file_mtime->($filename);
+                my $src_mtime = $self->_get_file_mtime($src_filename);
+                my $dest_mtime = $self->_get_file_mtime($filename);
                 if ((! -e $filename) ||
                     ($src_mtime > $dest_mtime)
                     )
