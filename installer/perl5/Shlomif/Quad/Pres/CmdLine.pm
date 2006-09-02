@@ -31,6 +31,7 @@ has 'dest_dir' => (isa => 'Str', 'is' => 'rw');
 has 'src_dir' => (isa => 'Str', 'is' => 'rw');
 has 'main_files_mtimes' => (isa => 'ArrayRef', 'is' => 'rw');
 has 'path_man' => (isa => "Shlomif::Quad::Pres::Path", 'is' => "rw");
+has 'getopt' => (isa => "Shlomif::Quad::Pres::Getopt", 'is' => "rw");
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
 
@@ -47,7 +48,7 @@ sub initialize
 
     my $cmd_line = $self->{'cmd_line'} = $args{'cmd_line'};
 
-    $self->{'getopt'} = Shlomif::Quad::Pres::Getopt->new($cmd_line);
+    $self->getopt(Shlomif::Quad::Pres::Getopt->new($cmd_line));
 
     return 0;
 }
@@ -127,13 +128,6 @@ sub run
     };
 }
 
-sub get_getopt
-{
-    my $self = shift;
-
-    return $self->{'getopt'};
-}
-
 sub get_cmdline
 {
     my $self = shift;
@@ -147,7 +141,7 @@ sub real_run
 
     my ($help, $man);
 
-    my $getopt = $self->get_getopt();
+    my $getopt = $self->getopt();
     my $cmd_line = $self->get_cmdline();
     
     $getopt->configure('require_order');
@@ -189,7 +183,7 @@ sub perform_setup_command
     my $self = shift;
 
     my $cmd_line = $self->get_cmdline();
-    my $getopt = $self->get_getopt();
+    my $getopt = $self->getopt();
 
     if (! @$cmd_line)
     {
@@ -382,7 +376,7 @@ sub perform_render_command
     my $self = shift;
 
     my $cmd_line = $self->get_cmdline();
-    my $getopt = $self->get_getopt();
+    my $getopt = $self->getopt();
 
     if (! @$cmd_line)
     {
@@ -597,7 +591,7 @@ sub perform_clear_command
     my $self = shift;
 
     my $cmd_line = $self->get_cmdline();
-    my $getopt = $self->get_getopt();
+    my $getopt = $self->getopt();
 
     if (! @$cmd_line)
     {
