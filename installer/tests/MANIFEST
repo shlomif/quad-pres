@@ -16,6 +16,7 @@ template-toolkit/test1.bash
 perl/Empty-Group.pl
 perl/t/tree.t
 perl/t/to-be-added-later/stages.t
+perl/CmdLine-Moose.pl
 perl/Getopt.pl
 get-files-list.pl
 gen-hd-html/test1.bash
