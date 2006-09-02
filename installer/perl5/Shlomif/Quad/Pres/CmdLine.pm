@@ -1,6 +1,7 @@
 package Shlomif::Quad::Pres::CmdLine;
 
 use strict;
+use warnings;
 
 use Scalar::Util qw(blessed);
 
@@ -23,6 +24,12 @@ use Shlomif::Quad::Pres::Getopt;
 use Shlomif::Quad::Pres::Config;
 use Shlomif::Quad::Pres;
 use Shlomif::Quad::Pres::FS;
+
+use Moose qw(has);
+
+has 'dest_dir' => (isa => 'Str', 'is' => 'rw');
+has 'src_dir' => (isa => 'Str', 'is' => 'rw');
+has 'main_files_mtimes' => (isa => 'ArrayRef', 'is' => 'rw');
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
 
@@ -427,14 +434,117 @@ sub _get_file_mtime
     return (stat($path))[9];
 }
 
+sub _render_all_contents_traverse_callback
+{
+    my $self = shift;
+    my (%arguments) = (@_);
+    
+    my $path_ref = $arguments{'path'};
+    my $branch = $arguments{'branch'};
+
+    my (@path);
+
+    @path = @{$path_ref};
+
+    my $p = join("/", @path);
+
+    my ($filename, $src_filename);
+
+    my $is_dir = exists($branch->{'subs'});
+
+    my $src_dir = $self->src_dir();
+    my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
+
+    if ($is_dir)
+    {
+        # It is a directory
+        $filename = ($self->dest_dir() . "/" . $p);
+        if (! (-d $filename))
+        {
+            mkdir($filename);
+        }
+        $filename .= "/index.html";
+        $src_filename = $src_dir . "/" . $p . "/index.html";
+    }
+    else
+    {
+        $filename = ($self->dest_dir() . "/" . $p);
+        $src_filename = $src_dir . "/" . $p;
+    }
+    $src_filename .= ".wml";
+    # Automatically copy the template to the source filename
+    if (! -e $src_filename)
+    {
+        if ($is_dir)
+        {
+            my $dir_name = $src_filename;
+            $dir_name =~ s/\/*index\.html\.wml$//;
+            mkdir($dir_name);
+        }
+        
+        open I, "<template.html.wml";
+        open O, (">" . $src_filename);
+        binmode(I);
+        binmode(O);
+        print O join("", <I>);
+        close(O);
+        close(I);
+    }
+    
+    my $src_mtime = $self->_get_file_mtime($src_filename);
+    my $dest_mtime = $self->_get_file_mtime($filename);
+
+    if ((! -e $filename) || 
+        (grep 
+            { $_ > $dest_mtime } 
+            (@{$self->main_files_mtimes()},$src_mtime)
+        ))
+    {
+        my $src_filename_modified = $src_filename;
+        $src_filename_modified =~ s/^(\.\/)?src\/*//;
+        my $cmd = "$scripts_dir/render-file.pl \"$src_filename_modified\" > \"$filename\"\n";
+            
+        print $cmd, "\n";
+        if (system($cmd) != 0) 
+        {
+            # Clean-up the file so it will have to be regenerated
+            unlink($filename);
+            my $error = Shlomif::Quad::Pres::Exception::RenderFile->new();
+            $error->{'src_filename'} = $src_filename;
+            die $error;
+        }
+    }
+
+    if (exists($branch->{'images'}))
+    {
+        foreach my $image (@{$branch->{'images'}})
+        {
+            $filename = $self->dest_dir() . "/" . $p . "/" . $image ;
+            $src_filename = $src_dir . "/" . $p . "/" . $image ;
+
+            my $src_mtime = $self->_get_file_mtime($src_filename);
+            my $dest_mtime = $self->_get_file_mtime($filename);
+            if ((! -e $filename) ||
+                ($src_mtime > $dest_mtime)
+                )
+            {
+                open I, ( "<" . $src_filename);
+                open O, ( ">" . $filename);
+                binmode(I);
+                binmode(O);
+                print O join("",<I>);
+                close(O);
+                close(I);        
+            }
+        }
+    }
+}
+
 sub _render_all_contents
 {
     my $self = shift;
 
     my $cfg = Shlomif::Quad::Pres::Config->new();
-
-    my $path_man = Shlomif::Quad::Pres::Path->new();
-    my $scripts_dir = $path_man->get_scripts_dir();
 
     my $default_dest_dir = $cfg->get_server_dest_dir();
     my $render_type = "server";
@@ -449,10 +559,15 @@ sub _render_all_contents
     {
         $src_dir .= "/";
     }
+
+    $self->src_dir($src_dir);
+
     if ($dest_dir !~ /\/$/)
     {
         $dest_dir .= "/";
     }
+
+    $self->dest_dir($dest_dir);
 
     my $group = $cfg->get_setgid_group();
 
@@ -464,109 +579,7 @@ sub _render_all_contents
 
     my $render_all = 0;
 
-
-    my (@main_files_mtimes) = map { $self->_get_file_mtime($_) } ("Contents.pm", "template.wml");
-
-    my $traverse_callback = sub {
-        my (%arguments) = (@_);
-        
-        my $path_ref = $arguments{'path'};
-        my $branch = $arguments{'branch'};
-
-        my (@path);
-
-        @path = @{$path_ref};
-
-        my $p = join("/", @path);
-
-        my ($filename, $src_filename);
-
-        my $is_dir = exists($branch->{'subs'});
-
-        if ($is_dir)
-        {
-            # It is a directory
-            $filename = ($dest_dir . "/" . $p);
-            if (! (-d $filename))
-            {
-                mkdir($filename);
-            }
-            $filename .= "/index.html";
-            $src_filename = $src_dir . "/" . $p . "/index.html";
-        }
-        else
-        {
-            $filename = ($dest_dir . "/" . $p);
-            $src_filename = $src_dir . "/" . $p;
-        }
-        $src_filename .= ".wml";
-        # Automatically copy the template to the source filename
-        if (! -e $src_filename)
-        {
-            if ($is_dir)
-            {
-                my $dir_name = $src_filename;
-                $dir_name =~ s/\/*index\.html\.wml$//;
-                mkdir($dir_name);
-            }
-            
-            open I, "<template.html.wml";
-            open O, (">" . $src_filename);
-            binmode(I);
-            binmode(O);
-            print O join("", <I>);
-            close(O);
-            close(I);
-        }
-        
-        my $src_mtime = $self->_get_file_mtime($src_filename);
-        my $dest_mtime = $self->_get_file_mtime($filename);
-
-        if ((! -e $filename) || 
-            (grep 
-                { $_ > $dest_mtime } 
-                (@main_files_mtimes,$src_mtime)
-            ))
-        {
-            my $src_filename_modified = $src_filename;
-            $src_filename_modified =~ s/^(\.\/)?src\/*//;
-            my $cmd = "$scripts_dir/render-file.pl \"$src_filename_modified\" > \"$filename\"\n";
-                
-            print $cmd, "\n";
-            if (system($cmd) != 0) 
-            {
-                # Clean-up the file so it will have to be regenerated
-                unlink($filename);
-                my $error = Shlomif::Quad::Pres::Exception::RenderFile->new();
-                $error->{'src_filename'} = $src_filename;
-                die $error;
-            }
-        }
-
-        if (exists($branch->{'images'}))
-        {
-            foreach my $image (@{$branch->{'images'}})
-            {
-                $filename = $dest_dir . "/" . $p . "/" . $image ;
-                $src_filename = $src_dir . "/" . $p . "/" . $image ;
-
-                my $src_mtime = $self->_get_file_mtime($src_filename);
-                my $dest_mtime = $self->_get_file_mtime($filename);
-                if ((! -e $filename) ||
-                    ($src_mtime > $dest_mtime)
-                    )
-                {
-                    open I, ( "<" . $src_filename);
-                    open O, ( ">" . $filename);
-                    binmode(I);
-                    binmode(O);
-                    print O join("",<I>);
-                    close(O);
-                    close(I);        
-                }
-            }
-        }
-    };
+    $self->main_files_mtimes([map { $self->_get_file_mtime($_) } ("Contents.pm", "template.wml")]);
 
     my $quadpres_obj = 
         Shlomif::Quad::Pres->new(
@@ -575,7 +588,7 @@ sub _render_all_contents
             'mode' => "server",
         );
 
-    $quadpres_obj->traverse_tree($traverse_callback);
+    $quadpres_obj->traverse_tree(sub {$self->_render_all_contents_traverse_callback(@_)});
 }
 
 sub perform_clear_command
