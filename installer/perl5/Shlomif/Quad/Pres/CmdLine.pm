@@ -30,6 +30,7 @@ use Moose qw(has);
 has 'dest_dir' => (isa => 'Str', 'is' => 'rw');
 has 'src_dir' => (isa => 'Str', 'is' => 'rw');
 has 'main_files_mtimes' => (isa => 'ArrayRef', 'is' => 'rw');
+has 'path_man' => (isa => "Shlomif::Quad::Pres::Path", 'is' => "rw");
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
 
@@ -38,7 +39,7 @@ sub initialize
 {
     my $self = shift;
 
-    $self->{'path_man'} = Shlomif::Quad::Pres::Path->new();
+    $self->path_man(Shlomif::Quad::Pres::Path->new());
 
     my (%args);
     
@@ -310,7 +311,7 @@ EOF
     print TEMPLATE "\n\n#include \"quadpres_main.wml\"\n\n";
     close TEMPLATE;
 
-    my $modules_dir = $self->{'path_man'}->get_modules_dir();
+    my $modules_dir = $self->path_man()->get_modules_dir();
 
     # Prepare the serve.pl file that can be used to serve it using a CGI;
     my $serve_filename = "$src_dir_name/serve.pl";
@@ -332,7 +333,7 @@ EOF
     
     mkdir("$src_dir_name/src");
 
-    my $template_dir = $self->{'path_man'}->get_template_dir();
+    my $template_dir = $self->path_man()->get_template_dir();
 
     &copy("$template_dir/style.css", "$src_dir_name/src/style.css");
     &copy("$template_dir/template.html.wml", "$src_dir_name/template.html.wml");
@@ -419,7 +420,7 @@ sub perform_render_command
 
     if ($render_hard_disk_html)
     {
-        my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
+        my $scripts_dir = $self->path_man()->get_scripts_dir();
         $self->run_command(
             'command' => "$scripts_dir/html-server-to-hd.pl",
             'error_text' => "Conversion to Hard-disk format failed",
@@ -453,7 +454,7 @@ sub _render_all_contents_traverse_callback
     my $is_dir = exists($branch->{'subs'});
 
     my $src_dir = $self->src_dir();
-    my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
+    my $scripts_dir = $self->path_man()->get_scripts_dir();
 
     if ($is_dir)
     {
@@ -617,7 +618,7 @@ sub perform_clear_command
     # Go to the base dir.
     $self->chdir_to_base();
 
-    my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
+    my $scripts_dir = $self->path_man()->get_scripts_dir();
     $self->run_command(
         'command' => "$scripts_dir/clear-tree.pl",
         'error_text' => "Calling the clear-tree helper script failed!",
@@ -630,7 +631,7 @@ sub perform_upload_command
 
     $self->chdir_to_base();
 
-    my $scripts_dir = $self->{'path_man'}->get_scripts_dir();
+    my $scripts_dir = $self->path_man()->get_scripts_dir();
 
     $self->run_command(
         command => "$scripts_dir/upload.pl",
