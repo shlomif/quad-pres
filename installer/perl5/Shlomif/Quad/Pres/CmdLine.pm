@@ -329,8 +329,8 @@ EOF
 
     my $template_dir = $self->path_man()->get_template_dir();
 
-    &copy("$template_dir/style.css", "$src_dir_name/src/style.css");
-    &copy("$template_dir/template.html.wml", "$src_dir_name/template.html.wml");
+    copy("$template_dir/style.css", "$src_dir_name/src/style.css");
+    copy("$template_dir/template.html.wml", "$src_dir_name/template.html.wml");
 
     # Create a file indicating that this is the root directory.
     # Regular named files may be present somewhere inside the ./src
