@@ -34,7 +34,7 @@
         # The translated title.
         my $trans_title = $translate_control_text->($title);
         
-        if ($url eq "")
+        if (!defined($url))
         {
             uniprint "<b>$trans_title</b>";
         }

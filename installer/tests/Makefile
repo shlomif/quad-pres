@@ -1,6 +1,6 @@
 all:
 
-BASH_TESTS = workflow html-correctness stop-on-error lang-settings body-dir credit gen-hd-html template-toolkit
+BASH_TESTS = workflow html-correctness stop-on-error lang-settings body-dir credit gen-hd-html template-toolkit bolded-nav-links
 
 BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 

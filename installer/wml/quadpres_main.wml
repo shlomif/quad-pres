@@ -64,18 +64,24 @@ sub uniprint
        $c->{'url'} = $qp->get_control_url($qp->$func());
    }
 
+sub nav_url_wrap
+{
+    my $url = shift;
+    my $rel_url = $qp->get_control_url($url);
+    return defined($rel_url) ? $rel_url : "./";
+}
 }:>
 <define-tag qp:nexturl><:{
-    print $qp->get_control_url($qp->get_next_url());
+    print nav_url_wrap($qp->get_next_url());
 }:></define-tag>
 <define-tag qp:prevurl><:{
-    print $qp->get_control_url($qp->get_prev_url());
+    print nav_url_wrap($qp->get_prev_url());
 }:></define-tag>
 <define-tag qp:upurl><:{
-    print $qp->get_control_url($qp->get_up_url());
+    print nav_url_wrap($qp->get_up_url());
 }:></define-tag>
 <define-tag qp:contentsurl><:{
-    print $qp->get_control_url($qp->get_contents_url());
+    print nav_url_wrap($qp->get_contents_url());
 }:></define-tag>
 <define-tag qp:navbarlink>
 
@@ -91,7 +97,7 @@ foreach my $c (@controls)
     my $url = $c->{'url'};
     my $title = $c->{'title'};
     
-    next if ($url eq "");
+    next if (!defined($url));
     uniprint("<link rel=\"" . $c->{'link'} . "\" href=\"$url\" />\n");
 }
 
