@@ -32,6 +32,7 @@ has 'src_dir' => (isa => 'Str', 'is' => 'rw');
 has 'main_files_mtimes' => (isa => 'ArrayRef', 'is' => 'rw');
 has 'path_man' => (isa => "Shlomif::Quad::Pres::Path", 'is' => "rw");
 has 'getopt' => (isa => "Shlomif::Quad::Pres::Getopt", 'is' => "rw");
+has 'cmd_line' => (isa => "ArrayRef", 'is' => "rw");
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
 
@@ -46,11 +47,27 @@ sub initialize
     
     %args = (@_);
 
-    my $cmd_line = $self->{'cmd_line'} = $args{'cmd_line'};
-
-    $self->getopt(Shlomif::Quad::Pres::Getopt->new($cmd_line));
+    $self->_init_cmd_line($args{'cmd_line'});
 
     return 0;
+}
+
+sub _init_cmd_line
+{
+    my ($self, $cmd_line) = @_;
+
+    if (!defined($cmd_line))
+    {
+        throw $error_class -text => "cmd_line not specified";
+    }
+
+    $self->cmd_line($cmd_line);
+
+    $self->getopt(
+        Shlomif::Quad::Pres::Getopt->new($cmd_line)
+    );
+
+    return;
 }
 
 sub gen_aliases
@@ -128,13 +145,6 @@ sub run
     };
 }
 
-sub get_cmdline
-{
-    my $self = shift;
-
-    return $self->{'cmd_line'};
-}
-
 sub real_run
 {
     my $self = shift;
@@ -142,7 +152,6 @@ sub real_run
     my ($help, $man);
 
     my $getopt = $self->getopt();
-    my $cmd_line = $self->get_cmdline();
     
     $getopt->configure('require_order');
     $getopt->getoptions(
@@ -153,9 +162,7 @@ sub real_run
     pod2usage(1) if $help;
     pod2usage(-exitstatus => 0, -verbose => 2) if $man;
 
-    pod2usage(1) if (scalar(@$cmd_line) == 0);
-
-    my $command = shift(@$cmd_line);
+    my $command = $self->_get_cl_param({'empty_cb' => sub { pod2usage(1) },},);
 
     if (! exists($cmd_aliases{$command}))
     {
@@ -178,23 +185,29 @@ sub get_dir_path
     return $ret;
 }
 
+sub _get_cl_param
+{
+    my ($self, $args) = @_;
+
+    if (! @{$self->cmd_line()})
+    {
+        if (exists($args->{empty_cb}))
+        {
+            return $args->{empty_cb}->();
+        }
+        throw $error_class -text => $args->{error_text};
+    }
+
+    return shift(@{$self->cmd_line()});
+}
+
 sub perform_setup_command
 {
     my $self = shift;
 
-    my $cmd_line = $self->get_cmdline();
     my $getopt = $self->getopt();
 
-    if (! @$cmd_line)
-    {
-        throw $error_class -text => "setup must be followed by a directory name";
-    }
-    my $src_dir_name = shift(@$cmd_line);
-
-    if ($src_dir_name =~ /^-/)
-    {
-        throw $error_class -text => "setup must be followed by a directory name";
-    }
+    my $src_dir_name = $self->_get_cl_param({'error_text' => "setup must be followed by a directory name"});
 
     my %args = 
     (
@@ -375,7 +388,7 @@ sub perform_render_command
 {
     my $self = shift;
 
-    my $cmd_line = $self->get_cmdline();
+    my $cmd_line = $self->cmd_line();
     my $getopt = $self->getopt();
 
     if (! @$cmd_line)
@@ -517,8 +530,6 @@ sub _render_all_contents_traverse_callback
             $filename = $self->dest_dir() . "/" . $p . "/" . $image ;
             $src_filename = $src_dir . "/" . $p . "/" . $image ;
 
-            my $src_mtime = $self->_get_file_mtime($src_filename);
-            my $dest_mtime = $self->_get_file_mtime($filename);
             if ((! -e $filename) ||
                 ($src_mtime > $dest_mtime)
                 )
@@ -590,7 +601,7 @@ sub perform_clear_command
 {
     my $self = shift;
 
-    my $cmd_line = $self->get_cmdline();
+    my $cmd_line = $self->cmd_line();
     my $getopt = $self->getopt();
 
     if (! @$cmd_line)
@@ -787,11 +798,12 @@ sub perform_add_command
 {
     my $self = shift;
 
-    my $cmd_line = $self->get_cmdline();
+    my $cmd_line = $self->cmd_line();
     
     $self->chdir_to_base();
 
-    my $filename = shift(@$cmd_line);
+    my $filename =
+        $self->_get_cl_param({'error_text' => "add needs a filename"});
 
     my @path = @{$self->{'invocation_path'}};
 
