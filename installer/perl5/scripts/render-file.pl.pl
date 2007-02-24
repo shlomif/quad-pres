@@ -18,8 +18,8 @@ my $local_wml_dir = $ENV{"HOME"}. "/.Quad-Pres/lib/";
 
 exec {"wml" } (
     "-DFILENAME=$filename",
-    "-I", $local_wml_dir,
     "-I", $wml_dir,
+    "-I", $local_wml_dir,
     "--passoption=3,-I$modules_dir",
     "src/$filename.wml"
 );
