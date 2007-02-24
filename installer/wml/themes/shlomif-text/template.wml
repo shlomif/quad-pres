@@ -49,13 +49,29 @@
 <restore withkey />
 </define-tag>
 
+<define-tag qp:pre_top_nav_bar>
+</define-tag>
+
+<define-tag qp:post_top_nav_bar>
+</define-tag>
+
+<define-tag qp:pre_bottom_nav_bar>
+</define-tag>
+
+<define-tag qp:post_bottom_nav_bar>
+</define-tag>
+
 <qp:html:header />
 <qp:html:bodystart />
+<qp:pre_top_nav_bar />
 <qpnavigationbar withkey="1" />
+<qp:post_top_nav_bar />
 <h1><qp:title /></h1>
 {#BODY#}
 <hr />
+<qp:pre_bottom_nav_bar />
 <qpnavigationbar />
+<qp:post_bottom_nav_bar />
 <qp:html:footer />
 </body>
 </html>

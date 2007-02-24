@@ -14,8 +14,13 @@ my $scripts_dir = $path_man->get_scripts_dir();
 my $wml_dir = $path_man->get_wml_dir();
 my $modules_dir = $path_man->get_modules_dir();
 
-# I don't realy need fix-gvim-html.pl anymore
-# And the pipeline makes my error handling much harder.
-# exec("wml -DFILENAME=\"$filename\" -I \"$wml_dir\" --passoption=3,-I\"$modules_dir\" \"src/$filename.wml\" | \"$scripts_dir\"/fix-gvim-html.pl");
-exec("wml -DFILENAME=\"$filename\" -I \"$wml_dir\" --passoption=3,-I\"$modules_dir\" \"src/$filename.wml\"");
+my $local_wml_dir = $ENV{"HOME"}. "/.Quad-Pres/lib/";
+
+exec {"wml" } (
+    "-DFILENAME=$filename",
+    "-I", $local_wml_dir,
+    "-I", $wml_dir,
+    "--passoption=3,-I$modules_dir",
+    "src/$filename.wml"
+);
 
