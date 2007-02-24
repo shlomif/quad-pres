@@ -16,10 +16,11 @@ my $modules_dir = $path_man->get_modules_dir();
 
 my $local_wml_dir = $ENV{"HOME"}. "/.Quad-Pres/lib/";
 
-exec {"wml" } (
-    "-DFILENAME=$filename",
+exec (
+    "wml",
     "-I", $wml_dir,
     "-I", $local_wml_dir,
+    "-DFILENAME=$filename",
     "--passoption=3,-I$modules_dir",
     "src/$filename.wml"
 );
