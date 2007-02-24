@@ -14,5 +14,5 @@ quadp : quadp.pl Makefile
 quadp.1: quadp
 	pod2man --section=1 --center="Quad-Pres" quadp > quadp.1
 
-EXTRA_DIST += quadp.pl
+EXTRA_DIST = quadp.pl
 

@@ -30,7 +30,7 @@ upload.pl: upload.pl.pl Makefile
 	cat upload.pl.pl | sed 's!{QP_MODULES_DIR}!$(modulesdir)!g' | sed '1 s!/usr/bin/perl!$(PATH_PERL)!' > upload.pl
 	chmod 755 upload.pl
 
-EXTRA_DIST += clear-tree.pl.pl fix-gvim-html.pl.pl html-server-to-hd.pl.pl Render_all_contents.pl.pl render-file.pl.pl upload.pl.pl
+EXTRA_DIST = clear-tree.pl.pl fix-gvim-html.pl.pl html-server-to-hd.pl.pl Render_all_contents.pl.pl render-file.pl.pl upload.pl.pl
 
 EXTRA_DIST += gen_am.pl
 
