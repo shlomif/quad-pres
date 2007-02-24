@@ -49,29 +49,33 @@
 <restore withkey />
 </define-tag>
 
-<define-tag qp:pre_top_nav_bar>
+<define-tag qp:before_top_nav_bar endtag="required" whitespace="delete">
+{#QUADPRES_BEFORE_TOP_NAV_BAR#:%body:##}
 </define-tag>
 
-<define-tag qp:post_top_nav_bar>
+<define-tag qp:after_top_nav_bar endtag="required" whitespace="delete">
+{#QUADPRES_AFTER_TOP_NAV_BAR#:%body:##}
 </define-tag>
 
-<define-tag qp:pre_bottom_nav_bar>
+<define-tag qp:before_bottom_nav_bar endtag="required" whitespace="delete">
+{#QUADPRES_BEFORE_BOTTOM_NAV_BAR#:%body:##}
 </define-tag>
 
-<define-tag qp:post_bottom_nav_bar>
+<define-tag qp:after_bottom_nav_bar endtag="required" whitespace="delete">
+{#QUADPRES_AFTER_BOTTOM_NAV_BAR#:%body:##}
 </define-tag>
 
 <qp:html:header />
 <qp:html:bodystart />
-<qp:pre_top_nav_bar />
+{#QUADPRES_BEFORE_TOP_NAV_BAR#}
 <qpnavigationbar withkey="1" />
-<qp:post_top_nav_bar />
+{#QUADPRES_AFTER_TOP_NAV_BAR#}
 <h1><qp:title /></h1>
 {#BODY#}
 <hr />
-<qp:pre_bottom_nav_bar />
+{#QUADPRES_BEFORE_BOTTOM_NAV_BAR#}
 <qpnavigationbar />
-<qp:post_bottom_nav_bar />
+{#QUADPRES_AFTER_BOTTOM_NAV_BAR#}
 <qp:html:footer />
 </body>
 </html>
