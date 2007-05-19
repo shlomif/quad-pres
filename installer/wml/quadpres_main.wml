@@ -187,6 +187,22 @@ foreach my $c (@controls)
 }:>
 </define-tag>
 
+<define-tag qp:before_top_nav_bar endtag="required" whitespace="delete">
+{#QUADPRES_BEFORE_TOP_NAV_BAR#:%body:##}
+</define-tag>
+
+<define-tag qp:after_top_nav_bar endtag="required" whitespace="delete">
+{#QUADPRES_AFTER_TOP_NAV_BAR#:%body:##}
+</define-tag>
+
+<define-tag qp:before_bottom_nav_bar endtag="required" whitespace="delete">
+{#QUADPRES_BEFORE_BOTTOM_NAV_BAR#:%body:##}
+</define-tag>
+
+<define-tag qp:after_bottom_nav_bar endtag="required" whitespace="delete">
+{#QUADPRES_AFTER_BOTTOM_NAV_BAR#:%body:##}
+</define-tag>
+
 
 #include "themes/$(THEME)/template.wml"
 

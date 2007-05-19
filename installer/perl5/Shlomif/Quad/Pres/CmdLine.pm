@@ -17,6 +17,8 @@ use Cwd;
 use Error qw(:try);
 use Data::Dumper;
 use File::Copy;
+use Carp;
+use File::Spec;
 
 use Shlomif::Quad::Pres::Path;
 use Shlomif::Quad::Pres::Exception;
@@ -636,12 +638,62 @@ sub perform_upload_command
 
     $self->chdir_to_base();
 
-    my $scripts_dir = $self->path_man()->get_scripts_dir();
+    my $cfg = Shlomif::Quad::Pres::Config->new();
 
-    $self->run_command(
-        command => "$scripts_dir/upload.pl",
-        error_text => "Upload Failed!",
-    );
+    my $util = $cfg->get_upload_util();
+
+    if (!defined($util))
+    {
+        confess "The upload utility was not specified in the quadpres.ini file. Aborting.";
+    }
+
+    my $dest_dir = $cfg->get_server_dest_dir();
+
+    my $upload_path = $cfg->get_upload_path();
+
+    # Split into the last component of the path and the main
+    # path up to it.
+    $dest_dir =~ m{^(.*?)/([^/]*)/*$};
+    my ($main_path, $last_component) = ($1, $2);
+
+    chdir($main_path);
+    my @command;
+
+    if ($util eq "rsync")
+    {
+        @command =
+        (
+            qw(rsync --progress --verbose --rsh=ssh -r), 
+            $last_component . "/",
+            $upload_path
+        );
+    }
+    elsif ($util eq "scp")
+    {
+        @command = 
+        (
+            qw(scp -r),
+            $last_component . "/",
+            $upload_path
+        )
+    }
+    elsif ($util eq "generic")
+    {
+        my $cmd_line = $cfg->get_upload_cmdline();    
+        @command = split(/\s+/, $cmd_line);
+        foreach (@command)
+        {
+            s/\${local}/$last_component/g;
+            s/\${remote_path}/$upload_path/g;
+        }
+    }
+    else
+    {
+        confess "The upload utility is unrecognized by Quad Pres.";
+    }
+
+    print (join(" ", @command), "\n");
+    system(@command);
 }
 
 sub add_filename_to_path
