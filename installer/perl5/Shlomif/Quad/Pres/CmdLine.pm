@@ -20,6 +20,7 @@ use File::Copy;
 use File::Path ();
 use Carp;
 use File::Spec;
+use HTML::Links::Localize;
 
 use Shlomif::Quad::Pres::Path;
 use Shlomif::Quad::Pres::Exception;
@@ -430,12 +431,27 @@ sub perform_render_command
 
     if ($render_hard_disk_html)
     {
-        my $scripts_dir = $self->path_man()->get_scripts_dir();
-        $self->run_command(
-            'command' => "$scripts_dir/html-server-to-hd.pl",
-            'error_text' => "Conversion to Hard-disk format failed",
-        );
+        $self->_convert_to_hardisk()
     }
+}
+
+sub _convert_to_hardisk
+{
+    my $self = shift;
+
+    my $cfg = Shlomif::Quad::Pres::Config->new();
+
+    my $default_dest_dir = $cfg->get_server_dest_dir();
+
+    my $hard_disk_dest_dir = $cfg->get_hard_disk_dest_dir();
+
+    my $converter= 
+        HTML::Links::Localize->new(
+            'base_dir' => $default_dest_dir,
+            'dest_dir' => $hard_disk_dest_dir,
+        );
+
+    $converter->process_dir_tree('only-newer' => 1);
 }
 
 sub _get_file_mtime
