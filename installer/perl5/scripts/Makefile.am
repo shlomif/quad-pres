@@ -6,17 +6,13 @@ PATH_PERL = @PATH_PERL@
 
 qpscriptsdir = $(pkgdatadir)/scripts/
 
-qpscripts_SCRIPTS = fix-gvim-html.pl render-file.pl
+qpscripts_SCRIPTS = fix-gvim-html.pl
 
 fix-gvim-html.pl: fix-gvim-html.pl.pl Makefile
 	cat fix-gvim-html.pl.pl | sed 's!{QP_MODULES_DIR}!$(modulesdir)!g' | sed '1 s!/usr/bin/perl!$(PATH_PERL)!' > fix-gvim-html.pl
 	chmod 755 fix-gvim-html.pl
 
-render-file.pl: render-file.pl.pl Makefile
-	cat render-file.pl.pl | sed 's!{QP_MODULES_DIR}!$(modulesdir)!g' | sed '1 s!/usr/bin/perl!$(PATH_PERL)!' > render-file.pl
-	chmod 755 render-file.pl
-
-EXTRA_DIST = fix-gvim-html.pl.pl render-file.pl.pl
+EXTRA_DIST = fix-gvim-html.pl.pl
 
 EXTRA_DIST += gen_am.pl
 
