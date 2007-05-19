@@ -17,6 +17,7 @@ use Cwd;
 use Error qw(:try);
 use Data::Dumper;
 use File::Copy;
+use File::Path ();
 use Carp;
 use File::Spec;
 
@@ -616,7 +617,7 @@ sub perform_clear_command
     $getopt->getoptions(
         'a|all!' => \$clear_all
     );
-    
+   
     if (! $clear_all)
     {
         throw $error_class -text => "Don't know how to clear anything but all yet.";
@@ -625,11 +626,11 @@ sub perform_clear_command
     # Go to the base dir.
     $self->chdir_to_base();
 
-    my $scripts_dir = $self->path_man()->get_scripts_dir();
-    $self->run_command(
-        'command' => "$scripts_dir/clear-tree.pl",
-        'error_text' => "Calling the clear-tree helper script failed!",
-    );
+    my $cfg = Shlomif::Quad::Pres::Config->new();
+
+    my $dest_dir = $cfg->get_server_dest_dir();
+
+    File::Path::rmtree([$dest_dir], 0, 0);
 }
 
 sub perform_upload_command
