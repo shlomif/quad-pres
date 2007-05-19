@@ -4,7 +4,7 @@ use strict;
 
 my @perl_scripts=
 (
-    qw(clear-tree.pl fix-gvim-html.pl html-server-to-hd.pl),
+    qw(fix-gvim-html.pl html-server-to-hd.pl),
     qw(render-file.pl)
 );
 
