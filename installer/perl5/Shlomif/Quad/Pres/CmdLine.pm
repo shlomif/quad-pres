@@ -584,7 +584,7 @@ sub _render_file
             : ("-I", $local_wml_dir)
         ;
 
-    my $ret = system (
+    my @command = (
         "wml",
         "-I", $wml_dir,
         @local_wml,
@@ -593,6 +593,13 @@ sub _render_file
         "-o", $output_filename,
         "src/$filename.wml"
     );
+
+    if (! $ENV{"QUAD_PRES_QUIET"})
+    {
+        print join(" ", @command), "\n";
+    }
+
+    my $ret = system(@command);
 
     # If it failed.
     if ($ret != 0)
