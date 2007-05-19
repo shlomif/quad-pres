@@ -529,17 +529,12 @@ sub _render_all_contents_traverse_callback
     {
         my $src_filename_modified = $src_filename;
         $src_filename_modified =~ s/^(\.\/)?src\/*//;
-        my $cmd = "$scripts_dir/render-file.pl \"$src_filename_modified\" > \"$filename\"\n";
-            
-        print $cmd, "\n";
-        if (system($cmd) != 0) 
-        {
-            # Clean-up the file so it will have to be regenerated
-            unlink($filename);
-            my $error = Shlomif::Quad::Pres::Exception::RenderFile->new();
-            $error->{'src_filename'} = $src_filename;
-            die $error;
-        }
+        $self->_render_file(
+            {
+                input_fn => $src_filename_modified,
+                output_fn => $filename,
+            },
+        );
     }
 
     if (exists($branch->{'images'}))
@@ -564,6 +559,68 @@ sub _render_all_contents_traverse_callback
         }
     }
 }
+
+sub _render_file
+{
+    my ($self, $args) = @_;
+
+    my $filename = $args->{input_fn};
+    my $output_filename = $args->{output_fn};
+
+    $filename =~ s{\.wml$}{};
+    $filename =~ s{/$}{/index.html};
+
+    my $path_man = Shlomif::Quad::Pres::Path->new();
+
+    my $scripts_dir = $path_man->get_scripts_dir();
+    my $wml_dir = $path_man->get_wml_dir();
+    my $modules_dir = $path_man->get_modules_dir();
+
+    my $local_wml_dir = $ENV{"HOME"}. "/.Quad-Pres/lib/";
+
+    my @local_wml = 
+        $ENV{"QUAD_PRES_NO_HOME_LIB"} 
+            ? ()
+            : ("-I", $local_wml_dir)
+        ;
+
+    my $ret = system (
+        "wml",
+        "-I", $wml_dir,
+        @local_wml,
+        "-DFILENAME=$filename",
+        "--passoption=3,-I$modules_dir",
+        "-o", $output_filename,
+        "src/$filename.wml"
+    );
+
+    # If it failed.
+    if ($ret != 0)
+    {
+        # Clean-up the file so it will have to be regenerated
+        my $error = Shlomif::Quad::Pres::Exception::RenderFile->new();
+        $error->{'src_filename'} = $filename;
+        die $error;
+    }
+}
+
+=begin Removed
+
+        my $cmd = "$scripts_dir/render-file.pl \"$src_filename_modified\" > \"$filename\"\n";
+            
+        print $cmd, "\n";
+        if (system($cmd) != 0) 
+        {
+            # Clean-up the file so it will have to be regenerated
+            unlink($filename);
+            my $error = Shlomif::Quad::Pres::Exception::RenderFile->new();
+            $error->{'src_filename'} = $src_filename;
+            die $error;
+        }
+
+=end
+
+=cut
 
 sub _render_all_contents
 {
