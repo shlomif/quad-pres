@@ -1,9 +1,11 @@
 <qp:html:header />
 <qp:html:bodystart />
 <h1><qp:title /></h1>
+{#QUADPRES_BEFORE_TOP_NAV_BAR#}
 <div class="nav">
 <a href="<qp:contentsurl />">[Top]</a> <a href="<qp:prevurl />">[Previous]</a> <a href="<qp:nexturl />">[Next]</a>
 </div>
+{#QUADPRES_AFTER_TOP_NAV_BAR#}
 {#BODY#}
 <address>
 <a href="http://validator.w3.org/check/referer">Valid HTML!</a><br />
