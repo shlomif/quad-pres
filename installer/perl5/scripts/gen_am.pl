@@ -4,8 +4,7 @@ use strict;
 
 my @perl_scripts=
 (
-    qw(fix-gvim-html.pl html-server-to-hd.pl),
-    qw(render-file.pl)
+    qw(fix-gvim-html.pl render-file.pl)
 );
 
 open O, ">Makefile.am";
