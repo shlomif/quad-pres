@@ -475,74 +475,81 @@ sub _render_all_contents_traverse_callback
 
     my $p = join("/", @path);
 
-    my ($filename, $src_filename);
-
-    my $is_dir = exists($branch->{'subs'});
-
-    my $src_dir = $self->src_dir();
-    my $scripts_dir = $self->path_man()->get_scripts_dir();
-
-    if ($is_dir)
     {
-        # It is a directory
-        $filename = ($self->dest_dir() . "/" . $p);
-        if (! (-d $filename))
-        {
-            mkdir($filename);
-        }
-        $filename .= "/index.html";
-        $src_filename = $src_dir . "/" . $p . "/index.html";
-    }
-    else
-    {
-        $filename = ($self->dest_dir() . "/" . $p);
-        $src_filename = $src_dir . "/" . $p;
-    }
-    $src_filename .= ".wml";
-    # Automatically copy the template to the source filename
-    if (! -e $src_filename)
-    {
+        my ($filename, $src_filename);
+
+        my $is_dir = exists($branch->{'subs'});
+
+        my $src_dir = $self->src_dir();
+
         if ($is_dir)
         {
-            my $dir_name = $src_filename;
-            $dir_name =~ s/\/*index\.html\.wml$//;
-            mkdir($dir_name);
+            # It is a directory
+            $filename = ($self->dest_dir() . "/" . $p);
+            if (! (-d $filename))
+            {
+                mkdir($filename);
+            }
+            $filename .= "/index.html";
+            $src_filename = $src_dir . "/" . $p . "/index.html";
         }
-        
-        open I, "<template.html.wml";
-        open O, (">" . $src_filename);
-        binmode(I);
-        binmode(O);
-        print O join("", <I>);
-        close(O);
-        close(I);
+        else
+        {
+            $filename = ($self->dest_dir() . "/" . $p);
+            $src_filename = $src_dir . "/" . $p;
+        }
+        $src_filename .= ".wml";
+        # Automatically copy the template to the source filename
+        if (! -e $src_filename)
+        {
+            if ($is_dir)
+            {
+                my $dir_name = $src_filename;
+                $dir_name =~ s/\/*index\.html\.wml$//;
+                mkdir($dir_name);
+            }
+            
+            open I, "<template.html.wml";
+            open O, (">" . $src_filename);
+            binmode(I);
+            binmode(O);
+            print O join("", <I>);
+            close(O);
+            close(I);
+        }
+
+        {
+            my $src_mtime = $self->_get_file_mtime($src_filename);
+            my $dest_mtime = $self->_get_file_mtime($filename);
+
+            if ((! -e $filename) || 
+                (grep 
+                    { $_ > $dest_mtime } 
+                    (@{$self->main_files_mtimes()},$src_mtime)
+                ))
+            {
+                my $src_filename_modified = $src_filename;
+                $src_filename_modified =~ s/^(\.\/)?src\/*//;
+                $self->_render_file(
+                    {
+                        input_fn => $src_filename_modified,
+                        output_fn => $filename,
+                    },
+                );
+            }
+        }
     }
     
-    my $src_mtime = $self->_get_file_mtime($src_filename);
-    my $dest_mtime = $self->_get_file_mtime($filename);
-
-    if ((! -e $filename) || 
-        (grep 
-            { $_ > $dest_mtime } 
-            (@{$self->main_files_mtimes()},$src_mtime)
-        ))
-    {
-        my $src_filename_modified = $src_filename;
-        $src_filename_modified =~ s/^(\.\/)?src\/*//;
-        $self->_render_file(
-            {
-                input_fn => $src_filename_modified,
-                output_fn => $filename,
-            },
-        );
-    }
 
     if (exists($branch->{'images'}))
     {
         foreach my $image (@{$branch->{'images'}})
         {
-            $filename = $self->dest_dir() . "/" . $p . "/" . $image ;
-            $src_filename = $src_dir . "/" . $p . "/" . $image ;
+            my $filename = $self->dest_dir() . "/" . $p . "/" . $image ;
+            my $src_filename = $self->src_dir() . "/" . $p . "/" . $image ;
+            
+            my $src_mtime = $self->_get_file_mtime($src_filename);
+            my $dest_mtime = $self->_get_file_mtime($filename);
 
             if ((! -e $filename) ||
                 ($src_mtime > $dest_mtime)
@@ -572,7 +579,6 @@ sub _render_file
 
     my $path_man = Shlomif::Quad::Pres::Path->new();
 
-    my $scripts_dir = $path_man->get_scripts_dir();
     my $wml_dir = $path_man->get_wml_dir();
     my $modules_dir = $path_man->get_modules_dir();
 
