@@ -102,6 +102,7 @@ foreach my $c (@controls)
 }
 
 }:>
+{#QUADPRES_MORE_HEAD_ELEMS#}
 </define-tag>
 
 <define-tag qp:subject>
@@ -203,6 +204,9 @@ foreach my $c (@controls)
 {#QUADPRES_AFTER_BOTTOM_NAV_BAR#:%body:##}
 </define-tag>
 
+<define-tag qp:more_head_elems endtag="required" whitespace="delete">
+{#QUADPRES_MORE_HEAD_ELEMS#:%body:##}
+</define-tag>
 
 #include "themes/$(THEME)/template.wml"
 
