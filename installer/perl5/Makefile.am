@@ -2,7 +2,7 @@ include $(top_srcdir)/perl5/Shlomif/modules.am
 
 PATH_PERL = @PATH_PERL@
 
-SUBDIRS = scripts Shlomif
+SUBDIRS = Shlomif
 
 bin_SCRIPTS = quadp
 
