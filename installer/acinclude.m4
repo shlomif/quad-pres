@@ -1,4 +1,4 @@
-AC_DEFUN(AC_CHECK_PERL_INTERPRETER,[dnl
+AC_DEFUN([AC_CHECK_PERL_INTERPRETER],[dnl
 AC_MSG_CHECKING([for Perl language])
 AC_ARG_WITH(perl,dnl
 [  --with-perl=PATH        force the usage of a specific Perl 5 interpreter],[
