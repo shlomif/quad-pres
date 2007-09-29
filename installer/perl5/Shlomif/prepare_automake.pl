@@ -22,8 +22,6 @@ sub wanted
 
 find({ 'wanted' => \&wanted, 'no_chdir' => 1, }, ".");
 
-print join("\n", @dirs), "\n";
-
 foreach my $dir (@dirs)
 {
     my (%sub_dirs, %modules, %preproc_modules);
