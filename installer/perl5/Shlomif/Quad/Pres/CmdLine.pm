@@ -37,6 +37,7 @@ has 'main_files_mtimes' => (isa => 'ArrayRef', 'is' => 'rw');
 has 'path_man' => (isa => "Shlomif::Quad::Pres::Path", 'is' => "rw");
 has 'getopt' => (isa => "Shlomif::Quad::Pres::Getopt", 'is' => "rw");
 has 'cmd_line' => (isa => "ArrayRef", 'is' => "rw");
+has 'invocation_path' => (isa => "ArrayRef", is => "rw");
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
 
@@ -382,8 +383,9 @@ sub chdir_to_base
 
     # Assign invocation_path the components from the quad-pres base
     # directory to the place where the script was invoked.
-    $self->{'invocation_path'} = 
-        [ @path[(scalar(@path)-$levels_num) .. $#path ] ];
+    $self->invocation_path(
+        [ @path[(scalar(@path)-$levels_num) .. $#path ] ]
+    );
 
     return 0;
 }
@@ -944,7 +946,7 @@ sub perform_add_command
     my $filename =
         $self->_get_cl_param({'error_text' => "add needs a filename"});
 
-    my @path = @{$self->{'invocation_path'}};
+    my @path = @{$self->invocation_path()};
 
     my $file_path = $self->add_filename_to_path(\@path, $filename);
 
