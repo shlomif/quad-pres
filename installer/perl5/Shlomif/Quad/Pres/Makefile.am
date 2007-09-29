@@ -2,12 +2,12 @@ include $(top_srcdir)/perl5/Shlomif/modules.am
 
 thesemodulesdir=$(modulesdir)/Shlomif/Quad/Pres
 
-MODULES = CGI.pm CmdLine.pm Config.pm Exception.pm FS.pm Getopt.pm Url.pm 
+MODULES = CGI.pm CmdLine.pm Config.pm Config-new-fangled.pm Exception.pm FS.pm Getopt.pm Url.pm
 PREPROCMODULES = Path.pm
-PREPROCMODULES_SOURCES = Path.pm.pl
+PREPROCMODULES_SRCS = Path.pm.pl
 
 
-EXTRA_DIST = $(MODULES) $(PREPROCMODULES_SOURCES)
+EXTRA_DIST = $(MODULES) $(PREPROCMODULES_SRCS)
 
 thesemodules_DATA = $(MODULES) $(PREPROCMODULES)
 
