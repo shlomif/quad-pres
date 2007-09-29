@@ -16,9 +16,7 @@ done
 
 
 if $AUTOCONF ; then
-    aclocal
-    automake
-    autoconf
+    ./autogen.sh
 fi
 
 ./configure --prefix=$HOME/apps/test/quadpres && make dist
