@@ -59,7 +59,14 @@ foreach my $dir (@dirs)
         );
         
     open O, ">$dir/Makefile.am";
-    print O "include \$(top_srcdir)/perl5/Shlomif/modules.am\n\n";
+    print O <<'EOF';
+# This .am file was generated using perl5/Shlomif/prepare_automake.pl
+# Do not edit directly!!!
+
+include $(top_srcdir)/perl5/Shlomif/modules.am
+
+
+EOF
 
     if (scalar(keys(%sub_dirs)) > 0)
     {
