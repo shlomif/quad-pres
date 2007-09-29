@@ -73,11 +73,11 @@ foreach my $dir (@dirs)
         
         print O "PREPROCMODULES = " . join(" ", map { "$_.pm" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
         
-        print O "PREPROCMODULES_SOURCES = " . join(" ", map { "$_.pm.pl" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
+        print O "PREPROCMODULES_SRCS = " . join(" ", map { "$_.pm.pl" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
 
         print O "\n\n";
         
-        print O "EXTRA_DIST = \$(MODULES) \$(PREPROCMODULES_SOURCES)\n\n";
+        print O "EXTRA_DIST = \$(MODULES) \$(PREPROCMODULES_SRCS)\n\n";
 
         print O "thesemodules_DATA = \$(MODULES) \$(PREPROCMODULES)\n\n";
 
