@@ -1,6 +1,9 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 use strict;
+use warnings;
+
+use Test::More tests => 2;
 
 use Shlomif::Quad::Pres::Getopt;
 
@@ -19,14 +22,10 @@ $parser->getoptions(
     'option=s' => \$option_val,
 );
 
-if ((! $is_w) || ($option_val ne "hello"))
-{
-    die "Arguments were not processed correctly!";
-}
+# TEST
+ok (!((! $is_w) || ($option_val ne "hello")),
+    "Arguments were not processed correctly!");
 
-if (join("|", @args) ne "yes|there|-t")
-{
-    die "Arguments left are incorrect! Arguments are:\n" . 
-        join("", map { "$_: $args[$_]\n" } (0 .. $#args));
-}
-
+# TEST
+is (join("|", @args), "yes|there|-t",
+    "Arguments left are incorrect! Arguments are:\n");
