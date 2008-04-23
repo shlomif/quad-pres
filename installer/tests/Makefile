@@ -7,7 +7,7 @@ BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 $(BASH_TESTS_TARGETS) :: test-% :
 	cd $(patsubst test-%,%,$@) && bash test1.bash
 
-PERL_TESTS = Empty-Group CmdLine-Moose
+PERL_TESTS = CmdLine-Moose
 
 PERL_TESTS_TARGETS = $(addprefix perl-test-,$(PERL_TESTS))
 
