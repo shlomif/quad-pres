@@ -1,27 +1,37 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 use strict;
+use warnings;
+
+use Test::More tests => 3;
+
 use Shlomif::Quad::Pres::FS;
 
-use vars qw($test_num @inputs);
+my ($test_num, @inputs);
 
 @inputs = (undef, "", "     ");
 
 my $filename = "test-for_chown.stub";
 
-sub mydie
+sub my_test
 {
-    my $error = shift;
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    my $fs = shift;
+    
     my $i = $inputs[$test_num];
     unlink($filename);
-    die ("Error! $error test_num=$test_num input=" . (defined($i)?$i:"undef"));
+
+    # TEST*3
+    ok (!exists($fs->{gid}),
+        "Gid defined test_num=$test_num input=" . (defined($i)?$i:"undef"));
 }
 
 #$SIG{__WARN__} = sub {
 #    mydie("Warning was received");
 #};
 
-open O, ">$filename";
+open O, ">", $filename;
 print O "";
 close(O);
 
@@ -29,10 +39,7 @@ for($test_num = 0; $test_num < @inputs; $test_num++)
 {
     my $fs = Shlomif::Quad::Pres::FS->new('group' => $inputs[$test_num]);
     
-    if (exists($fs->{'gid'}))
-    {
-        mydie("gid was defined for an empty group");
-    }
+    my_test($fs);
 
     $fs->my_chown($filename);
 }
@@ -40,5 +47,4 @@ for($test_num = 0; $test_num < @inputs; $test_num++)
 unlink($filename);
 
 exit(0);
-
 
