@@ -151,6 +151,13 @@ sub get_hard_disk_dest_dir
     return $self->get_val("hard-disk", "dest_dir");
 }
 
+sub get_src_archive_path
+{
+    my $self = shift;
+
+    return $self->get_val("quadpres", "src_archive");
+}
+
 1;
 
 

@@ -21,6 +21,7 @@ use File::Path ();
 use Carp;
 use File::Spec;
 use HTML::Links::Localize;
+use File::Glob ':glob';
 
 use Shlomif::Quad::Pres::Path;
 use Shlomif::Quad::Pres::Exception;
@@ -102,6 +103,7 @@ reg_cmd('render',0,[qw(rend)]);
 reg_cmd('setup');
 reg_cmd('upload');
 reg_cmd('add');
+reg_cmd('pack');
 
 sub run_command
 {
@@ -638,6 +640,22 @@ sub _render_file
 
 =cut
 
+sub _assign_src_dir
+{
+    my $self = shift;
+
+    my $src_dir = "./src/";
+
+    if ($src_dir !~ /\/$/)
+    {
+        $src_dir .= "/";
+    }
+
+    $self->src_dir($src_dir);
+
+    return;
+}
+
 sub _render_all_contents
 {
     my $self = shift;
@@ -650,15 +668,10 @@ sub _render_all_contents
     require Contents;
     my $contents = Contents::get_contents();
 
-    my $src_dir = "./src/";
+    $self->_assign_src_dir();
+
     my $dest_dir = shift || $default_dest_dir;
 
-    if ($src_dir !~ /\/$/)
-    {
-        $src_dir .= "/";
-    }
-
-    $self->src_dir($src_dir);
 
     if ($dest_dir !~ /\/$/)
     {
@@ -904,6 +917,125 @@ sub perform_add_command
     my $writer =
         Shlomif::Quad::Pres::WriteContents->new(contents => $contents);
     $writer->update_contents();
+
+    return 0;
+}
+
+sub _traverse_pack_callback
+{
+    my $self = shift;
+
+    my (%arguments) = (@_);
+    
+    my $path_ref = $arguments{'path'};
+    my $branch = $arguments{'branch'};
+
+    my (@path);
+
+    @path = @{$path_ref};
+
+    my $p = join("/", @path);
+
+    {
+        my ($filename, $src_filename);
+
+        my $is_dir = exists($branch->{'subs'});
+
+        my $src_dir = $self->src_dir();
+
+        if ($is_dir)
+        {
+            # It is a directory
+            $filename = ($self->src_archive_src_dir() . "/" . $p);
+            if (! (-d $filename))
+            {
+                mkdir($filename);
+            }
+            copy($src_dir . "/" . $p . "/index.html.wml",
+                 "$filename/index.html.wml"
+            );
+        }
+        else
+        {
+            $filename = ($self->src_archive_src_dir() . "/" . $p);
+            $src_filename = $src_dir . "/" . $p;
+            copy($src_filename.".wml", $filename.".wml");
+        }
+    }
+    
+
+    if (exists($branch->{'images'}))
+    {
+        foreach my $image (@{$branch->{'images'}})
+        {
+            my $filename = $self->src_archive_src_dir() . "/" . $p . "/" . $image ;
+            my $src_filename = $self->src_dir() . "/" . $p . "/" . $image ;
+            
+            copy($src_filename, $filename);
+        }
+    }
+}
+
+sub src_archive_dir
+{
+    my $self = shift;
+
+    return "./SOURCE";
+}
+
+sub src_archive_src_dir
+{
+    my $self = shift;
+
+    return $self->src_archive_dir()."/src";
+}
+
+sub perform_pack_command
+{
+    my $self = shift;
+
+    my $cfg = Shlomif::Quad::Pres::Config->new();
+
+    $self->_assign_src_dir();
+
+    my $src_archive_name = $cfg->get_src_archive_path() || 
+        ($cfg->get_server_dest_dir() . "/" . "src.tar.gz");
+
+    File::Path::rmtree([$self->src_archive_dir()], 0, 0);
+
+    mkdir($self->src_archive_dir());
+    mkdir($self->src_archive_dir(). "/.quadpres");
+
+    # Copy the files from the root directory.
+    foreach my $file (
+        sort { $a cmp $b }
+        grep { -f $_ } 
+        map { glob($_) } qw(*.pm *.wml *.html quadpres.ini *.pl *.sh .quadpres/*)
+    )
+    {
+        copy($file, $self->src_archive_dir() . "/$file");
+    }
+
+    mkdir($self->src_archive_src_dir());
+   
+
+    require Contents;
+    my $contents = Contents::get_contents();
+
+    my $quadpres_obj = 
+        Shlomif::Quad::Pres->new(
+            $contents, 
+            'doc_id' => "/",
+            'mode' => "server",
+        );
+ 
+    $quadpres_obj->traverse_tree(
+        sub {
+            return $self->_traverse_pack_callback(@_);
+        }
+    );
+
+    system("tar", "-czf", $src_archive_name, $self->src_archive_dir());
 
     return 0;
 }
