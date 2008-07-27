@@ -45,6 +45,10 @@ Render slides.
 
 Clear the rendered slides.
 
+=item pack
+
+Prepare a source distribution of the presentation.
+
 =item upload
 
 Upload the rendered slides to a remote server.
@@ -101,6 +105,16 @@ The synopsis is as follows:
 B<quadp> B<clear> I<-a>
 
 This command causes all the rendered files to be deleted.
+
+=head2 PACK
+
+The synopsis is as follows:
+
+B<quadp> B<pack>
+
+This creates an archive for the entire source distribution under 
+C<rendered/src.tar.gz> or the key specified in C<quadpres/src_archive>
+in the configuration in the command line.
 
 =head2 UPLOAD
 
