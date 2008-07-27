@@ -18,6 +18,7 @@ use Error qw(:try);
 use Data::Dumper;
 use File::Copy;
 use File::Path ();
+use File::Basename;
 use Carp;
 use File::Spec;
 use HTML::Links::Localize;
@@ -560,13 +561,7 @@ sub _render_all_contents_traverse_callback
                 ($src_mtime > $dest_mtime)
                 )
             {
-                open I, ( "<" . $src_filename);
-                open O, ( ">" . $filename);
-                binmode(I);
-                binmode(O);
-                print O join("",<I>);
-                close(O);
-                close(I);        
+                copy_with_creating_dir($src_filename, $filename);
             }
         }
     }
@@ -921,6 +916,13 @@ sub perform_add_command
     return 0;
 }
 
+sub copy_with_creating_dir
+{
+    my ($src_fn, $dest_fn) = @_;
+    File::Path::mkpath([dirname($dest_fn)]);
+    return copy($src_fn, $dest_fn);
+}
+
 sub _traverse_pack_callback
 {
     my $self = shift;
@@ -971,7 +973,8 @@ sub _traverse_pack_callback
             my $filename = $self->src_archive_src_dir() . "/" . $p . "/" . $image ;
             my $src_filename = $self->src_dir() . "/" . $p . "/" . $image ;
             
-            copy($src_filename, $filename);
+            File::Path::mkpath([dirname($filename)]);
+            copy_with_creating_dir($src_filename, $filename);
         }
     }
 }
@@ -1010,7 +1013,8 @@ sub perform_pack_command
     foreach my $file (
         sort { $a cmp $b }
         grep { -f $_ } 
-        map { glob($_) } qw(*.pm *.wml *.html quadpres.ini *.pl *.sh .quadpres/*)
+        map { glob($_) }
+        qw(*.pm *.wml *.html quadpres.ini *.pl *.sh .quadpres/* .wmlrc)
     )
     {
         copy($file, $self->src_archive_dir() . "/$file");
