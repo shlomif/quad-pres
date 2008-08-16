@@ -41,13 +41,29 @@ sub is_dir
 sub get_relative_url
 {
     my $base = shift;
+
+    my $url = $base->_get_url_worker(@_);
+
+    return ( ($url eq "") ? "./" : $url);
+}
+
+sub _get_url_worker
+{
+    my $base = shift;
     my $to = shift;
+    my $slash_terminated = shift;
+    my $no_leading_dot = shift;
+
+    my $prefix = ($no_leading_dot ? "" : "./");
+
     my @this_url = @{$base->get_url()};
     my @other_url = @{$to->get_url()};
-    my $slash_terminated = shift;
 
     my $ret;
-    
+
+    my @this_url_bak = @this_url;
+    my @other_url_bak = @other_url;
+
     while(
         scalar(@this_url) &&
         scalar(@other_url) &&
@@ -56,6 +72,25 @@ sub get_relative_url
     {
         shift(@this_url);
         shift(@other_url);
+    }
+
+    if ((! @this_url) && (! @other_url))
+    {
+        if ((!$base->is_dir() ) ne (!$to->is_dir()))
+        {
+            die "Two identical URLs with non-matching is_dir()'s";
+        }
+        if (! $base->is_dir())
+        {
+            if (scalar(@this_url_bak))
+            {
+                return $prefix . $this_url_bak[-1];
+            }
+            else
+            {
+                die "Root URL is not a directory";
+            }
+        }
     }
 
     if (($base->{'mode'} eq "harddisk") && ($to->is_dir()))
@@ -69,11 +104,15 @@ sub get_relative_url
     {
         if ((scalar(@this_url) == 0) && (scalar(@other_url) == 0))
         {
-            $ret = "./";
+            $ret = $prefix;
         }
         else
         {
-            $ret .= join("/", (map { ".." } @this_url), @other_url);         
+            if (! $base->is_dir())
+            {
+                pop(@this_url);
+            }
+            $ret .= join("/", (map { ".." } @this_url), @other_url);
             if ($to->is_dir() && ($base->{'mode'} ne "harddisk"))
             {
                 $ret .= "/";
@@ -83,7 +122,7 @@ sub get_relative_url
     else
     {
         my @components = ((map { ".." } @this_url[1..$#this_url]), @other_url);
-        $ret .= ("./" . join("/", @components)); 
+        $ret .= ($prefix . join("/", @components)); 
         if (($to->is_dir()) && ($base->{'mode'} ne "harddisk") && scalar(@components))
         {
             $ret .= "/";

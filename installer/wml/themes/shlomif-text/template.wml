@@ -1,4 +1,5 @@
 
+
 <define-tag qpnavigationbar>
 <preserve withkey />
 <set-var %attributes />
@@ -49,11 +50,20 @@
 <restore withkey />
 </define-tag>
 
+<define-tag quadpres_breadcrumbs_trail>
+<div class="bread">
+<:{
+    uniprint $qp->get_breadcrumbs_trail();
+}:>
+</div>
+</define-tag>
+
 
 <qp:html:header />
 <qp:html:bodystart />
 {#QUADPRES_BEFORE_TOP_NAV_BAR#}
 <qpnavigationbar withkey="1" />
+<quadpres_breadcrumbs_trail />
 {#QUADPRES_AFTER_TOP_NAV_BAR#}
 <h1><qp:title /></h1>
 {#BODY#}

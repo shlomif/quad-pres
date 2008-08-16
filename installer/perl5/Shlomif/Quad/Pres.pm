@@ -1,11 +1,16 @@
 package Shlomif::Quad::Pres;
 
 use strict;
+use warnings;
+
+use utf8;
 
 use Shlomif::Gamla::Object;
 use Data::Dumper;
 
 use Shlomif::Quad::Pres::Url;
+
+use CGI ();
 
 use vars qw(@ISA);
 
@@ -464,20 +469,28 @@ sub get_navigation_bar
     return $self->{'navigation_bar'};
 }
 
-sub get_subject
+sub get_subject_by_coords
 {
     my $self = shift;
+    my $coords_ref = shift;
 
     my $branch = $self->{'contents'};
 
-    my @coords = @{$self->{'coords'}};
+    my @coords = @$coords_ref;
 
     for(my $i=0;$i<scalar(@coords);$i++)
     {
         $branch = $branch->{'subs'}->[$coords[$i]];
-    }    
+    }
 
     return $branch->{'title'};
+}
+
+sub get_subject
+{
+    my $self = shift;
+
+    return $self->get_subject_by_coords($self->{coords});
 }
 
 sub get_title
@@ -774,5 +787,28 @@ sub traverse_tree
 
     $traverse_helper->([], [], $contents);
 }
+
+sub get_breadcrumbs_trail
+{
+    my $qp = shift;
+
+    my @abs_coords = @{$qp->{'coords'}};
+
+    my @strs;
+    for my $end ((-1) .. $#abs_coords)
+    {
+        my @coords = @abs_coords[0 .. $end];
+        my $s = "<a href=\""
+            . CGI::escapeHTML($qp->get_control_url($qp->get_url_by_coords(\@coords)))
+            . "\">"
+            . CGI::escapeHTML($qp->get_subject_by_coords(\@coords)) .
+            "</a>"
+            ;
+        push @strs, $s;
+    }
+
+    return join(" → " , @strs);
+}
+
 1;
 

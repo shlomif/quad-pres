@@ -1,4 +1,9 @@
-use Test::More tests => 4;
+use strict;
+use warnings;
+
+use utf8;
+
+use Test::More tests => 6;
 
 # TEST
 use_ok("Shlomif::Quad::Pres");
@@ -382,5 +387,22 @@ use_ok("Shlomif::Quad::Pres");
 
         my $prev_url = $qp->get_control_url($qp->get_prev_url());
         is($prev_url, "../", "prev OK"); # TEST
+    }
+
+    {
+        my $qp = Shlomif::Quad::Pres->new(
+            $contents1,
+            'doc_id' => 'features/colour_modes.html',
+            'mode' => "server",
+        );
+
+        # TEST
+        ok($qp); 
+
+        # TEST
+        is ($qp->get_breadcrumbs_trail(),
+            q{<a href="./../">Do it with the GIMP</a> → <a href="./">Overview of Features</a> → <a href="./colour_modes.html">Colour Modes</a>},
+            "Testing the breadcrumbs trail",
+        );
     }
 }
