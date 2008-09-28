@@ -801,7 +801,7 @@ sub get_breadcrumbs_trail
         my $s = "<a href=\""
             . CGI::escapeHTML($qp->get_control_url($qp->get_url_by_coords(\@coords)))
             . "\">"
-            . CGI::escapeHTML($qp->get_subject_by_coords(\@coords)) .
+            . $qp->get_subject_by_coords(\@coords) .
             "</a>"
             ;
         push @strs, $s;
