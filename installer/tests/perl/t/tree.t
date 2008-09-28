@@ -3,7 +3,7 @@ use warnings;
 
 use utf8;
 
-use Test::More tests => 8;
+use Test::More tests => 9;
 
 # TEST
 use_ok("Shlomif::Quad::Pres");
@@ -417,9 +417,15 @@ use_ok("Shlomif::Quad::Pres");
         ok($qp); 
 
         # TEST
-        is ($qp->get_breadcrumbs_trail(),
+        is ($qp->get_breadcrumbs_trail(" → "),
             q{<a href="../../">Do it with the GIMP</a> → <a href="../">Basic Areal Effects</a> → <a href="./">Sharpening &amp; Marpening</a>},
             "Testing the breadcrumbs trail",
         );
+
+        # TEST
+        is ($qp->get_breadcrumbs_trail(" ← "),
+            q{<a href="../../">Do it with the GIMP</a> ← <a href="../">Basic Areal Effects</a> ← <a href="./">Sharpening &amp; Marpening</a>},
+            "Testing the breadcrumbs trail",
+        );        
     }
 }

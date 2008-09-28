@@ -791,6 +791,7 @@ sub traverse_tree
 sub get_breadcrumbs_trail
 {
     my $qp = shift;
+    my $sep = shift;
 
     my @abs_coords = @{$qp->{'coords'}};
 
@@ -807,7 +808,7 @@ sub get_breadcrumbs_trail
         push @strs, $s;
     }
 
-    return join(" → " , @strs);
+    return join($sep, @strs);
 }
 
 1;

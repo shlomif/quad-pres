@@ -50,10 +50,12 @@
 <restore withkey />
 </define-tag>
 
+
 <define-tag quadpres_breadcrumbs_trail>
 <div class="bread">
 <:{
-    uniprint $qp->get_breadcrumbs_trail();
+    use utf8;
+    uniprint $qp->get_breadcrumbs_trail(<ifeq "<get-var qp_body_dir />" "rtl" "' ← '" "' → '" />);
 }:>
 </div>
 </define-tag>
