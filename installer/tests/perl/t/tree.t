@@ -3,7 +3,7 @@ use warnings;
 
 use utf8;
 
-use Test::More tests => 6;
+use Test::More tests => 8;
 
 # TEST
 use_ok("Shlomif::Quad::Pres");
@@ -218,7 +218,7 @@ use_ok("Shlomif::Quad::Pres");
                     },
                     {
                         'url' => "sharpen",
-                        'title' => "Sharpening",
+                        'title' => "Sharpening &amp; Marpening",
                         'subs' =>
                         [
                             {
@@ -402,6 +402,23 @@ use_ok("Shlomif::Quad::Pres");
         # TEST
         is ($qp->get_breadcrumbs_trail(),
             q{<a href="./../">Do it with the GIMP</a> → <a href="./">Overview of Features</a> → <a href="./colour_modes.html">Colour Modes</a>},
+            "Testing the breadcrumbs trail",
+        );
+    }
+
+    {
+        my $qp = Shlomif::Quad::Pres->new(
+            $contents1,
+            'doc_id' => 'areal/sharpen/',
+            'mode' => "server",
+        );
+
+        # TEST
+        ok($qp); 
+
+        # TEST
+        is ($qp->get_breadcrumbs_trail(),
+            q{<a href="../../">Do it with the GIMP</a> → <a href="../">Basic Areal Effects</a> → <a href="./">Sharpening &amp; Marpening</a>},
             "Testing the breadcrumbs trail",
         );
     }

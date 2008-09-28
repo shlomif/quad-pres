@@ -761,7 +761,7 @@ sub perform_upload_command
     {
         @command =
         (
-            qw(rsync --progress --verbose --rsh=ssh -r), 
+            qw(rsync --progress --verbose --rsh=ssh -a), 
             $last_component . "/",
             $upload_path
         );
