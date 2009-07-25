@@ -793,6 +793,11 @@ sub get_breadcrumbs_trail
     my $qp = shift;
     my $sep = shift;
 
+    if (!defined ($sep))
+    {
+        $sep = " → ";
+    }
+
     my @abs_coords = @{$qp->{'coords'}};
 
     my @strs;
