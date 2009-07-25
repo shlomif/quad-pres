@@ -139,19 +139,22 @@ sub run
 {
     my $self = shift;
 
+    my $ret;
     try {
-        return $self->real_run();
+        $ret = $self->real_run();
     }
     catch $error_class with {
         my $e = shift;
         print STDERR "Quad-Pres Error: ", $e->text(), "\n";
-        return (-1);        
+        $ret = -1;        
     }
     otherwise {
         my $e = shift;
         print STDERR "$e\n"; 
-        return (-1);
+        $ret = -1;
     };
+
+    return $ret;
 }
 
 sub real_run
@@ -180,7 +183,7 @@ sub real_run
     
     my $callback = $registered_commands{$cmd_aliases{$command}};
     
-    $self->$callback();    
+    return $self->$callback();    
 }
 
 sub get_dir_path
@@ -363,6 +366,8 @@ EOF
     close(O);
 
     print "Successfully Created $src_dir_name\n";
+
+    return 0;
 }
 
 sub chdir_to_base
@@ -439,6 +444,8 @@ sub perform_render_command
     {
         $self->_convert_to_hardisk()
     }
+
+    return 0;
 }
 
 sub _convert_to_hardisk
@@ -728,6 +735,8 @@ sub perform_clear_command
     my $dest_dir = $cfg->get_server_dest_dir();
 
     File::Path::rmtree([$dest_dir], 0, 0);
+
+    return 0;
 }
 
 sub perform_upload_command
@@ -791,7 +800,7 @@ sub perform_upload_command
     }
 
     print (join(" ", @command), "\n");
-    system(@command);
+    return system(@command);
 }
 
 sub add_filename_to_path
