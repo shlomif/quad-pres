@@ -8,6 +8,7 @@ use Test::More tests => 9;
 # TEST
 use_ok("Shlomif::Quad::Pres");
 
+binmode STDOUT, ":utf8";
 {
     my $contents1 = 
     {
@@ -380,10 +381,16 @@ use_ok("Shlomif::Quad::Pres");
             'doc_id' => 'intro/',
             'mode' => "server",
         );
-        ok($qp); # TEST
+        # TEST
+        ok ($qp, "A Quad-Pres instance was initialized."); 
 
         my $next_url = $qp->get_control_url($qp->get_next_url());
-        ok(($next_url eq "history.html"), "next OK"); # TEST
+        # TEST
+        is(
+            $next_url,
+            "history.html", 
+            "next OK"
+        ); 
 
         my $prev_url = $qp->get_control_url($qp->get_prev_url());
         is($prev_url, "../", "prev OK"); # TEST
@@ -397,7 +404,7 @@ use_ok("Shlomif::Quad::Pres");
         );
 
         # TEST
-        ok($qp); 
+        ok ($qp, "A Quad-Pres instance was initialized. (No. 2)"); 
 
         # TEST
         is ($qp->get_breadcrumbs_trail(),
@@ -414,7 +421,7 @@ use_ok("Shlomif::Quad::Pres");
         );
 
         # TEST
-        ok($qp); 
+        ok ($qp, "A Quad-Pres instance was initialized. (No. 3)"); 
 
         # TEST
         is ($qp->get_breadcrumbs_trail(" → "),
