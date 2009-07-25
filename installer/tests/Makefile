@@ -7,16 +7,9 @@ BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 $(BASH_TESTS_TARGETS) :: test-% :
 	cd $(patsubst test-%,%,$@) && bash test1.bash
 
-PERL_TESTS = CmdLine-Moose
-
-PERL_TESTS_TARGETS = $(addprefix perl-test-,$(PERL_TESTS))
-
-$(PERL_TESTS_TARGETS) :: perl-test-% :
-	perl perl/$(patsubst perl-test-%,%,$@).pl
-
 bash-tests: $(BASH_TESTS_TARGETS)
 
-perl-tests: $(PERL_TESTS_TARGETS) perl-tests-t
+perl-tests: perl-tests-t
 
 check: perl-tests bash-tests 
 
