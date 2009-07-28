@@ -1,10 +1,10 @@
 
 
 <define-tag qpnavigationbar>
-<preserve withkey />
+<preserve withkey placement />
 <set-var %attributes />
 
-<table><tr><:{
+<table class="page-nav-bar <get-var placement />"><tr><:{
 
     # Assign a default to $translate_control_text
     $translate_control_text ||= 
@@ -47,7 +47,7 @@
     }
 }:>
 </tr></table>
-<restore withkey />
+<restore withkey placement />
 </define-tag>
 
 
@@ -64,14 +64,14 @@
 <qp:html:header />
 <qp:html:bodystart />
 {#QUADPRES_BEFORE_TOP_NAV_BAR#}
-<qpnavigationbar withkey="1" />
+<qpnavigationbar withkey="1" placement="top" />
 <quadpres_breadcrumbs_trail />
 {#QUADPRES_AFTER_TOP_NAV_BAR#}
 <h1><qp:title /></h1>
 {#BODY#}
 <hr />
 {#QUADPRES_BEFORE_BOTTOM_NAV_BAR#}
-<qpnavigationbar />
+<qpnavigationbar placement="bottom" />
 {#QUADPRES_AFTER_BOTTOM_NAV_BAR#}
 <qp:html:footer />
 </body>
