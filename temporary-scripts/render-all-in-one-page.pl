@@ -170,13 +170,17 @@ sub render_to_all_in_one
             ;
 
         my $div_tag =
-            qq{<div class="page" id="} . calc_page_id(\@path) .qq{">\n}
+            qq{<div class="page">\n};
             ;
+
+        my $id_attr = qq{ id="} . calc_page_id(\@path) .qq{"};
         
         if ($text !~ s{(<body[^>]*>)}{$1$div_tag}ms)
         {
             $text = $div_tag . $text;
         }
+        
+        $text =~ s{<h1>}{<h1$id_attr>};
 
         print {$all_in_one_out_fh} $text, qq{\n</div>\n};
         close($in);
@@ -207,4 +211,8 @@ $quadpres_obj->traverse_tree(\&render_to_all_in_one);
 print {$all_in_one_out_fh} "\n</body></html>\n";
 close($all_in_one_out_fh);
 
-system("cp", "-a", $all_in_one_dir, "/var/www/html/shlomi/perl/p4n-lecture1-all-in-one");
+# Remming out - was only temporary for testing.
+# system("cp", "-a", $all_in_one_dir, 
+#    "/var/www/html/shlomi/perl/p4n-lecture1-all-in-one"
+# );
+
