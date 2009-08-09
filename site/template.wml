@@ -87,7 +87,8 @@ $(ROOT)/<get-var url />
 </table>
 <hr />
 <p>
-<b>Webmaster:</b> <a href="mailto:shlomif@vipe.technion.ac.il">Shlomi Fish - shlomif@vipe.technion.ac.il</a>
+<b>Webmaster:</b> <a href="http://www.shlomifish.org/">Shlomi Fish</a>
+<a href="mailto:shlomif@cpan.org">shlomif@cpan.org</a> .
 </p>
 
 </body>
