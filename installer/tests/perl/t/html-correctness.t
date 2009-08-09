@@ -11,7 +11,7 @@ use Cwd;
 use IO::All;
 use HTML::Lint;
 
-my $io_dir = "t/data/html-correctness";
+my $io_dir = "t/data/in-out-html-correctness";
 rmtree ($io_dir);
 mkpath ($io_dir);
 
