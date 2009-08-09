@@ -11,6 +11,11 @@ html-correctness/
 lang-settings/
 perl/
 perl/t/
+perl/t/data/
+perl/t/lib/
+perl/t/lib/workflow/
+perl/t/lib/workflow/template/
+perl/t/lib/workflow/template/src/
 perl/t/to-be-added-later/
 stop-on-error/
 stop-on-error/template/
@@ -23,6 +28,3 @@ update-images/
 update-images/template/
 update-images/template/src/
 update-images/template/src/finale/
-workflow/
-workflow/template/
-workflow/template/src/
