@@ -7,7 +7,6 @@ credit/
 credit/template/
 credit/template/src/
 gen-hd-html/
-html-correctness/
 lang-settings/
 perl/
 perl/t/

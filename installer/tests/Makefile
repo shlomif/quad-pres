@@ -1,6 +1,6 @@
 all:
 
-BASH_TESTS = stop-on-error lang-settings body-dir credit gen-hd-html template-toolkit bolded-nav-links update-images
+BASH_TESTS = lang-settings body-dir credit gen-hd-html template-toolkit bolded-nav-links update-images
 
 BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 
