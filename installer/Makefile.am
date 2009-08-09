@@ -18,7 +18,7 @@ prepare_check:
 
 purecheck:
 	@PATH=`pwd`/tests/installation/bin:$$PATH ; \
-	export PERL5LIB=`pwd`/tests/installation/share/quad-pres/perl5/ ; \
+	export PERL5LIB="`pwd`/tests/installation/share/quad-pres/perl5/:$PERL5LIB" ; \
 	export QUAD_PRES_NO_HOME_LIB=1 ; \
 	make -C tests check
 
