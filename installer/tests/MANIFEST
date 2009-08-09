@@ -28,13 +28,6 @@ perl/t/lib/workflow/template/src/two.html.wml
 perl/t/to-be-added-later/stages.t
 perl/t/tree.t
 perl/t/workflow.t
-stop-on-error/template/slides/Contents.pm
-stop-on-error/template/slides/src/index.html.wml
-stop-on-error/template/slides/src/one.html.wml
-stop-on-error/template/slides/src/style.css
-stop-on-error/template/slides/src/three.html.wml
-stop-on-error/template/slides/src/two.html.wml
-stop-on-error/test1.bash
 template-toolkit/template/Contents.pm
 template-toolkit/template/src/index.html.wml
 template-toolkit/template/src/two.html.wml
