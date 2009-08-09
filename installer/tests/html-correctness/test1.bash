@@ -3,9 +3,9 @@
 # Verify the HTML correctness for all the themes
 
 if [ ! -e in-out ] ; then
-    mkdir in-out
+    mkdir "in-out"
 else
-    rm -fr in-out/*
+    rm -fr "in-out"/*
 fi
 cd "in-out"
 
