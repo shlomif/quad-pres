@@ -1,6 +1,6 @@
 all:
 
-BASH_TESTS = update-images
+BASH_TESTS =
 
 BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 
