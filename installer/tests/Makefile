@@ -1,6 +1,6 @@
 all:
 
-BASH_TESTS = credit gen-hd-html template-toolkit bolded-nav-links update-images
+BASH_TESTS = gen-hd-html template-toolkit bolded-nav-links update-images
 
 BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 
