@@ -1,6 +1,6 @@
 all:
 
-BASH_TESTS = template-toolkit bolded-nav-links update-images
+BASH_TESTS = bolded-nav-links update-images
 
 BASH_TESTS_TARGETS = $(addprefix test-,$(BASH_TESTS))
 
