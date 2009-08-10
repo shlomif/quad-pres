@@ -1,7 +1,0 @@
-#include 'template.wml'
-
-<ol>
-<li>
-Hi there!
-</li>
-</ol>
