@@ -14,7 +14,6 @@ use vars qw(@ISA);
 use English;
 use Pod::Usage;
 use Cwd;
-use Error qw(:try);
 use Data::Dumper;
 use File::Copy;
 use File::Path ();
@@ -66,7 +65,7 @@ sub _init_cmd_line
 
     if (!defined($cmd_line))
     {
-        throw $error_class -text => "cmd_line not specified";
+        $error_class->throw({text => 'cmd_line not specified'});
     }
 
     $self->cmd_line($cmd_line);
@@ -128,7 +127,7 @@ sub run_command
 
     if ($cmd_ret != 0)
     {
-        throw $error_class -text => $error_text;
+        $error_class->throw({text => $error_text});
     }
 
     return 0;
@@ -140,19 +139,22 @@ sub run
     my $self = shift;
 
     my $ret;
-    try {
+    eval {
         $ret = $self->real_run();
-    }
-    catch $error_class with {
-        my $e = shift;
-        print STDERR "Quad-Pres Error: ", $e->text(), "\n";
-        $ret = -1;        
-    }
-    otherwise {
-        my $e = shift;
-        print STDERR "$e\n"; 
-        $ret = -1;
     };
+
+    if (my $E = $@)
+    {
+        if (blessed($E) && $E->isa($error_class))
+        {
+            print STDERR "Quad-Pres Error: ", $E->text(), "\n";
+        }
+        else
+        {
+            print STDERR "$E\n"; 
+        }
+        $ret = -1;
+    }
 
     return $ret;
 }
@@ -178,7 +180,7 @@ sub real_run
 
     if (! exists($cmd_aliases{$command}))
     {
-        throw $error_class -text => "Unknown Command \"$command\"!";
+        $error_class->throw({text => "Unknown Command \"$command\"!"});
     }
     
     my $callback = $registered_commands{$cmd_aliases{$command}};
@@ -207,7 +209,7 @@ sub _get_cl_param
         {
             return $args->{empty_cb}->();
         }
-        throw $error_class -text => $args->{error_text};
+        $error_class->throw({text => $args->{error_text} });
     }
 
     return shift(@{$self->cmd_line()});
@@ -236,10 +238,18 @@ sub perform_setup_command
 
     if (!defined($args{"server_dest_dir"}))
     {
-        throw $error_class -text => "You must specify --dest-dir with somthing meaningful!";
+        $error_class->throw(
+            {text => 'You must specify --dest-dir with somthing meaningful!'}
+        );
     }
 
-    mkdir($src_dir_name) || throw $error_class -text => "Could not create the source directory.\nErrno=$!";
+    if (! mkdir($src_dir_name) )
+    {
+        $error_class->throw({
+                text => "Could not create the source directory.\nErrno=$!"
+            }
+        );
+    }
 
     open INI, ">$src_dir_name/quadpres.ini";
 
@@ -386,7 +396,11 @@ sub chdir_to_base
         $levels_num++;
         if (getcwd() eq "/")
         {
-            throw $error_class -text => "Could not find the Quad-Pres root anywhere";
+            $error_class->throw(
+                {
+                    text => 'Could not find the Quad-Pres root anywhere',
+                }
+            );
         }
     }
 
@@ -408,7 +422,9 @@ sub perform_render_command
 
     if (! @$cmd_line)
     {
-        throw $error_class -text => "render must be followed by filenames or flags";
+        $error_class->throw(
+            { text => 'render must be followed by filenames or flags' }
+        );
     }
     
     my $render_all = 0;
@@ -421,7 +437,9 @@ sub perform_render_command
     
     if (! $render_all)
     {
-        throw $error_class -text => "Don't know how to render anything but all yet.";
+        $error_class->throw(
+            { text => "Don't know how to render anything but all yet.", }
+        );
     }
 
     $self->chdir_to_base();
@@ -430,9 +448,9 @@ sub perform_render_command
     $self->_render_all_contents();
     };
     my $error = $@;
-    if (defined($error) && blessed($error) && $error->isa('Shlomif::Quad::Pres::Exception::RenderFile'))
+    if ($error && blessed($error) && $error->isa('Shlomif::Quad::Pres::Exception::RenderFile'))
     {
-        throw $error_class -text => "Rendering Failed!";
+        $error_class->throw({text => "Rendering Failed!"});
     }
     
     # $self->run_command(
@@ -713,7 +731,9 @@ sub perform_clear_command
 
     if (! @$cmd_line)
     {
-        throw $error_class -text => "clear must be followed by filenames or flags";
+        $error_class->throw(
+            {text => 'clear must be followed by filenames or flags',}
+        );
     }
     
     my $clear_all = 0;
@@ -724,7 +744,9 @@ sub perform_clear_command
    
     if (! $clear_all)
     {
-        throw $error_class -text => "Don't know how to clear anything but all yet.";
+        $error_class->throw(
+            {text => q{Don't know how to clear anything but all yet.},}
+       );
     }
 
     # Go to the base dir.
@@ -824,7 +846,13 @@ sub add_filename_to_path
         {
             if (! @path)
             {
-                throw $error_class -text => "Path given exits from the lecture ssource code base directory";
+                $error_class->throw(
+                    {
+                        text => 
+                        ('Path given exits from the lecture source'
+                        . ' code base directory'),
+                    }
+                );
             }
             else
             {
@@ -855,8 +883,9 @@ sub perform_add_command
 
     if ($file_path->[0] ne "src")
     {
-        throw $error_class 
-            -text => "Cannot add files outside the src directory";
+        $error_class->throw(
+            {text => "Cannot add files outside the src directory",},
+        );
     }
 
     # Remove "src" from the file path
@@ -866,8 +895,10 @@ sub perform_add_command
 
     if (! -e $filename)
     {
-        throw $error_class
-            -text => "File \"$filename\" does not exist";
+        $error_class->throw({
+                text => "File \"$filename\" does not exist"
+            }
+        );
     }
 
     require Contents;
@@ -889,25 +920,33 @@ sub perform_add_command
         }
         if (!defined($next_section))
         {
-            throw $error_class
-                -text => ("Could not find the relevant section in the lecture's"
-                . " table of contents"
-                );                
+            $error_class->throw(
+                {
+                    text => ("Could not find the relevant section in "
+                        . "the lecture's table of contents"
+                    )
+                }
+            );
         }
         $current_section = $next_section;
     }
     my $last_component = $file_path->[$#$file_path];
     if ($last_component !~ /\.wml$/)
     {
-        throw $error_class
-            -text => "The Filename \"$last_component\" is not a slide.";
+        $error_class->throw({
+                text => "The Filename \"$last_component\" is not a slide."
+            }
+        );
     }
     $last_component =~ s/\.wml$//;
     if ( (grep { $_->{'url'} eq $last_component } @{$current_section->{'subs'}})
        || (grep { $_ eq $last_component } @{$current_section->{'images'}}))
     {
-        throw $error_class
-            -text => "The File already exists in the lecture.";
+        $error_class->throw(
+            {
+                text => "The File already exists in the lecture.",
+            }
+        );
     }
     my $is_dir = (-d $filename);
     my $title = "My Title";
