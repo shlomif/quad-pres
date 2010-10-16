@@ -1,10 +1,27 @@
 package Shlomif::Quad::Pres::Exception;
 
-use vars qw(@ISA);
+use strict;
+use warnings;
 
-use Error;
+use base 'Shlomif::Gamla::Object';
 
-@ISA=qw(Error);
+sub throw
+{
+    my $class = shift;
+    my $args = shift;
+
+    my $exception = $class->new();
+    $exception->{'text'} = $args->{text};
+
+    die $exception;
+}
+
+sub text
+{
+    my $self = shift;
+
+    return $self->{'text'};
+}
 
 package Shlomif::Quad::Pres::Exception::RenderFile;
 

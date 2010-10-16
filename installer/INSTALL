@@ -25,7 +25,6 @@ RPM of the program. You can then install it by using "rpm -U".
 
 * The Following Perl 5 CPAN Modules:
     - Config::IniFiles
-    - Error
     - MIME::Types
     - HTML::Hard::Disk
 
