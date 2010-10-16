@@ -114,6 +114,7 @@ sub render_to_all_in_one
         else
         {
             $text =~ s{<link rel="(?:top|next|first|last)".*?/>}{}gms;
+            $text =~ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wonderful ad code. -->\E}{}ms;
         }
         $is_first = 0;
 
