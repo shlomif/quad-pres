@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use lib '/home/shlomi/apps/test/quadpres/share/quad-pres/perl5/';
+use lib "$ENV{HOME}/apps/quadpres/share/quad-pres/perl5/";
 
 use Shlomif::Quad::Pres;
 use Shlomif::Quad::Pres::FS;
