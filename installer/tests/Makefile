@@ -11,7 +11,7 @@ bash-tests: $(BASH_TESTS_TARGETS)
 
 perl-tests: perl-tests-t
 
-check: perl-tests bash-tests 
+check: perl-tests bash-tests
 
 TEST_VERBOSE = 0
 TEST_FILES = t/*.t
