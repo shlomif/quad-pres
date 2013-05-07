@@ -542,13 +542,7 @@ sub _render_all_contents_traverse_callback
                 mkdir($dir_name);
             }
 
-            open I, "<template.html.wml";
-            open O, (">" . $src_filename);
-            binmode(I);
-            binmode(O);
-            print O join("", <I>);
-            close(O);
-            close(I);
+            io->file("template.html.wml") > io->file($src_filename);
         }
 
         {
