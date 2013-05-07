@@ -13,14 +13,14 @@ use parent (qw(Shlomif::Gamla::Object));
 
 # @ISA=qw(Shlomif::Gamla::Object);
 
-use English;
-use Pod::Usage;
-use Cwd;
+use English qw( -no_match_vars );
+use Pod::Usage (qw( pod2usage ));
+use Cwd (qw( getcwd ));
 use Data::Dumper;
-use File::Copy;
+use File::Copy (qw( copy ));
 use File::Path ();
-use File::Basename;
-use Carp;
+use File::Basename ( qw( dirname) );
+use Carp ();
 use File::Spec;
 use HTML::Links::Localize;
 use File::Glob ':glob';
@@ -743,7 +743,7 @@ sub perform_upload_command
 
     if (!defined($util))
     {
-        confess "The upload utility was not specified in the quadpres.ini file. Aborting.";
+        Carp::confess( "The upload utility was not specified in the quadpres.ini file. Aborting." );
     }
 
     my $dest_dir = $cfg->get_server_dest_dir();
@@ -788,7 +788,7 @@ sub perform_upload_command
     }
     else
     {
-        confess "The upload utility is unrecognized by Quad Pres.";
+        Carp::confess( "The upload utility is unrecognized by Quad Pres." );
     }
 
     print (join(" ", @command), "\n");
