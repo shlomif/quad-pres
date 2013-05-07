@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use autodie;
+
 use File::Find;
 
 my @dirs;
@@ -23,18 +25,19 @@ sub wanted
 
 find({ 'wanted' => \&wanted, 'no_chdir' => 1, }, ".");
 
-foreach my $dir (@dirs)
+foreach my $dir_path (@dirs)
 {
     my (%sub_dirs, %modules, %preproc_modules);
-    opendir DIR, $dir;
-    while (my $file = readdir(DIR))
+
+    my $dh;
+    opendir $dh, $dir_path;
+    my @entries = File::Spec->no_upwards(readdir ($dh));
+    closedir($dh);
+
+    foreach my $file (@entries)
     {
         # Skip hidden files
-        if (substr($file, 0, 1) eq ".")
-        {
-            next;
-        }
-        if (-d "$dir/$file")
+        if (-d "$dir_path/$file")
         {
             $sub_dirs{$file} = 1;
         }
@@ -57,8 +60,8 @@ foreach my $dir (@dirs)
             )
         );
 
-    open O, ">$dir/Makefile.am";
-    print O <<'EOF';
+    open my $o, ">$dir_path/Makefile.am";
+    print {$o} <<'EOF';
 # This .am file was generated using perl5/Shlomif/prepare_automake.pl
 # Do not edit directly!!!
 
@@ -69,32 +72,33 @@ EOF
 
     if (scalar(keys(%sub_dirs)) > 0)
     {
-        print O "SUBDIRS = " . join(" ", sort { $a cmp $b } keys(%sub_dirs)) . "\n\n";
+        print {$o} "SUBDIRS = " . join(" ", sort { $a cmp $b } keys(%sub_dirs)) . "\n\n";
     }
     if (scalar(keys(%modules)) + scalar(keys(%preproc_modules)) > 0)
     {
-        print O "thesemodulesdir=\$(modulesdir)/Shlomif/$dir\n\n";
+        print {$o} "thesemodulesdir=\$(modulesdir)/Shlomif/$dir_path\n\n";
 
-        print O "MODULES = " . join(" ", map { "$_.pm" } sort { $a cmp $b } keys(%modules)) . "\n";
+        print {$o} "MODULES = " . join(" ", map { "$_.pm" } sort { $a cmp $b } keys(%modules)) . "\n";
 
-        print O "PREPROCMODULES = " . join(" ", map { "$_.pm" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
+        print {$o} "PREPROCMODULES = " . join(" ", map { "$_.pm" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
 
-        print O "PREPROCMODULES_SRCS = " . join(" ", map { "$_.pm.pl" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
+        print {$o} "PREPROCMODULES_SRCS = " . join(" ", map { "$_.pm.pl" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
 
-        print O "\n\n";
+        print {$o} "\n\n";
 
-        print O "EXTRA_DIST = \$(MODULES) \$(PREPROCMODULES_SRCS)\n\n";
+        print {$o} "EXTRA_DIST = \$(MODULES) \$(PREPROCMODULES_SRCS)\n\n";
 
-        print O "thesemodules_DATA = \$(MODULES) \$(PREPROCMODULES)\n\n";
+        print {$o} "thesemodules_DATA = \$(MODULES) \$(PREPROCMODULES)\n\n";
 
         foreach my $m (keys(%preproc_modules))
         {
             my $target = "$m.pm";
             my $src = "$target.pl";
 
-            print O "${target}: $src\n";
-            print O "\tcat ${src} | sed 's!{QP_PKG_DATA_DIR}!\$(pkgdatadir)!g' > ${target}\n\n";
+            print {$o} "${target}: $src\n";
+            print {$o} "\tcat ${src} | sed 's!{QP_PKG_DATA_DIR}!\$(pkgdatadir)!g' > ${target}\n\n";
         }
     }
-    close(O);
+
+    close($o);
 }
