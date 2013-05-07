@@ -255,9 +255,7 @@ sub perform_setup_command
         );
     }
 
-    open INI, ">$src_dir_name/quadpres.ini";
-
-    print INI <<"EOF" ;
+    io->file("$src_dir_name/quadpres.ini")->print( <<"EOF" );
 [quadpres]
 
 ; The destination direcory in which to place the rendered files.
@@ -291,8 +289,6 @@ upload_path=$args{upload_path}
 dest_dir=./hard-disk-html/
 EOF
     ;
-
-    close INI;
 
     io->file("$src_dir_name/.wmlrc")->print(
         "-DROOT~src --passoption=2,-X3074 -DTHEME=shlomif-text\n"
