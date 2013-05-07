@@ -25,7 +25,7 @@ use File::Spec;
 use HTML::Links::Localize;
 use File::Glob ':glob';
 
-# use IO::All;
+use IO::All;
 
 use Shlomif::Quad::Pres::Path;
 use Shlomif::Quad::Pres::Exception;
@@ -308,11 +308,9 @@ EOF
 
     close INI;
 
-    open WMLRC, ">$src_dir_name/.wmlrc";
-
-    print WMLRC "-DROOT~src --passoption=2,-X3074 -DTHEME=shlomif-text\n";
-
-    close WMLRC;
+    io->file("$src_dir_name/.wmlrc")->print(
+        "-DROOT~src --passoption=2,-X3074 -DTHEME=shlomif-text\n"
+    );
 
     open O, ">$src_dir_name/Contents.pm";
 
