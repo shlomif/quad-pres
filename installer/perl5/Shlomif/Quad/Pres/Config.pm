@@ -72,7 +72,7 @@ sub _get_tt_val
 
     if (!defined($template))
     {
-        return undef;
+        return;
     }
 
     my $output = "";
