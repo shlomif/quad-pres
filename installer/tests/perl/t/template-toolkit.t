@@ -50,15 +50,15 @@ sub perform_test
 
     my $ini_fn = "$test_dir/quadpres.ini";
     my @lines = io->file($ini_fn)->getlines();
-    
-    @lines = 
+
+    @lines =
     (
-        map 
-        { 
+        map
+        {
             /\Aupload_path=/
                 ? qq{tt_upload_path=[% ENV.mypath %]\n}
                 : $_
-        } 
+        }
         @lines
     );
 

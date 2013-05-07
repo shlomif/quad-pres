@@ -49,13 +49,13 @@ foreach my $dir (@dirs)
         }
     }
     closedir(DIR);
-    %modules = 
-        (map { $_ => $modules{$_} } 
-            (grep { !exists($preproc_modules{$_}) } 
+    %modules =
+        (map { $_ => $modules{$_} }
+            (grep { !exists($preproc_modules{$_}) }
                 keys(%modules)
             )
         );
-        
+
     open O, ">$dir/Makefile.am";
     print O <<'EOF';
 # This .am file was generated using perl5/Shlomif/prepare_automake.pl
@@ -73,15 +73,15 @@ EOF
     if (scalar(keys(%modules)) + scalar(keys(%preproc_modules)) > 0)
     {
         print O "thesemodulesdir=\$(modulesdir)/Shlomif/$dir\n\n";
-        
+
         print O "MODULES = " . join(" ", map { "$_.pm" } sort { $a cmp $b } keys(%modules)) . "\n";
-        
+
         print O "PREPROCMODULES = " . join(" ", map { "$_.pm" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
-        
+
         print O "PREPROCMODULES_SRCS = " . join(" ", map { "$_.pm.pl" } sort { $a cmp $b } keys(%preproc_modules)) . "\n";
 
         print O "\n\n";
-        
+
         print O "EXTRA_DIST = \$(MODULES) \$(PREPROCMODULES_SRCS)\n\n";
 
         print O "thesemodules_DATA = \$(MODULES) \$(PREPROCMODULES)\n\n";
@@ -90,7 +90,7 @@ EOF
         {
             my $target = "$m.pm";
             my $src = "$target.pl";
-                        
+
             print O "${target}: $src\n";
             print O "\tcat ${src} | sed 's!{QP_PKG_DATA_DIR}!\$(pkgdatadir)!g' > ${target}\n\n";
         }

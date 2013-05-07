@@ -26,9 +26,9 @@ sub _initialize
     $self->{'getopt'} = Getopt::Long::Parser->new();
 
     my $args = shift;
-    
+
     $self->{'args'} = $args;
-    
+
     return 0;
 }
 

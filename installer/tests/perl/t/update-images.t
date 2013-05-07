@@ -59,7 +59,7 @@ sub perform_test
         !system("cd $test_dir && quadp render -a"),
         "quadp render -a",
     );
-    
+
     # TEST
     like(
         scalar(io->file("$test_dir/rendered/test.js")->slurp),

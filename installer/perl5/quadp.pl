@@ -4,7 +4,7 @@ use strict;
 
 use Shlomif::Quad::Pres::CmdLine;
 
-my $cmd_line = 
+my $cmd_line =
     Shlomif::Quad::Pres::CmdLine->new(
         'cmd_line' => [@ARGV],
         );
@@ -53,7 +53,7 @@ Prepare a source distribution of the presentation.
 
 Upload the rendered slides to a remote server.
 
-=back 
+=back
 
 =head1 COMMANDS
 
@@ -77,7 +77,7 @@ the rendered slides will be placed in.
 =item --setgid-group=[group]
 
 Specifies a group ID to make the root directory (and subsequent direcories)
-SGID to. 
+SGID to.
 
 =item --upload-path=[path]
 
@@ -112,7 +112,7 @@ The synopsis is as follows:
 
 B<quadp> B<pack>
 
-This creates an archive for the entire source distribution under 
+This creates an archive for the entire source distribution under
 C<rendered/src.tar.gz> or the key specified in C<quadpres/src_archive>
 in the configuration in the command line.
 
@@ -188,12 +188,12 @@ Here's an example:
     };
 
 The first section would have the relative URL C<first/> and the first
-subpage the relativel URL C<first/page1.html>. There is an image 
+subpage the relativel URL C<first/page1.html>. There is an image
 C<first/hello.png>
 
 =head1 Format of the template.wml file
 
-The template.wml file is the master Web Meta Language template file for the 
+The template.wml file is the master Web Meta Language template file for the
 slides. Within it one can put definitions of macros that are used in several
 slides of the lecture. The file contains one statement:
 
@@ -227,7 +227,7 @@ Set to either C<ltr> or C<rtl>. Default is C<ltr>
 
 =item qp_doctype_strictnesss
 
-Whether the file is XHTML 1.0 Strict or XHTML 1.0 Transitional. Set to 
+Whether the file is XHTML 1.0 Strict or XHTML 1.0 Transitional. Set to
 either C<strict> or something else. Default is C<strict>
 
 =back
@@ -237,7 +237,7 @@ Here's an example for a C<template.wml> file that sets some parameters:
     #include "wml_helpers.wml"
     <default-var "qp_lang" "fr-FR" />
     <default-var "qp_charset" "utf-8" />
-    
+
     #include "quadpres_main.wml"
 
 The C<$translate_control_text> is a reference to a Perl subroutine that
@@ -247,31 +247,31 @@ should return the translated value.
 
 =head1 Format of an Individual Page
 
-The first statement in a page should be 
+The first statement in a page should be
 
     #include 'template.wml'
 
-Afterwards one can put the HTML markup placed inside the slide.. Use the 
-C<E<lt>qpcontents /E<gt>> tag to denote a table of contents for inside this 
+Afterwards one can put the HTML markup placed inside the slide.. Use the
+C<E<lt>qpcontents /E<gt>> tag to denote a table of contents for inside this
 sub-section onwards.
 
-Beforehand this initial statement one can put settings for the page in a 
+Beforehand this initial statement one can put settings for the page in a
 similar fashion described in the section "Format of the template.wml file".
 
 =head1 Choosing a Theme
 
 Quad-Pres ships with various themes that can modify its look and feel.
-To set a theme for the lecture, edit the C<.wmlrc> file in the 
+To set a theme for the lecture, edit the C<.wmlrc> file in the
 presentation's directory and change the C<-DTHEME=shlomif-text> directive
 to define some other theme. Look in the Quad-Pres installation directory
-under C<share/quad-pres/wml/themes> for a list of themes. (each theme is 
+under C<share/quad-pres/wml/themes> for a list of themes. (each theme is
 a directory there).
 
 More themes can be created on your own based on the examples there.
 
 =head1 quadpres.ini
 
-The file C<quadpres.ini> is a standard INI file. However if there is a 
+The file C<quadpres.ini> is a standard INI file. However if there is a
 configuration option that starts with the prefix C<tt_> it is interpreted
 as a small Template Toolkit template, whose value overrides that of the
 normal non-C<tt_>'ed value.
@@ -279,7 +279,7 @@ normal non-C<tt_>'ed value.
 =head2 Pre-defined Template Variables
 
 Currently only the C<ENV> variable is defined as a hash containing the
-environment variables. 
+environment variables.
 
 =head1 SEE ALSO
 

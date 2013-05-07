@@ -58,7 +58,7 @@ my $contents = Contents::get_contents();
 my ($document_name, $script_name);
 
 if (exists($ENV{'SCRIPT_NAME'}))
-{    
+{
     $script_name = $ENV{'SCRIPT_NAME'};
     $document_name = $ENV{'REQUEST_URI'};
     $document_name = substr($document_name, length($script_name));
@@ -98,7 +98,7 @@ while (scalar(@cgi_path))
 my $error_too_deep = sub {
     print $q->header();
     print "<html><head><title>Too deep a path</title></head><body><p>Too deep a path</p></body></html>";
-    exit();    
+    exit();
 };
 
 my $type = "branch";
@@ -153,7 +153,7 @@ my $is_dir = exists($branch->{'subs'});
 my $is_not_root_dir = ($is_dir && (scalar(@real_path) > 0));
 my $should_end_in_slash = $is_not_root_dir && ($type ne "image");
 # If it contains more than one slash
-if (($document_name =~ /\/\/$/) || 
+if (($document_name =~ /\/\/$/) ||
     # Or it is a directory and does not contain a slash
     ($should_end_in_slash && ($document_name !~ /\/$/)) ||
     ((!$should_end_in_slash) && ($document_name =~ /\/$/))
@@ -161,7 +161,7 @@ if (($document_name =~ /\/\/$/) ||
 {
     $redirect = 1;
 }
-    
+
 
 if ($redirect)
 {
@@ -182,8 +182,8 @@ if ($type eq "image")
     my $mimetypes = MIME::Types->new();
     my MIME::Type $type = $mimetypes->mimeTypeOf($real_path[$#real_path]);
     print $q->header(-type => $type->type());
-    
-    if ((! -e "$dest_dir/$file_path") || 
+
+    if ((! -e "$dest_dir/$file_path") ||
         (&is_newer("./src/$file_path", "$dest_dir/$file_path"))
         )
     {
@@ -220,14 +220,14 @@ if ($type eq "image")
 else
 {
     my $file_path = join("/", @real_path);
-    
+
     print $q->header();
     if ($is_dir)
     {
         $file_path .= "/index.html";
     }
     my $render_file_cmd = "$scripts_dir/render-file.pl \"$file_path\"";
-    if ((! -e "$dest_dir/$file_path") || 
+    if ((! -e "$dest_dir/$file_path") ||
         (&is_newer("./src/$file_path.wml", "$dest_dir/$file_path")) ||
         (&is_newer("template.wml", "$dest_dir/$file_path")) ||
         (&is_newer("Contents.pm", "$dest_dir/$file_path"))

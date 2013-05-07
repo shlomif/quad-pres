@@ -8,7 +8,7 @@ use Test::More tests => 2;
 use Shlomif::Quad::Pres::Getopt;
 
 my @args = ("-w", "--option", "hello", "yes", "there", "-t");
-my $parser = 
+my $parser =
     Shlomif::Quad::Pres::Getopt->new(
         \@args,
     );

@@ -28,9 +28,9 @@ sub initialize
 
     $self->{'base_path'} = $base_path;
 
-    my $cfg = 
-        Config::IniFiles->new( 
-            -file => "$base_path/quadpres.ini" 
+    my $cfg =
+        Config::IniFiles->new(
+            -file => "$base_path/quadpres.ini"
         );
 
     if (!defined($cfg))
@@ -39,7 +39,7 @@ sub initialize
     }
 
     $self->{'cfg'} = $cfg;
-    
+
     return 0;
 }
 

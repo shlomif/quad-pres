@@ -69,11 +69,11 @@ sub perform_test
     {
         my $fn = "template.wml";
         io->file($fn)->print(
-            qq{<set-var qp_avoid_credit="yes" />\n\n}, 
+            qq{<set-var qp_avoid_credit="yes" />\n\n},
             io->file($fn)->getlines(),
         );
     }
-    
+
     # TEST:$n++;
     ok (!system("quadp", "render", "-a"),
         "quadp render -a ran successfully for theme '$theme'."

@@ -54,13 +54,13 @@ sub set_lang_settings
             $total_charset = $charset;
         }
 
-        return "#include \"wml_helpers.wml\"\n" . 
-                ($lang ? 
-                    "<default-var \"qp_lang\" \"$lang\" />\n" : 
+        return "#include \"wml_helpers.wml\"\n" .
+                ($lang ?
+                    "<default-var \"qp_lang\" \"$lang\" />\n" :
                     ""
                 ) .
-                ($charset ? 
-                    "<default-var \"qp_charset\" \"$charset\" />\n" : 
+                ($charset ?
+                    "<default-var \"qp_charset\" \"$charset\" />\n" :
                     ""
                 );
     };
@@ -68,7 +68,7 @@ sub set_lang_settings
     if ($global_lang || $global_charset)
     {
         $add_header->(
-            "$dir/template.wml", 
+            "$dir/template.wml",
             $get_header->($global_lang, $global_charset),
             );
     }
@@ -76,9 +76,9 @@ sub set_lang_settings
     if ($local_lang || $local_charset)
     {
         $add_header->(
-            "$dir/src/index.html.wml", 
+            "$dir/src/index.html.wml",
             $get_header->($local_lang, $local_charset),
-            );    
+            );
     }
 
     return ($total_charset, $total_lang);
@@ -167,7 +167,7 @@ EOF
         0,
         "File for '$test_idx' has proper language encodings",
     );
-    
+
     chdir($orig_dir);
 }
 
