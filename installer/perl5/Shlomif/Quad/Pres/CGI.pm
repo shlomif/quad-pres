@@ -34,7 +34,7 @@ sub is_newer
 {
     my $file1 = shift;
     my $file2 = shift;
-    return (! &is_older($file1, $file2));
+    return (! is_older($file1, $file2));
 }
 
 sub run
@@ -184,7 +184,7 @@ if ($type eq "image")
     print $q->header(-type => $type->type());
 
     if ((! -e "$dest_dir/$file_path") ||
-        (&is_newer("./src/$file_path", "$dest_dir/$file_path"))
+        (is_newer("./src/$file_path", "$dest_dir/$file_path"))
         )
     {
         my $dir_path = "";
@@ -228,9 +228,9 @@ else
     }
     my $render_file_cmd = "$scripts_dir/render-file.pl \"$file_path\"";
     if ((! -e "$dest_dir/$file_path") ||
-        (&is_newer("./src/$file_path.wml", "$dest_dir/$file_path")) ||
-        (&is_newer("template.wml", "$dest_dir/$file_path")) ||
-        (&is_newer("Contents.pm", "$dest_dir/$file_path"))
+        (is_newer("./src/$file_path.wml", "$dest_dir/$file_path")) ||
+        (is_newer("template.wml", "$dest_dir/$file_path")) ||
+        (is_newer("Contents.pm", "$dest_dir/$file_path"))
         )
     {
         my $dir_path = "";
