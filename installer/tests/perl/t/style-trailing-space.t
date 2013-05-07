@@ -25,7 +25,7 @@ else
     my $rule = $subrule->or(
         $subrule->new->directory->name(qr/blib/)->prune->discard,
         $subrule->new->file()->name(qr/(?:xslt|t|rng|dtd|pm|xml|PL|pl)\z/)
-    )->start(".");
+    )->start("../..");
 
     while ( my $path = $rule->match() )
     {
