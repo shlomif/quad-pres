@@ -257,20 +257,6 @@ sub perform_setup_command
 
     open INI, ">$src_dir_name/quadpres.ini";
 
-    my $print_section = sub {
-        my $section = shift;
-        my $which_args = shift;
-
-        print INI "[$section]\n\n";
-
-        foreach my $arg (@$which_args)
-        {
-            print INI "$arg=" . $args{$arg}. "\n\n";
-        }
-    };
-
-    my $src_dir_path = get_dir_path($src_dir_name);
-
     print INI <<"EOF" ;
 [quadpres]
 
