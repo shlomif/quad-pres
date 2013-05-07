@@ -3,6 +3,8 @@ package Shlomif::Quad::Pres::WriteContents;
 use strict;
 use warnings;
 
+use autodie;
+
 use Moose;
 
 has '_contents' => (isa => "HashRef", is => "ro", init_arg => "contents");
@@ -59,14 +61,7 @@ sub update_contents
     my ($self) = @_;
 
     open my $contents_fh, ">", "Contents.pm";
-    # open Contents, ">&STDOUT";
     print {$contents_fh} "package Contents;\n\nuse strict;\n\nmy \$contents = \n";
-
-    # my $d = Data::Dumper->new([$contents], ["\$contents"]);
-
-    # $d->Indent(1);
-    # $d->Sortkeys(\&output_contents_sort_keys);
-    # print Contents $d->Dump();
 
     print {$contents_fh} $self->dump_contents();
 
