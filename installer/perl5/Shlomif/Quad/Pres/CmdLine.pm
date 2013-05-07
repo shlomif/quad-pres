@@ -3,13 +3,15 @@ package Shlomif::Quad::Pres::CmdLine;
 use strict;
 use warnings;
 
+# use autodie;
+
 use Scalar::Util qw(blessed);
 
-use Shlomif::Gamla::Object;
+use parent (qw(Shlomif::Gamla::Object));
 
-use vars qw(@ISA);
+# use vars qw(@ISA);
 
-@ISA=qw(Shlomif::Gamla::Object);
+# @ISA=qw(Shlomif::Gamla::Object);
 
 use English;
 use Pod::Usage;
@@ -22,6 +24,8 @@ use Carp;
 use File::Spec;
 use HTML::Links::Localize;
 use File::Glob ':glob';
+
+# use IO::All;
 
 use Shlomif::Quad::Pres::Path;
 use Shlomif::Quad::Pres::Exception;

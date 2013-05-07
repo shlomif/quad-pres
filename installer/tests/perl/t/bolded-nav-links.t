@@ -49,6 +49,9 @@ sub perform_test
         "quadp render -a",
     );
 
+    # For debug
+    # system("( echo 'Foobar'; ls -lR $test_dir ; for I in \$( find $test_dir -type f ) ; do echo \"===\$I===\" ; echo ; cat \$I ; done) 1>&2");
+
     # TEST
     like(
         scalar(io->file("$test_dir/rendered/finale/books.html")->slurp),
