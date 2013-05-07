@@ -2,7 +2,7 @@ import os
 
 env = Environment()
 
-# TODO : Implement a user-specified perl path 
+# TODO : Implement a user-specified perl path
 
 # What to do:
 # 1. Read the option.
@@ -11,7 +11,7 @@ env = Environment()
 # 4. If not empty - assign it as the Perl interpreter.
 # 5. If the setting is not the same as PERL_PATH, or if the file PERL_PATH.txt
 #    does not exist change the setting in the file PERL_PATH.txt.
-# 6. Make sure all the scripts that require PERL_PATH depend upon 
+# 6. Make sure all the scripts that require PERL_PATH depend upon
 #    the file.
 
 if (ARGUMENTS.has_key('PATH_PERL') or not os.access('PATH_PERL.setting', os.F_OK)):
@@ -26,7 +26,7 @@ if (ARGUMENTS.has_key('PATH_PERL') or not os.access('PATH_PERL.setting', os.F_OK
         f = open('PATH_PERL.setting', 'wb')
         f.write(path_perl)
         f.close()
-       
+
 config_file = 'quad-pres.conf'
 opts = Options(config_file)
 perl_path = env.WhereIs("perl");
@@ -34,7 +34,7 @@ perl_path = env.WhereIs("perl");
 opts.Add(PathOption('PREFIX',
     'Directory to install under (Default: /usr/local)',
     '/usr/local'))
-opts.Add('DESTDIR', 
+opts.Add('DESTDIR',
         'Prefix to append to the installation directory (without affecting the paths in the files) - Default: empty',
     '')
 opts.Add(PathOption('MANDIR',
@@ -139,7 +139,7 @@ def plain_install(file, dist_dir, target_dir):
     destdir_install(target_dir + "/" + file_home,
         env.File(path_comps[-1], dist_dir + "/" + file_home)
         )
-    
+
 for module in perl5_modules:
     plain_install(module, "perl5", modulesdir)
 
@@ -152,7 +152,7 @@ wml_files = [
 
 for file in wml_files:
     plain_install(file, "wml", wml_files_dir);
- 
+
 template_files = [
 'style.css',
 'template.html.wml',
