@@ -312,9 +312,7 @@ EOF
         "-DROOT~src --passoption=2,-X3074 -DTHEME=shlomif-text\n"
     );
 
-    open O, ">$src_dir_name/Contents.pm";
-
-    print O
+    io->file("$src_dir_name/Contents.pm")->print(
         ("package Contents;\n\n",
         "use strict;\n\n",
         "my \$contents =\n",
@@ -334,11 +332,10 @@ EOF
         "}\n",
         "\n",
         "1;\n"
-        );
+        )
+    );
 
-    close(O);
-
-     "\n\n#include \"quadpres_main.wml\"\n\n" >
+    "\n\n#include \"quadpres_main.wml\"\n\n" >
         io->file("$src_dir_name/template.wml");
 
     my $modules_dir = $self->path_man()->get_modules_dir();
