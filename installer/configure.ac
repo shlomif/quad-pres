@@ -17,12 +17,12 @@ else
 fi
 
 AC_OUTPUT([Makefile perl5/Makefile
-           perl5/Shlomif/Makefile perl5/Shlomif/Arad/Makefile 
-           perl5/Shlomif/Quad/Makefile perl5/Shlomif/Quad/Pres/Makefile 
-           perl5/Shlomif/Gamla/Makefile 
-           wml/Makefile wml/themes/Makefile wml/themes/shlomif-text/Makefile 
+           perl5/Shlomif/Makefile perl5/Shlomif/Arad/Makefile
+           perl5/Shlomif/Quad/Makefile perl5/Shlomif/Quad/Pres/Makefile
+           perl5/Shlomif/Gamla/Makefile
+           wml/Makefile wml/themes/Makefile wml/themes/shlomif-text/Makefile
            wml/themes/alon-altman-text/Makefile
-           template/Makefile 
+           template/Makefile
            quad-pres.spec
            ])
 
