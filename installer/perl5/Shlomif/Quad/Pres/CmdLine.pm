@@ -338,9 +338,8 @@ EOF
 
     close(O);
 
-    open TEMPLATE, ">$src_dir_name/template.wml";
-    print TEMPLATE "\n\n#include \"quadpres_main.wml\"\n\n";
-    close TEMPLATE;
+     "\n\n#include \"quadpres_main.wml\"\n\n" >
+        io->file("$src_dir_name/template.wml");
 
     my $modules_dir = $self->path_man()->get_modules_dir();
 
