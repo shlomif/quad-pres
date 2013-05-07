@@ -373,9 +373,7 @@ EOF
     # Regular named files may be present somewhere inside the ./src
     # directory for all we know.
     mkdir ("$src_dir_name/.quadpres");
-    open O, ">$src_dir_name/.quadpres/is_root";
-    print O "";
-    close(O);
+    io->file("$src_dir_name/.quadpres/is_root")->print('');
 
     print "Successfully Created $src_dir_name\n";
 
