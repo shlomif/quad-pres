@@ -346,8 +346,7 @@ EOF
 
     # Prepare the serve.pl file that can be used to serve it using a CGI;
     my $serve_filename = "$src_dir_name/serve.pl";
-    open SERVE, ">".$serve_filename;
-    print SERVE <<"EOF";
+    io->file($serve_filename)->print( <<"EOF" );
 #!/usr/bin/perl -w -I$modules_dir
 
 use strict;
@@ -359,7 +358,6 @@ my \$cgi = Shlomif::Quad::Pres::CGI->new();
 
 EOF
     ;
-    close SERVE;
     chmod 0755, $serve_filename;
 
     mkdir("$src_dir_name/src");
