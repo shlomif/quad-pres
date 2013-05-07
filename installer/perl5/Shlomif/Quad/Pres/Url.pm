@@ -14,7 +14,7 @@ sub initialize
     my $self = shift;
 
     my $url = shift;
-    $self->{'url'} = ((ref($url) eq "ARRAY") ? 
+    $self->{'url'} = ((ref($url) eq "ARRAY") ?
         [ @$url ] :
         [ split(/\//, $url) ])
         ;
@@ -122,7 +122,7 @@ sub _get_url_worker
     else
     {
         my @components = ((map { ".." } @this_url[1..$#this_url]), @other_url);
-        $ret .= ($prefix . join("/", @components)); 
+        $ret .= ($prefix . join("/", @components));
         if (($to->is_dir()) && ($base->{'mode'} ne "harddisk") && scalar(@components))
         {
             $ret .= "/";

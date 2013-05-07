@@ -24,17 +24,17 @@ sub initialize
     my $self = shift;
 
     $self->{'contents'} = shift;
-    
+
     my %args = (@_);
-    
+
     my $doc_id = $args{'doc_id'};
-    
+
     $self->{'mode'} = ($args{'mode'} || "server");
 
     $self->{'stage_idx'} = ($args{'stage_idx'} || 0);
-    
+
     $self->get_doc_id($doc_id);
-    
+
     $self->{'doc_id_slash_terminated'} = (($doc_id =~ /\/$/) ? 1 : 0);
 
     return 0;
@@ -51,7 +51,7 @@ sub get_doc_id
     $self->get_coords($doc_id_parsed);
 
     my ($b, $i, @coords);
-    
+
     @coords = @{$self->{'coords'}};
     $b = $self->{'contents'};
 
@@ -59,7 +59,7 @@ sub get_doc_id
     {
         $b = $b->{'subs'}->[$coords[$i]];
     }
-    
+
     $self->{'doc_id'} = Shlomif::Quad::Pres::Url->new(
         $doc_id_parsed,
         exists($b->{'subs'}),
@@ -77,7 +77,7 @@ sub get_coords
         my %locs;
         my $traverse;
 
-        $traverse = 
+        $traverse =
         sub {
             my $coords = shift;
             my $branch = shift;
@@ -149,7 +149,7 @@ sub get_document_base_text
         close(I);
         return $text;
     }
-    else 
+    else
     {
         die "Could not find the file \"" . $document_id . "\"";
     }
@@ -255,7 +255,7 @@ sub get_most_advanced_leaf
     # Get a reference to the contents HDS (= hierarchial data structure)
     my $branch = $self->{'contents'};
 
-    # Get to the current branch by advancing to the offset 
+    # Get to the current branch by advancing to the offset
     foreach my $c (@coords)
     {
         # Advance to the next level which is at index $c
@@ -272,7 +272,7 @@ sub get_most_advanced_leaf
         # Recurse into the sub-branch
         $branch = $branch->{'subs'}->[$index];
     }
-    
+
     return \@coords;
 }
 
@@ -285,12 +285,12 @@ sub get_prev_url
     if (scalar(@coords) == 0)
     {
         return undef;
-    }    
+    }
     elsif ($coords[$#coords] > 0)
     {
         # Get the previous leaf
-        my @previous_leaf = 
-        ( 
+        my @previous_leaf =
+        (
                 @coords[0 .. ($#coords - 1) ] ,
                 $coords[$#coords]-1
             );
@@ -326,7 +326,7 @@ sub get_up_url
         return $self->get_url_by_coords(
             [ @coords[0..($#coords-1)] ]
             );
-    }    
+    }
 }
 
 sub get_relative_url__depcracated
@@ -336,7 +336,7 @@ sub get_relative_url__depcracated
     my $slash_terminated = shift;
 
     my $ret;
-    
+
     while(
         scalar(@this_url) &&
         scalar(@other_url) &&
@@ -351,11 +351,11 @@ sub get_relative_url__depcracated
 
     if ($slash_terminated)
     {
-        $ret .= join("/", (map { ".." } @this_url), @other_url); 
+        $ret .= join("/", (map { ".." } @this_url), @other_url);
     }
     else
     {
-        $ret .= ("./" . join("/", (map { ".." } @this_url[1..$#this_url]), @other_url)); 
+        $ret .= ("./" . join("/", (map { ".." } @this_url[1..$#this_url]), @other_url));
     }
 
     return $ret;
@@ -371,7 +371,7 @@ sub get_control_url
     {
         return undef;
     }
-    
+
     my $this_url = $self->{'doc_id'};
 
     return
@@ -395,11 +395,11 @@ sub get_control_text
 
     if (defined($other_url))
     {
-    
-        $text .= "<a href=\"" . 
+
+        $text .= "<a href=\"" .
                 $self->get_control_url($other_url) .
             "\" class=\"" . $navigation_style_class . "\">";
-    
+
         $text .= $spec->{'caption'};
 
         $text .= "</a>";
@@ -453,7 +453,7 @@ sub get_navigation_bar
                 'caption' => "Next",
             },
         ));
-        
+
 
         $text .= join("</td>\n<td>\n", @controls);
 
@@ -506,7 +506,7 @@ sub get_title
         $indexes_str .= ". ";
     }
 
-    return $indexes_str . $self->get_subject();    
+    return $indexes_str . $self->get_subject();
 }
 
 sub get_header
@@ -528,10 +528,10 @@ sub get_header
                 0,
                 $self->{'mode'}
                 ),
-            $self->{'doc_id_slash_terminated'}    
+            $self->{'doc_id_slash_terminated'}
             ) .
         "\" type=\"text/css\">\n";
-        
+
     $text .= "</head>\n";
     $text .= "<body>\n";
     $text .= $self->get_navigation_bar();
@@ -572,7 +572,7 @@ sub get_contents_helper
     $text .= "<a href=\"" .
         $self->{'doc_id'}->get_relative_url(
             Shlomif::Quad::Pres::Url->new(
-                [@$url], 
+                [@$url],
                 exists($branch->{'subs'}),
                 $self->{'mode'}
             )
@@ -590,7 +590,7 @@ sub get_contents_helper
         foreach my $sb (@{$branch->{'subs'}})
         {
             $text .= $self->get_contents_helper(
-                $sb, 
+                $sb,
                 [@$url, $sb->{'url'}],
                 [ @coords, $index ],
                 );
@@ -620,13 +620,13 @@ sub get_contents
         $b = $b->{'subs'}->[$coords[$i]];
         push @url, $b->{'url'};
     }
-    
+
     if (exists($b->{'subs'}))
     {
         for($i=0;$i<scalar(@{$b->{'subs'}});$i++)
         {
             $text .= $self->get_contents_helper(
-                $b->{'subs'}->[$i], 
+                $b->{'subs'}->[$i],
                 [@url, $b->{'subs'}->[$i]->{'url'}],
                 [ @coords, $i],
                 );
@@ -634,23 +634,23 @@ sub get_contents
     }
 
     return "<ul class=\"$contents_style_class" . "main\">\n" . $text . "</ul>\n";   # The wrapping <ul>'s are
-        # meant to make sure there are no spaces between the various 
+        # meant to make sure there are no spaces between the various
         # lines.
         # It just works.
 }
 
 sub get_menupath_text
 {
-    # We are not using $self, but it may prove useful in the future, so a 
+    # We are not using $self, but it may prove useful in the future, so a
     # stitch in time saves nine. So for the while get_menupath_text is treated
     # as a method function.
-    my $self = shift; 
+    my $self = shift;
 
     my $inside = shift;
 
     # Remove new-lines
     $inside =~ s/\n//g;
-    
+
     # Remove the existing <tt>'s and such.
     $inside =~ s/< *\/? *tt *>//;
 
@@ -658,21 +658,21 @@ sub get_menupath_text
     if (0)
     {
         $inside =~ s/&(amp|lt|gt);/
-            (($1 eq "amp") ? 
-                "&" : 
-                ($1 eq "lt") ? 
-                    "<" : 
+            (($1 eq "amp") ?
+                "&" :
+                ($1 eq "lt") ?
+                    "<" :
                     ">"
             )
                     /ge;
     }
-    
+
     # Split to the menu path components
     my @components = split(/\s*-&gt;\s*/, $inside);
 
     # Wrap the components of the path with the HTML Cascading Style
     # Sheets Magic
-    my @components_rendered = map { 
+    my @components_rendered = map {
         "\n<b class=\"menupathcomponent\">\n" .
         $_ . "\n" .
         "</b>\n"
@@ -685,10 +685,10 @@ sub get_menupath_text
 
     my $final_string = join($separator_string, @components_rendered);
 
-    $final_string = 
-        ("&nbsp;" x 2) .        
-        "<font class=\"menupath\">" . 
-        $final_string . 
+    $final_string =
+        ("&nbsp;" x 2) .
+        "<font class=\"menupath\">" .
+        $final_string .
         "</font>";
 
     return $final_string;
@@ -754,14 +754,14 @@ sub traverse_tree
     my $contents = $self->{'contents'};
 
     my $traverse_helper;
-    $traverse_helper = 
+    $traverse_helper =
         sub {
             my $path_ref = shift;
             my $coords = shift;
             my $branch = shift;
 
             $callback->(
-                'path' => $path_ref, 
+                'path' => $path_ref,
                 'branch' => $branch,
                 'coords' => $coords,
                 );
@@ -775,7 +775,7 @@ sub traverse_tree
                     $traverse_helper->(
                         [ @$path_ref, $sub_branch->{'url'} ],
                         [ @$coords, $new_coord],
-                        $sub_branch,            
+                        $sub_branch,
                         );
                 }
                 continue

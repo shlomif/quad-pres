@@ -51,7 +51,7 @@ sub initialize
     $self->path_man(Shlomif::Quad::Pres::Path->new());
 
     my (%args);
-    
+
     %args = (@_);
 
     $self->_init_cmd_line($args{'cmd_line'});
@@ -151,7 +151,7 @@ sub run
         }
         else
         {
-            print STDERR "$E\n"; 
+            print STDERR "$E\n";
         }
         $ret = -1;
     }
@@ -166,7 +166,7 @@ sub real_run
     my ($help, $man);
 
     my $getopt = $self->getopt();
-    
+
     $getopt->configure('require_order');
     $getopt->getoptions(
         'help|h|?' => \$help,
@@ -182,10 +182,10 @@ sub real_run
     {
         $error_class->throw({text => "Unknown Command \"$command\"!"});
     }
-    
+
     my $callback = $registered_commands{$cmd_aliases{$command}};
-    
-    return $self->$callback();    
+
+    return $self->$callback();
 }
 
 sub get_dir_path
@@ -223,7 +223,7 @@ sub perform_setup_command
 
     my $src_dir_name = $self->_get_cl_param({'error_text' => "setup must be followed by a directory name"});
 
-    my %args = 
+    my %args =
     (
         "server_dest_dir" => undef,
         "setgid_group" => "",
@@ -301,7 +301,7 @@ upload_path=$args{upload_path}
 dest_dir=./hard-disk-html/
 EOF
     ;
-    
+
     close INI;
 
     open WMLRC, ">$src_dir_name/.wmlrc";
@@ -312,8 +312,8 @@ EOF
 
     open O, ">$src_dir_name/Contents.pm";
 
-    print O 
-        ("package Contents;\n\n", 
+    print O
+        ("package Contents;\n\n",
         "use strict;\n\n",
         "my \$contents =\n",
         "{\n",
@@ -359,7 +359,7 @@ EOF
     ;
     close SERVE;
     chmod 0755, $serve_filename;
-    
+
     mkdir("$src_dir_name/src");
 
     my $template_dir = $self->path_man()->get_template_dir();
@@ -426,15 +426,15 @@ sub perform_render_command
             { text => 'render must be followed by filenames or flags' }
         );
     }
-    
+
     my $render_all = 0;
     my $render_hard_disk_html = 0;
-    
+
     $getopt->getoptions(
         'a|all!' => \$render_all,
         'hd|hard-disk!' => \$render_hard_disk_html,
     );
-    
+
     if (! $render_all)
     {
         $error_class->throw(
@@ -452,7 +452,7 @@ sub perform_render_command
     {
         $error_class->throw({text => "Rendering Failed!"});
     }
-    
+
     # $self->run_command(
     #     'command' => "$scripts_dir/Render_all_contents.pl",
     #     'error_text' => "Rendering Failed!",
@@ -476,7 +476,7 @@ sub _convert_to_hardisk
 
     my $hard_disk_dest_dir = $cfg->get_hard_disk_dest_dir();
 
-    my $converter= 
+    my $converter=
         HTML::Links::Localize->new(
             'base_dir' => $default_dest_dir,
             'dest_dir' => $hard_disk_dest_dir,
@@ -496,7 +496,7 @@ sub _render_all_contents_traverse_callback
 {
     my $self = shift;
     my (%arguments) = (@_);
-    
+
     my $path_ref = $arguments{'path'};
     my $branch = $arguments{'branch'};
 
@@ -539,7 +539,7 @@ sub _render_all_contents_traverse_callback
                 $dir_name =~ s/\/*index\.html\.wml$//;
                 mkdir($dir_name);
             }
-            
+
             open I, "<template.html.wml";
             open O, (">" . $src_filename);
             binmode(I);
@@ -553,9 +553,9 @@ sub _render_all_contents_traverse_callback
             my $src_mtime = $self->_get_file_mtime($src_filename);
             my $dest_mtime = $self->_get_file_mtime($filename);
 
-            if ((! -e $filename) || 
-                (grep 
-                    { $_ > $dest_mtime } 
+            if ((! -e $filename) ||
+                (grep
+                    { $_ > $dest_mtime }
                     (@{$self->main_files_mtimes()},$src_mtime)
                 ))
             {
@@ -570,7 +570,7 @@ sub _render_all_contents_traverse_callback
             }
         }
     }
-    
+
 
     if (exists($branch->{'images'}))
     {
@@ -578,7 +578,7 @@ sub _render_all_contents_traverse_callback
         {
             my $filename = $self->dest_dir() . "/" . $p . "/" . $image ;
             my $src_filename = $self->src_dir() . "/" . $p . "/" . $image ;
-            
+
             my $src_mtime = $self->_get_file_mtime($src_filename);
             my $dest_mtime = $self->_get_file_mtime($filename);
 
@@ -609,8 +609,8 @@ sub _render_file
 
     my $local_wml_dir = $ENV{"HOME"}. "/.Quad-Pres/lib/";
 
-    my @local_wml = 
-        $ENV{"QUAD_PRES_NO_HOME_LIB"} 
+    my @local_wml =
+        $ENV{"QUAD_PRES_NO_HOME_LIB"}
             ? ()
             : ("-I", $local_wml_dir)
         ;
@@ -645,9 +645,9 @@ sub _render_file
 =begin Removed
 
         my $cmd = "$scripts_dir/render-file.pl \"$src_filename_modified\" > \"$filename\"\n";
-            
+
         print $cmd, "\n";
-        if (system($cmd) != 0) 
+        if (system($cmd) != 0)
         {
             # Clean-up the file so it will have to be regenerated
             unlink($filename);
@@ -712,9 +712,9 @@ sub _render_all_contents
 
     $self->main_files_mtimes([map { $self->_get_file_mtime($_) } ("Contents.pm", "template.wml")]);
 
-    my $quadpres_obj = 
+    my $quadpres_obj =
         Shlomif::Quad::Pres->new(
-            $contents, 
+            $contents,
             'doc_id' => "/",
             'mode' => "server",
         );
@@ -735,13 +735,13 @@ sub perform_clear_command
             {text => 'clear must be followed by filenames or flags',}
         );
     }
-    
+
     my $clear_all = 0;
-    
+
     $getopt->getoptions(
         'a|all!' => \$clear_all
     );
-   
+
     if (! $clear_all)
     {
         $error_class->throw(
@@ -792,14 +792,14 @@ sub perform_upload_command
     {
         @command =
         (
-            qw(rsync --progress --verbose --rsh=ssh -a), 
+            qw(rsync --progress --verbose --rsh=ssh -a),
             $last_component . "/",
             $upload_path
         );
     }
     elsif ($util eq "scp")
     {
-        @command = 
+        @command =
         (
             qw(scp -r),
             $last_component . "/",
@@ -808,7 +808,7 @@ sub perform_upload_command
     }
     elsif ($util eq "generic")
     {
-        my $cmd_line = $cfg->get_upload_cmdline();    
+        my $cmd_line = $cfg->get_upload_cmdline();
         @command = split(/\s+/, $cmd_line);
         foreach (@command)
         {
@@ -848,7 +848,7 @@ sub add_filename_to_path
             {
                 $error_class->throw(
                     {
-                        text => 
+                        text =>
                         ('Path given exits from the lecture source'
                         . ' code base directory'),
                     }
@@ -860,7 +860,7 @@ sub add_filename_to_path
             }
             next;
         }
-        push(@path, $component);        
+        push(@path, $component);
     }
 
     return \@path;
@@ -871,7 +871,7 @@ sub perform_add_command
     my $self = shift;
 
     my $cmd_line = $self->cmd_line();
-    
+
     $self->chdir_to_base();
 
     my $filename =
@@ -950,13 +950,13 @@ sub perform_add_command
     }
     my $is_dir = (-d $filename);
     my $title = "My Title";
-    push @{$current_section->{'subs'}}, 
-        { 
-            'url' => $last_component, 
+    push @{$current_section->{'subs'}},
+        {
+            'url' => $last_component,
             'title' => $title,
             ($is_dir ? ('subs' => []) : ())
         };
-    
+
     my $writer =
         Shlomif::Quad::Pres::WriteContents->new(contents => $contents);
     $writer->update_contents();
@@ -976,7 +976,7 @@ sub _traverse_pack_callback
     my $self = shift;
 
     my (%arguments) = (@_);
-    
+
     my $path_ref = $arguments{'path'};
     my $branch = $arguments{'branch'};
 
@@ -1012,7 +1012,7 @@ sub _traverse_pack_callback
             copy($src_filename.".wml", $filename.".wml");
         }
     }
-    
+
 
     if (exists($branch->{'images'}))
     {
@@ -1020,7 +1020,7 @@ sub _traverse_pack_callback
         {
             my $filename = $self->src_archive_src_dir() . "/" . $p . "/" . $image ;
             my $src_filename = $self->src_dir() . "/" . $p . "/" . $image ;
-            
+
             File::Path::mkpath([dirname($filename)]);
             copy_with_creating_dir($src_filename, $filename);
         }
@@ -1049,7 +1049,7 @@ sub perform_pack_command
 
     $self->_assign_src_dir();
 
-    my $src_archive_name = $cfg->get_src_archive_path() || 
+    my $src_archive_name = $cfg->get_src_archive_path() ||
         ($cfg->get_server_dest_dir() . "/" . "src.tar.gz");
 
     File::Path::rmtree([$self->src_archive_dir()], 0, 0);
@@ -1060,7 +1060,7 @@ sub perform_pack_command
     # Copy the files from the root directory.
     foreach my $file (
         sort { $a cmp $b }
-        grep { -f $_ } 
+        grep { -f $_ }
         map { glob($_) }
         qw(*.pm *.wml *.html quadpres.ini *.pl *.sh .quadpres/* .wmlrc)
     )
@@ -1069,18 +1069,18 @@ sub perform_pack_command
     }
 
     mkdir($self->src_archive_src_dir());
-   
+
 
     require Contents;
     my $contents = Contents::get_contents();
 
-    my $quadpres_obj = 
+    my $quadpres_obj =
         Shlomif::Quad::Pres->new(
-            $contents, 
+            $contents,
             'doc_id' => "/",
             'mode' => "server",
         );
- 
+
     $quadpres_obj->traverse_tree(
         sub {
             return $self->_traverse_pack_callback(@_);

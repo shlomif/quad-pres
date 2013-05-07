@@ -67,7 +67,7 @@ sub perform_test
     );
 
     # TEST
-    ok (!(-e "dest/two.html"), 
+    ok (!(-e "dest/two.html"),
         "Faulty file was not found in the directory"
     );
 

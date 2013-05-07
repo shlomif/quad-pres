@@ -44,7 +44,7 @@ sub perform_test
     );
 
     chdir($test_dir);
-    
+
     # TEST:$n++;
     ok (!system("quadp", "render", "-a", ($hd ? ("-hd") : ())),
         "quadp render -a ran successfully for hd '$hd'."

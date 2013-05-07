@@ -10,7 +10,7 @@ use_ok("Shlomif::Quad::Pres");
 
 binmode STDOUT, ":utf8";
 {
-    my $contents1 = 
+    my $contents1 =
     {
         'title' => "Do it with the GIMP",
         'subs' =>
@@ -44,7 +44,7 @@ binmode STDOUT, ":utf8";
                         'title' => "Colour Modes",
                     },
                     {
-                        'url' => "8bit.html",                    
+                        'url' => "8bit.html",
                         'title' => "8 bits per colour value",
                     },
                     {
@@ -327,7 +327,7 @@ binmode STDOUT, ":utf8";
                     {
                         'url' => "pdb.html",
                         'title' => "The Procedural Database",
-                    },   
+                    },
                     {
                         'url' => "script-fu",
                         'title' => "Script-Fu Scripting",
@@ -340,7 +340,7 @@ binmode STDOUT, ":utf8";
                             {
                                 'url' => "generating_logo.html",
                                 'title' => "Generating a Logo",
-                            },                           
+                            },
                         ],
                     },
                     {
@@ -369,12 +369,12 @@ binmode STDOUT, ":utf8";
                 ],
             },
         ],
-        'images' => 
-        [ 
+        'images' =>
+        [
             'style.css',
         ],
     };
-    
+
     {
         my $qp = Shlomif::Quad::Pres->new(
             $contents1,
@@ -382,15 +382,15 @@ binmode STDOUT, ":utf8";
             'mode' => "server",
         );
         # TEST
-        ok ($qp, "A Quad-Pres instance was initialized."); 
+        ok ($qp, "A Quad-Pres instance was initialized.");
 
         my $next_url = $qp->get_control_url($qp->get_next_url());
         # TEST
         is(
             $next_url,
-            "history.html", 
+            "history.html",
             "next OK"
-        ); 
+        );
 
         my $prev_url = $qp->get_control_url($qp->get_prev_url());
         is($prev_url, "../", "prev OK"); # TEST
@@ -404,7 +404,7 @@ binmode STDOUT, ":utf8";
         );
 
         # TEST
-        ok ($qp, "A Quad-Pres instance was initialized. (No. 2)"); 
+        ok ($qp, "A Quad-Pres instance was initialized. (No. 2)");
 
         # TEST
         is ($qp->get_breadcrumbs_trail(),
@@ -421,7 +421,7 @@ binmode STDOUT, ":utf8";
         );
 
         # TEST
-        ok ($qp, "A Quad-Pres instance was initialized. (No. 3)"); 
+        ok ($qp, "A Quad-Pres instance was initialized. (No. 3)");
 
         # TEST
         is ($qp->get_breadcrumbs_trail(" → "),
@@ -433,6 +433,6 @@ binmode STDOUT, ":utf8";
         is ($qp->get_breadcrumbs_trail(" ← "),
             q{<a href="../../">Do it with the GIMP</a> ← <a href="../">Basic Areal Effects</a> ← <a href="./">Sharpening &amp; Marpening</a>},
             "Testing the breadcrumbs trail",
-        );        
+        );
     }
 }

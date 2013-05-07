@@ -8,7 +8,7 @@ use Test::More tests => 7;
 use_ok("Shlomif::Quad::Pres");
 
 {
-my $contents1 = 
+my $contents1 =
 {
     'title' => "Title",
     'subs' =>
@@ -38,7 +38,7 @@ my $contents1 =
         ok($next_url eq "slide1.2.html"); # TEST
 
         $next_url = $qp->get_next_url('skip_slide' => 1);
-        ok($next_url eq "slide2.html");   # TEST        
+        ok($next_url eq "slide2.html");   # TEST
     }
 
     {
@@ -53,7 +53,7 @@ my $contents1 =
         ok($prev_url eq "slide1.html"); # TEST
 
         $prev_url = $qp->get_next_url('stage_step' => 1);
-        ok($prev_url eq "slide1.3.html");   # TEST        
+        ok($prev_url eq "slide1.3.html");   # TEST
     }
 }
 1;

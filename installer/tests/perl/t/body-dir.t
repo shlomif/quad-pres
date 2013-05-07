@@ -92,7 +92,7 @@ EOF
     {
         $body_str = q{<body dir="rtl">};
     }
-    
+
     # TEST:$n++;
     like(
         scalar(io()->file($output_file)->slurp),

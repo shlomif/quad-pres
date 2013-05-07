@@ -18,7 +18,7 @@ sub my_test
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     my $fs = shift;
-    
+
     my $i = $inputs[$test_num];
     unlink($filename);
 
@@ -38,7 +38,7 @@ close(O);
 for($test_num = 0; $test_num < @inputs; $test_num++)
 {
     my $fs = Shlomif::Quad::Pres::FS->new('group' => $inputs[$test_num]);
-    
+
     my_test($fs);
 
     $fs->my_chown($filename);

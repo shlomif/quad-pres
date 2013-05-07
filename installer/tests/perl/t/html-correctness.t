@@ -60,7 +60,7 @@ sub perform_test
 <p>
 Hello world!
 </p>
-    
+
 EOF
 
     chdir($test_dir);

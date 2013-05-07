@@ -14,8 +14,8 @@ my %output_contents_keys_values = (map { $output_contents_keys_order[$_] => $_ }
 sub output_contents_get_value
 {
     my ($key) = (@_);
-    
-    return exists($output_contents_keys_values{$key}) ? 
+
+    return exists($output_contents_keys_values{$key}) ?
         $output_contents_keys_values{$key} :
         scalar(@output_contents_keys_order);
 }
@@ -23,16 +23,16 @@ sub output_contents_get_value
 sub output_contents_sort_keys
 {
     my ($hash) = @_;
-    return 
-        [ 
-            sort 
+    return
+        [
+            sort
             {
                 output_contents_get_value($a) <=> output_contents_get_value($b)
             }
             keys(%$hash)
         ];
 }
-my %special_chars = 
+my %special_chars =
 (
     "\n" => "\\n",
     "\t" => "\\t",
@@ -47,7 +47,7 @@ sub string_to_perl
 {
     my $s = shift;
     $s =~ s/([\\\"])/\\$1/g;
-    
+
     $s =~ s/([\n\t\r\f\b\a\e])/$special_chars{$1}/ge;
     $s =~ s/([\x00-\x1F\x80-\xFF])/sprintf("\\x%.2xd", ord($1))/ge;
 
@@ -94,7 +94,7 @@ sub dump_contents
     my @branches = ({ 'b' => $contents, 'i' => -1 });
 
     my $ret = "";
-    
+
     MAIN_LOOP: while (@branches > 0)
     {
         my $last_element = $branches[$#branches];
@@ -113,12 +113,12 @@ sub dump_contents
                     $ret .= "${p2}'$field' => \"" . string_to_perl($b->{$field}) . "\",\n";
                 }
             }
-            
-            
+
+
             if (exists($b->{'subs'}))
             {
                 $ret .= "${p2}'subs' =>\n";
-                $ret .= "${p2}\[\n";                
+                $ret .= "${p2}\[\n";
                 # push @branches { 'b' => $b->{'subs'} }
             }
             $last_element->{'i'} = 0;
@@ -136,7 +136,7 @@ sub dump_contents
                     $ret .= "${p3}\"" . string_to_perl($img) . "\",\n";
                 }
                 $ret .= "${p2}],\n";
-            }            
+            }
             pop(@branches);
             $ret .= "${p1}}" . ((@branches > 0) ? "," : ";") ."\n";
             next MAIN_LOOP;

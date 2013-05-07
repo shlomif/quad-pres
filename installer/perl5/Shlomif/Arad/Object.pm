@@ -7,11 +7,11 @@ sub new
 {
     my $class = shift;
     my $self = {};
-    
+
     bless($self, $class);
-    
+
     $self->initialize(@_);
-    
+
     return $self;
 }
 
@@ -25,14 +25,14 @@ sub initialize
 sub destroy_
 {
     my $self = shift;
-    
+
     return 0;
 }
 
 sub DESTROY
 {
     my $self = shift;
-    
+
     $self->destroy_();
 }
 

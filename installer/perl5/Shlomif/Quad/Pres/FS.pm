@@ -61,20 +61,20 @@ sub set_group
         $self->{'gid'} = $gid;
     }
 
-    return 0;    
+    return 0;
 }
 
 sub my_chown
 {
     my $self = shift;
-    
+
     my $path = shift;
 
     if (!exists($self->{gid}))
     {
         return;
     }
-    
+
     chown(-1,$self->{'gid'}, $path);
 }
 
@@ -90,7 +90,7 @@ sub make_dest_dir
     if (! -e $dest_dir)
     {
         mkdir($dest_dir);
-        # Make it belong to the common group 
+        # Make it belong to the common group
         $self->my_chown($dest_dir);
         # Make it a SGID directory
         # This means that subsequent files will belong to its group.
