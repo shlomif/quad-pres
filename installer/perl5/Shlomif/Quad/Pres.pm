@@ -289,8 +289,8 @@ sub get_prev_url
     elsif ($coords[$#coords] > 0)
     {
         # Get the previous leaf
-	    my @previous_leaf = 
-	        ( 
+        my @previous_leaf = 
+        ( 
                 @coords[0 .. ($#coords - 1) ] ,
                 $coords[$#coords]-1
             );
