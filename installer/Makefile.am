@@ -14,7 +14,7 @@ prepare_check:
 	@myprefix=`pwd`/tests/installation ; \
 		cd quad-pres-`cat ver.txt` ;  \
 		./configure --prefix="$$myprefix" ; \
-		make install 
+		make install
 
 purecheck:
 	@PATH=`pwd`/tests/installation/bin:$$PATH ; \
@@ -24,6 +24,5 @@ purecheck:
 
 dist-hook:
 	mkdir $(distdir)/tests
-	cat $(srcdir)/tests/MANIFEST-DIRS | (while read T ; do mkdir -p $(distdir)/tests/"$$T" ; done)
-	cat $(srcdir)/tests/MANIFEST | (while read T ; do cp -p $(srcdir)/tests/"$$T" $(distdir)/tests/"$$T" ; done)
+	cat $(srcdir)/tests/MANIFEST | (while read T ; do dest=$(distdir)/tests/"$$T" ; mkdir -p `dirname "$$dest"` ; cp -p $(srcdir)/tests/"$$T" "$$dest" ; done)
 

@@ -12,7 +12,7 @@ $files_or_dirs = ($files_or_dirs eq "-f");
 
 my $source_dir = shell_quote(shift || ".");
 
-my @lines = `svn ls -R $source_dir`;
+my @lines = `hg ls $source_dir`;
 
 my (@dirs, @files);
 
