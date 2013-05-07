@@ -46,3 +46,4 @@ installer/wml/themes/alon-altman-text/Makefile
 installer/wml/themes/alon-altman-text/Makefile.in
 installer/wml/themes/shlomif-text/Makefile
 installer/wml/themes/shlomif-text/Makefile.in
+installer/tests/installation
