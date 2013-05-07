@@ -13,6 +13,8 @@ use Contents;
 
 use MIME::Types;
 
+use IO::All;
+
 use POSIX;
 
 use English;
@@ -196,26 +198,15 @@ if ($type eq "image")
             {
                 if (!mkdir($dest_dir_path))
                 {
-                    open I, "./src/$file_path";
-                    print join("", <I>);
-                    close(I);
+                    io->("./src/$file_path") > io('-');
                     exit;
                 }
             }
         }
         # if (-w "$dest_dir/$file_path")
-        {
-            open I, "./src/$file_path";
-            open O, ">$dest_dir/$file_path";
-            print O join("", <I>);
-            close(I);
-            close(O);
-            # my_chown("$dest_dir/$file_path");
-        }
+        io("./src/$file_path") > "$dest_dir/$file_path";
     }
-    open I, "$dest_dir/$file_path";
-    print join("", <I>);
-    close(I);
+    io("$dest_dir/$file_path") > io('-');
 }
 else
 {
@@ -255,9 +246,7 @@ else
             # my_chown("$dest_dir/$file_path");
         };
     }
-    open I, "$dest_dir/$file_path";
-    print join("", <I>);
-    close(I);
+    io( "$dest_dir/$file_path") > io('-');
 }
 }
 
