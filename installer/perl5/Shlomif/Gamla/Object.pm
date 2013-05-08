@@ -1,12 +1,9 @@
 package Shlomif::Gamla::Object;
 
 use strict;
+use warnings;
 
-use Shlomif::Arad::Object;
-
-use vars qw(@ISA);
-
-@ISA=qw(Shlomif::Arad::Object);
+use parent (qw( Shlomif::Arad::Object ));
 
 sub initialize_analyze_args
 {
@@ -19,7 +16,7 @@ sub initialize_analyze_args
     {
         while (my ($spec_key, $spec_callback) = each(%$spec))
         {
-            if ($key =~ m/^-?${spec_key}$/)
+            if ($key =~ m/\A-?\Q${spec_key}\E\z/)
             {
                 $spec_callback->(shift());
             }
