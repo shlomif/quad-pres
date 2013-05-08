@@ -227,7 +227,7 @@ sub get_next_url
         }
         if ($i == -1)
         {
-            return undef;
+            return;
         }
     }
 
