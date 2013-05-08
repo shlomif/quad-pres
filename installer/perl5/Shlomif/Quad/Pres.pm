@@ -5,16 +5,13 @@ use warnings;
 
 use utf8;
 
-use Shlomif::Gamla::Object;
+use parent (qw( Shlomif::Gamla::Object ));
+
 use Data::Dumper;
 
 use Shlomif::Quad::Pres::Url;
 
 use CGI ();
-
-use vars qw(@ISA);
-
-@ISA=qw(Shlomif::Gamla::Object);
 
 my $navigation_style_class = "nav";
 my $contents_style_class = "contents";
