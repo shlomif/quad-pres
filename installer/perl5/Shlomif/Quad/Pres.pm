@@ -7,6 +7,8 @@ use utf8;
 
 use parent (qw( Shlomif::Gamla::Object ));
 
+use IO::All;
+
 use Data::Dumper;
 
 use Shlomif::Quad::Pres::Url;
@@ -128,23 +130,15 @@ sub get_document_base_text
 
     my $filename = "./src/" . $document_id;
 
+    my $index_fn = $filename."/index.html";
+
     if (-f $filename)
     {
-        my $text;
-        local(*I);
-        open I, ("<".$filename);
-        $text = join("",<I>);
-        close(I);
-        return $text;
+        return scalar( io->file($filename)->slurp );
     }
-    elsif ((-d $filename) && (-f $filename."/index.html"))
+    elsif ((-d $filename) && (-f $index_fn))
     {
-        my $text;
-        local(*I);
-        open I, ("<".$filename."/index.html");
-        $text = join("",<I>);
-        close(I);
-        return $text;
+        return scalar( io->file($index_fn)->slurp );
     }
     else
     {
