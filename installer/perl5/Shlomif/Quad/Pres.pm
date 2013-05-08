@@ -275,7 +275,7 @@ sub get_prev_url
 
     if (scalar(@coords) == 0)
     {
-        return undef;
+        return;
     }
     elsif ($coords[$#coords] > 0)
     {
@@ -298,7 +298,7 @@ sub get_prev_url
     }
     else
     {
-        return undef;
+        return;
     }
 }
 
@@ -310,7 +310,7 @@ sub get_up_url
 
     if (scalar(@coords) == 0)
     {
-        return undef;
+        return;
     }
     else
     {
@@ -360,7 +360,7 @@ sub get_control_url
 
     if (!defined($other_url))
     {
-        return undef;
+        return;
     }
 
     my $this_url = $self->{'doc_id'};
