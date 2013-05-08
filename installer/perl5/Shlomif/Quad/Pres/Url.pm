@@ -1,13 +1,11 @@
 package Shlomif::Quad::Pres::Url;
 
 use strict;
+use warnings;
 
-use Shlomif::Gamla::Object;
+use parent (qw( Shlomif::Gamla::Object ));
+
 use Data::Dumper;
-
-use vars qw(@ISA);
-
-@ISA=qw(Shlomif::Gamla::Object);
 
 sub initialize
 {
@@ -121,8 +119,14 @@ sub _get_url_worker
     }
     else
     {
-        my @components = ((map { ".." } @this_url[1..$#this_url]), @other_url);
-        $ret .= ($prefix . join("/", @components));
+        $ret .= $prefix;
+
+        my @components;
+        if ($#this_url >= 1)
+        {
+            @components = ((map { ".." } @this_url[1..$#this_url]), @other_url);
+        }
+        $ret .= join("/", @components);
         if (($to->is_dir()) && ($base->{'mode'} ne "harddisk") && scalar(@components))
         {
             $ret .= "/";

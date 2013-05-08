@@ -1,14 +1,9 @@
 package Shlomif::Quad::Pres::FS;
 
 use strict;
+use warnings;
 
-use Shlomif::Gamla::Object;
-
-use vars qw(@ISA);
-
-@ISA=qw(Shlomif::Gamla::Object);
-
-use Config::IniFiles;
+use parent (qw( Shlomif::Gamla::Object ));
 
 sub initialize
 {

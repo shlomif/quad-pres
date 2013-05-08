@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::Exception;
 use strict;
 use warnings;
 
-use base 'Shlomif::Gamla::Object';
+use parent 'Shlomif::Gamla::Object';
 
 sub throw
 {

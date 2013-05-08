@@ -34,6 +34,8 @@ sub DESTROY
     my $self = shift;
 
     $self->destroy_();
+
+    return;
 }
 
 1;

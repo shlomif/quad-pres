@@ -1,12 +1,9 @@
 package Shlomif::Quad::Pres::CGI;
 
 use strict;
+use warnings;
 
-use Shlomif::Gamla::Object;
-
-use vars qw(@ISA);
-
-@ISA=qw(Shlomif::Gamla::Object);
+use parent (qw( Shlomif::Gamla::Object ));
 
 use CGI;
 use Contents;
