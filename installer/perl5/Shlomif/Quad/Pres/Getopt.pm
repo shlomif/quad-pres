@@ -1,5 +1,8 @@
 package Shlomif::Quad::Pres::Getopt;
 
+use strict;
+use warnings;
+
 # A wrapper around Getopt::Long::Parser that allows it to use a different
 # array instead of @ARGV.
 #
