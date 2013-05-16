@@ -52,7 +52,6 @@ foreach my $dir_path (@dirs)
             $modules{$file} = 1;
         }
     }
-    closedir(DIR);
     %modules =
         (map { $_ => $modules{$_} }
             (grep { !exists($preproc_modules{$_}) }
