@@ -2,6 +2,7 @@ installer/Makefile
 installer/Makefile.in
 installer/aclocal.m4
 installer/autom4te.cache
+installer/compile
 installer/config.log
 installer/config.status
 installer/configure
