@@ -50,11 +50,11 @@ HTML::Links::Localize
 
 This bundle installs modules needed by Quad-Pres:
 
-http://vipe.technion.ac.il/~shlomif/quadpres/
+L<http://www.shlomifish.org/quad-pres/>
 
 =head1 AUTHOR
 
-Shlomi Fish E<lt>F<shlomif@vipe.technion.ac.il>E<gt>
+Shlomi Fish, L<http://www.shlomifish.org/>
 
 =cut
 
