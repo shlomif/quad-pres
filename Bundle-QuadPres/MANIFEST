@@ -1,5 +1,7 @@
+Changes
 MANIFEST
 Makefile.PL
-README
-Changes
 QuadPres.pm
+README
+t/00-load.t
+t/pod.t
