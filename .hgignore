@@ -1,3 +1,9 @@
+Bundle-QuadPres/Bundle-QuadPres-*
+Bundle-QuadPres/MYMETA.json
+Bundle-QuadPres/MYMETA.yml
+Bundle-QuadPres/Makefile
+Bundle-QuadPres/blib
+Bundle-QuadPres/pm_to_blib
 installer/Makefile
 installer/Makefile.in
 installer/aclocal.m4
