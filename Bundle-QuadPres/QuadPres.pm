@@ -1,6 +1,6 @@
 package Bundle::QuadPres;
 
-$VERSION = '0.8.3';
+$VERSION = '0.8.4';
 
 1;
 
