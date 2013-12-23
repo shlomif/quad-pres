@@ -1,0 +1,6 @@
+
+v0.8.0 (2003-Jun-2) - Bundle Created
+
+v0.8.1 (2003-Jun-5) - Removed Pod::Usage and made the files inside the 
+archive non-executable
+
