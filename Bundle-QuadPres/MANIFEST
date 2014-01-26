@@ -1,9 +1,10 @@
 Build.PL
 Changes
+LICENSE
 MANIFEST
+META.json
+META.yml
 README
 lib/Bundle/QuadPres.pm
 t/00-load.t
 t/pod.t
-META.yml
-META.json
