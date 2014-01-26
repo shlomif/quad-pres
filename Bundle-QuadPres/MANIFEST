@@ -1,7 +1,9 @@
+Build.PL
 Changes
 MANIFEST
-Makefile.PL
-QuadPres.pm
 README
+lib/Bundle/QuadPres.pm
 t/00-load.t
 t/pod.t
+META.yml
+META.json
