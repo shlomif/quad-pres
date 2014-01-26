@@ -1,3 +1,6 @@
+    - Convert to Build.PL
+    - Add the LICENSE file (Kwalitee).
+
 v0.8.4 (2013-12-23)
     - Made Makefile.PL non-executable.
     - Add t/pod.t and t/00-load.t
