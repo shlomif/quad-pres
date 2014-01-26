@@ -7,4 +7,5 @@ META.yml
 README
 lib/Bundle/QuadPres.pm
 t/00-load.t
+t/cpan-changes.t
 t/pod.t
