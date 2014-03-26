@@ -243,7 +243,7 @@ sub perform_setup_command
     if (!defined($args{"server_dest_dir"}))
     {
         $error_class->throw(
-            {text => 'You must specify --dest-dir with somthing meaningful!'}
+            {text => 'You must specify --dest-dir with something meaningful!'}
         );
     }
 
