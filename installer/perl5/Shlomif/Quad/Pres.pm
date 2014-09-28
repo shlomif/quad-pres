@@ -197,6 +197,8 @@ sub get_last_url
         $b_subs = $b->{subs};
     };
 
+    $fetch->();
+
     while (defined($b_subs) && @$b_subs)
     {
         my $last_branch = $b_subs->[-1];
