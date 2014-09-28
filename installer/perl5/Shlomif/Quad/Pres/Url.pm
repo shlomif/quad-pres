@@ -142,10 +142,7 @@ sub _get_url_worker
         $ret .= $prefix;
 
         my @components;
-        if ($#this_url >= 1)
-        {
-            push @components, ((map { ".." } @this_url[1..$#this_url]));
-        }
+        push @components, (("..") x ($base->is_dir ? @this_url : @this_url - 1));
         push @components, @other_url;
         $ret .= join("/", @components);
         if (($to->is_dir()) && ($base->{'mode'} ne "harddisk") && scalar(@components))
