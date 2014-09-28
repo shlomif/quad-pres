@@ -3,19 +3,39 @@ package Shlomif::Quad::Pres::Url;
 use strict;
 use warnings;
 
+use List::MoreUtils qw( notall );
+use Carp;
+
 use parent (qw( Shlomif::Gamla::Object ));
 
 use Data::Dumper;
 
 sub initialize
 {
+    $Carp::RefArgFormatter = sub { require Data::Dumper; Dumper([$_[0]],);
+    };
     my $self = shift;
 
     my $url = shift;
-    $self->{'url'} = ((ref($url) eq "ARRAY") ?
-        [ @$url ] :
-        [ split(/\//, $url) ])
-        ;
+
+    if (!defined($url))
+    {
+        Carp::confess("URL passed undef.");
+    }
+
+
+    if (ref($url) eq 'ARRAY')
+    {
+        if (notall { defined } @$url)
+        {
+            Carp::confess("URL passed FOOundef.");
+        }
+        $self->{'url'} = [@$url];
+    }
+    else
+    {
+        $self->{'url'} = [ split(/\//, $url) ];
+    }
     $self->{'is_dir'} = shift || 0;
     $self->{'mode'} = shift || 'server';
 
@@ -76,7 +96,7 @@ sub _get_url_worker
     {
         if ((!$base->is_dir() ) ne (!$to->is_dir()))
         {
-            die "Two identical URLs with non-matching is_dir()'s";
+            Carp::confess("Two identical URLs with non-matching is_dir()'s");
         }
         if (! $base->is_dir())
         {
@@ -124,8 +144,9 @@ sub _get_url_worker
         my @components;
         if ($#this_url >= 1)
         {
-            @components = ((map { ".." } @this_url[1..$#this_url]), @other_url);
+            push @components, ((map { ".." } @this_url[1..$#this_url]));
         }
+        push @components, @other_url;
         $ret .= join("/", @components);
         if (($to->is_dir()) && ($base->{'mode'} ne "harddisk") && scalar(@components))
         {

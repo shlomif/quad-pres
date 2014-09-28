@@ -13,6 +13,8 @@ use Data::Dumper;
 
 use Shlomif::Quad::Pres::Url;
 
+use Carp;
+
 use CGI ();
 
 my $navigation_style_class = "nav";
@@ -161,7 +163,13 @@ sub get_url_by_coords
     for($i=0;$i<scalar(@coords);$i++)
     {
         $b = $b->{'subs'}->[$coords[$i]];
-        push @url, $b->{'url'};
+        my $comp = $b->{url};
+
+        if (!defined ($comp))
+        {
+            Carp::confess ("undef component.");
+        }
+        push @url, $comp;
     }
 
     return Shlomif::Quad::Pres::Url->new(\@url, exists($b->{'subs'}), $self->{'mode'});
@@ -183,15 +191,26 @@ sub get_last_url
 
     my @path;
 
-    while (exists($b->{'subs'}))
+    my $b_subs;
+
+    my $fetch = sub {
+        $b_subs = $b->{subs};
+    };
+
+    while (defined($b_subs) && @$b_subs)
     {
-        my $b_subs = $b->{'subs'};
-        my $last_branch = $b_subs->[scalar(@$b_subs)-1];
-        push @path, $last_branch->{'url'};
+        my $last_branch = $b_subs->[-1];
+        my $url = $last_branch->{url};
+        if (!defined ($url))
+        {
+            Carp::confess ("undef URL.");
+        }
+        push @path, $url;
         $b = $last_branch;
+        $fetch->();
     }
 
-    return Shlomif::Quad::Pres::Url->new([@path], 0, $self->{'mode'});
+    return Shlomif::Quad::Pres::Url->new([@path], (exists($b->{subs}) ? 1 : 0), $self->{'mode'});
 }
 
 sub get_next_url
@@ -206,12 +225,13 @@ sub get_next_url
 
     my $i;
 
-    for($i=0;$i<scalar(@coords);$i++)
+    for ($i=0;$i<scalar(@coords);$i++)
     {
         $branches[$i+1] = $branches[$i]->{'subs'}->[$coords[$i]];
     }
 
-    if (exists($branches[$i]->{'subs'}))
+    my $subs = $branches[$i]->{'subs'};
+    if (defined $subs && @$subs)
     {
         @dest_coords = (@coords,0);
     }
@@ -219,7 +239,7 @@ sub get_next_url
     {
         for($i--;$i>=0;$i--)
         {
-            if (scalar(@{$branches[$i]->{'subs'}}) > ($coords[$i]+1))
+            if (@{ $branches[$i]->{'subs'} } > ($coords[$i]+1))
             {
                 @dest_coords = (@coords[0 .. ($i-1)], $coords[$i]+1);
                 last;
