@@ -5,7 +5,7 @@ use warnings;
 
 use utf8;
 
-use parent (qw( Shlomif::Gamla::Object ));
+use parent 'Games::Solitaire::Verify::Base';
 
 use IO::All;
 
@@ -20,23 +20,37 @@ use CGI ();
 my $navigation_style_class = "nav";
 my $contents_style_class = "contents";
 
-sub initialize
+__PACKAGE__->mk_acc_ref(
+    [
+        qw(
+        contents
+        coords
+        doc_id
+        doc_id_slash_terminated
+        mode
+        navigation_bar
+        stage_idx
+        )
+    ]
+);
+
+sub _init
 {
     my $self = shift;
 
-    $self->{'contents'} = shift;
+    $self->contents(shift);
 
     my %args = (@_);
 
     my $doc_id = $args{'doc_id'};
 
-    $self->{'mode'} = ($args{'mode'} || "server");
+    $self->mode($args{'mode'} || "server");
 
-    $self->{'stage_idx'} = ($args{'stage_idx'} || 0);
+    $self->stage_idx($args{'stage_idx'} || 0);
 
     $self->_populate_doc_id($doc_id);
 
-    $self->{'doc_id_slash_terminated'} = (($doc_id =~ /\/$/) ? 1 : 0);
+    $self->doc_id_slash_terminated(($doc_id =~ /\/$/) ? 1 : 0);
 
     return 0;
 }
@@ -51,21 +65,21 @@ sub _populate_doc_id
 
     $self->_populate_coords($doc_id_parsed);
 
-    my ($b, $i, @coords);
+    my @coords = @{$self->coords()};
+    my $b = $self->contents;
 
-    @coords = @{$self->{'coords'}};
-    $b = $self->{'contents'};
-
-    for($i=0;$i<scalar(@coords);$i++)
+    foreach my $c (@coords)
     {
-        $b = $b->{'subs'}->[$coords[$i]];
+        $b = $b->{'subs'}->[$c];
     }
 
-    $self->{'doc_id'} = Shlomif::Quad::Pres::Url->new(
-        $doc_id_parsed,
-        exists($b->{'subs'}),
-        $self->{'mode'}
-        );
+    $self->doc_id(
+        Shlomif::Quad::Pres::Url->new(
+            $doc_id_parsed,
+            exists($b->{'subs'}),
+            $self->mode,
+        )
+    );
 
     return;
 }
@@ -75,7 +89,7 @@ sub _populate_coords
     my $self = shift;
 
     my $doc_id_parsed  = shift;
-    if (!exists($self->{'coords'}))
+    if (!defined($self->coords))
     {
         my %locs;
         my $traverse;
@@ -106,7 +120,7 @@ sub _populate_coords
 
         $traverse->(
             [ ],
-            $self->{'contents'},
+            $self->contents,
             [ ],
         );
 
@@ -122,7 +136,7 @@ sub _populate_coords
         {
             die "Pres::get_coords(): Could not find the document \"" . $document_id . "\".";
         }
-        $self->{'coords'} = [ @{$locs{$document_id}} ];
+        $self->coords([ @{$locs{$document_id}} ]);
     }
 
     return;
@@ -132,7 +146,7 @@ sub get_document_base_text
 {
     my $self = shift;
 
-    my $document_id = join("/", @{$self->{'doc_id'}->get_url()});
+    my $document_id = join("/", @{$self->doc_id->get_url()});
 
     my $filename = "./src/" . $document_id;
 
@@ -159,14 +173,12 @@ sub get_url_by_coords
     my @coords = @{shift(@_)};
 
     my @url;
-    my $b;
-    my $i;
 
-    $b = $self->{'contents'};
+    my $b = $self->contents;
 
-    for($i=0;$i<scalar(@coords);$i++)
+    foreach my $c (@coords)
     {
-        $b = $b->{'subs'}->[$coords[$i]];
+        $b = $b->{'subs'}->[$c];
         my $comp = $b->{url};
 
         if (!defined ($comp))
@@ -176,7 +188,7 @@ sub get_url_by_coords
         push @url, $comp;
     }
 
-    return Shlomif::Quad::Pres::Url->new(\@url, exists($b->{'subs'}), $self->{'mode'});
+    return Shlomif::Quad::Pres::Url->new(\@url, exists($b->{'subs'}), $self->mode);
 }
 
 
@@ -184,14 +196,14 @@ sub get_contents_url
 {
     my $self = shift;
 
-    return Shlomif::Quad::Pres::Url->new([], 1, $self->{'mode'});
+    return Shlomif::Quad::Pres::Url->new([], 1, $self->mode);
 }
 
 sub get_last_url
 {
     my $self = shift;
 
-    my $b = $self->{'contents'};
+    my $b = $self->contents;
 
     my @path;
 
@@ -216,16 +228,16 @@ sub get_last_url
         $fetch->();
     }
 
-    return Shlomif::Quad::Pres::Url->new([@path], (exists($b->{subs}) ? 1 : 0), $self->{'mode'});
+    return Shlomif::Quad::Pres::Url->new([@path], (exists($b->{subs}) ? 1 : 0), $self->mode);
 }
 
 sub get_next_url
 {
     my $self = shift;
 
-    my @coords = @{$self->{'coords'}};
+    my @coords = @{$self->coords};
 
-    my @branches = ($self->{'contents'});
+    my @branches = ($self->contents);
 
     my @dest_coords;
 
@@ -270,7 +282,7 @@ sub get_most_advanced_leaf
     my @coords = @{$coords_ref};
 
     # Get a reference to the contents HDS (= hierarchial data structure)
-    my $branch = $self->{'contents'};
+    my $branch = $self->contents;
 
     # Get to the current branch by advancing to the offset
     foreach my $c (@coords)
@@ -297,7 +309,7 @@ sub get_prev_url
 {
     my $self = shift;
 
-    my @coords = @{$self->{'coords'}};
+    my @coords = @{$self->coords};
 
     if (scalar(@coords) == 0)
     {
@@ -332,7 +344,7 @@ sub get_up_url
 {
     my $self = shift;
 
-    my @coords = @{$self->{'coords'}};
+    my @coords = @{$self->coords};
 
     if (scalar(@coords) == 0)
     {
@@ -389,13 +401,12 @@ sub get_control_url
         return;
     }
 
-    my $this_url = $self->{'doc_id'};
+    my $this_url = $self->doc_id;
 
-    return
-        $this_url->get_relative_url(
-                $other_url,
-                $self->{'doc_id_slash_terminated'}
-            );
+    return $this_url->get_relative_url(
+        $other_url,
+        $self->doc_id_slash_terminated
+    );
 }
 
 sub get_control_text
@@ -406,7 +417,7 @@ sub get_control_text
 
     my $text = "";
 
-    my $this_url = $self->{'doc_id'};
+    my $this_url = $self->doc_id;
 
     my $other_url = $spec->{'url'}->($self);
 
@@ -433,7 +444,7 @@ sub get_navigation_bar
 {
     my $self = shift;
 
-    if (!exists($self->{'navigation_bar'}))
+    if (!defined($self->navigation_bar))
     {
         # Render the Navigation Bar
         my $text = "";
@@ -480,10 +491,10 @@ sub get_navigation_bar
         $text .= "\n";
         #$text .= "<br><br>";
 
-        $self->{'navigation_bar'} = $text;
+        $self->navigation_bar($text);
     }
 
-    return $self->{'navigation_bar'};
+    return $self->navigation_bar;
 }
 
 sub get_subject_by_coords
@@ -491,7 +502,7 @@ sub get_subject_by_coords
     my $self = shift;
     my $coords_ref = shift;
 
-    my $branch = $self->{'contents'};
+    my $branch = $self->contents;
 
     my @coords = @$coords_ref;
 
@@ -507,14 +518,14 @@ sub get_subject
 {
     my $self = shift;
 
-    return $self->get_subject_by_coords($self->{coords});
+    return $self->get_subject_by_coords($self->coords);
 }
 
 sub get_title
 {
     my $self = shift;
 
-    my @coords = @{$self->{'coords'}};
+    my @coords = @{$self->coords};
 
     my @coords_plus_1 = (map { $_+1 ; } @coords);
     my $indexes_str = join(".", @coords_plus_1);
@@ -533,19 +544,19 @@ sub get_header
     my $text = "";
     my $branch;
 
-    my @coords = @{$self->{'coords'}};
+    my @coords = @{$self->coords};
 
     $text .= "<html>\n";
     $text .= "<head>\n";
     $text .= "<title>" . $self->get_subject() . "</title>\n";
     $text .= "<link rel=\"StyleSheet\" href=\"" .
-        $self->{'doc_id'}->get_relative_url(
+        $self->doc_id->get_relative_url(
             Shlomif::Quad::Pres::Url->new(
                 [ "style.css" ],
                 0,
-                $self->{'mode'}
+                $self->mode
                 ),
-            $self->{'doc_id_slash_terminated'}
+            $self->doc_id_slash_terminated
             ) .
         "\" type=\"text/css\">\n";
 
@@ -587,11 +598,11 @@ sub get_contents_helper
     my $text = "";
     $text .= "<li>";
     $text .= "<a href=\"" .
-        $self->{'doc_id'}->get_relative_url(
+        $self->doc_id->get_relative_url(
             Shlomif::Quad::Pres::Url->new(
                 [@$url],
                 exists($branch->{'subs'}),
-                $self->{'mode'}
+                $self->mode
             )
         ) .
         "\" class=\"" . $contents_style_class . "\">";
@@ -625,10 +636,10 @@ sub get_contents
 
     my $text = "";
 
-    my @coords = @{$self->{'coords'}};
+    my @coords = @{$self->coords};
     my @url;
 
-    my $b = $self->{'contents'};
+    my $b = $self->contents;
 
     my $i;
 
@@ -745,7 +756,7 @@ sub render
     eval {
         $self->_populate_coords();
         my $text = $self->render_text();
-        if ($self->{'mode'} eq 'cgi')
+        if ($self->mode eq 'cgi')
         {
             print "Content-Type: text/html\n\n";
         }
@@ -754,7 +765,7 @@ sub render
 
     if ($@)
     {
-        if ($self->{'mode'} eq 'cgi')
+        if ($self->mode eq 'cgi')
         {
             print "Content-Type: text/plain\n\n";
         }
@@ -770,7 +781,7 @@ sub traverse_tree
     my $self = shift;
     my $callback = shift;
 
-    my $contents = $self->{'contents'};
+    my $contents = $self->contents;
 
     my $traverse_helper;
     $traverse_helper =
