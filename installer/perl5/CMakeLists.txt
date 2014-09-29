@@ -23,6 +23,22 @@ ADD_CUSTOM_TARGET(
     DEPENDS "${d}"
 )
 
+SET (s "${CMAKE_CURRENT_SOURCE_DIR}/Shlomif/Quad/Pres/Path.pm.pl")
+SET (d "${CMAKE_CURRENT_BINARY_DIR}/Shlomif/Quad/Pres/Path.pm")
+
+ADD_CUSTOM_COMMAND(
+    OUTPUT "${d}"
+    COMMAND "${PERL_EXECUTABLE}"
+    ARGS "-E" "use IO::All; use File::Basename qw( dirname) ; use File::Path qw/ mkpath/ ; my $t = io->file(\"${s}\")->slurp; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#/usr/bin/perl#${PATH_PERL}#g; mkpath([dirname(\"${d}\")]); io->file(\"${d}\")->print($t)"
+    DEPENDS "${s}"
+    VERBATIM
+)
+
+ADD_CUSTOM_TARGET(
+    Path_pm_pl ALL
+    DEPENDS "${d}"
+)
+
 install( FILES "${CMAKE_CURRENT_BINARY_DIR}/quadp" DESTINATION bin )
 
 #	cat quadp.pl | sed 's!{QP_MODULES_DIR}!$(modulesdir)!g' | sed '1 s!/usr/bin/perl!$(PATH_PERL)!' > quadp
@@ -38,13 +54,18 @@ INSTALL(
         Shlomif/Quad/Pres/Exception.pm
         Shlomif/Quad/Pres/FS.pm
         Shlomif/Quad/Pres/Getopt.pm
-        Shlomif/Quad/Pres/Path.pm
         Shlomif/Quad/Pres/Url.pm
         Shlomif/Quad/Pres/WriteContents.pm
     DESTINATION
         "${PATH_PERL}"
 )
 
+INSTALL(
+    FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/Shlomif/Quad/Pres/Path.pm"
+    DESTINATION
+        "${PATH_PERL}"
+)
 
 #original Makefile.am contents follow:
 
