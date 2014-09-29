@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::Exception;
 use strict;
 use warnings;
 
-use parent 'Shlomif::Gamla::Object';
+use parent 'Games::Solitaire::Verify::Base';
 
 sub throw
 {

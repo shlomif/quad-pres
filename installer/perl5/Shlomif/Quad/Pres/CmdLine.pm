@@ -7,8 +7,6 @@ use warnings;
 
 use Scalar::Util qw(blessed);
 
-use parent (qw(Shlomif::Gamla::Object));
-
 # use vars qw(@ISA);
 
 # @ISA=qw(Shlomif::Gamla::Object);
@@ -40,28 +38,18 @@ use Moose qw(has);
 has 'dest_dir' => (isa => 'Str', 'is' => 'rw');
 has 'src_dir' => (isa => 'Str', 'is' => 'rw');
 has 'main_files_mtimes' => (isa => 'ArrayRef', 'is' => 'rw');
-has 'path_man' => (isa => "Shlomif::Quad::Pres::Path", 'is' => "rw");
-has 'getopt' => (isa => "Shlomif::Quad::Pres::Getopt", 'is' => "rw");
-has 'cmd_line' => (isa => "ArrayRef", 'is' => "rw");
+has 'getopt' => (isa => "Shlomif::Quad::Pres::Getopt", 'is' => "ro", lazy => 1,
+default => sub {
+    return Shlomif::Quad::Pres::Getopt->new(shift->cmd_line);
+},);
 has 'invocation_path' => (isa => "ArrayRef", is => "rw");
+has 'path_man' => (is => 'ro', lazy => 1, default => sub {
+        return Shlomif::Quad::Pres::Path->new;
+    },
+);
+has 'cmd_line' => (isa => 'ArrayRef', is => 'ro', required => 1);
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
-
-
-sub initialize
-{
-    my $self = shift;
-
-    $self->path_man(Shlomif::Quad::Pres::Path->new());
-
-    my (%args);
-
-    %args = (@_);
-
-    $self->_init_cmd_line($args{'cmd_line'});
-
-    return 0;
-}
 
 sub _init_cmd_line
 {
