@@ -34,14 +34,14 @@ sub initialize
 
     $self->{'stage_idx'} = ($args{'stage_idx'} || 0);
 
-    $self->get_doc_id($doc_id);
+    $self->_populate_doc_id($doc_id);
 
     $self->{'doc_id_slash_terminated'} = (($doc_id =~ /\/$/) ? 1 : 0);
 
     return 0;
 }
 
-sub get_doc_id
+sub _populate_doc_id
 {
     my $self = shift;
 
@@ -49,7 +49,7 @@ sub get_doc_id
 
     my $doc_id_parsed = [ split(/\//, $doc_id) ];
 
-    $self->get_coords($doc_id_parsed);
+    $self->_populate_coords($doc_id_parsed);
 
     my ($b, $i, @coords);
 
@@ -66,9 +66,11 @@ sub get_doc_id
         exists($b->{'subs'}),
         $self->{'mode'}
         );
+
+    return;
 }
 
-sub get_coords
+sub _populate_coords
 {
     my $self = shift;
 
@@ -122,6 +124,8 @@ sub get_coords
         }
         $self->{'coords'} = [ @{$locs{$document_id}} ];
     }
+
+    return;
 }
 
 sub get_document_base_text
@@ -739,7 +743,7 @@ sub render
 {
     my $self = shift;
     eval {
-        $self->get_coords();
+        $self->_populate_coords();
         my $text = $self->render_text();
         if ($self->{'mode'} eq 'cgi')
         {
@@ -757,6 +761,8 @@ sub render
         print "Error!\n\n";
         print $@;
     }
+
+    return;
 }
 
 sub traverse_tree
@@ -799,6 +805,8 @@ sub traverse_tree
         };
 
     $traverse_helper->([], [], $contents);
+
+    return;
 }
 
 sub get_breadcrumbs_trail
