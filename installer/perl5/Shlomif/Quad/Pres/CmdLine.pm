@@ -93,21 +93,24 @@ my %cmd_aliases;
 
 my %registered_commands;
 
-sub reg_cmd
+sub _register_cmd
 {
     my $command = shift;
     my $callback = shift || "perform_${command}_command";
     my $aliases = shift || [];
+
     %cmd_aliases = (%cmd_aliases, gen_aliases($command, $aliases));
     $registered_commands{$command} = $callback;
+
+    return;
 }
 
-reg_cmd('clear');
-reg_cmd('render',0,[qw(rend)]);
-reg_cmd('setup');
-reg_cmd('upload');
-reg_cmd('add');
-reg_cmd('pack');
+_register_cmd('clear');
+_register_cmd('render',0,[qw(rend)]);
+_register_cmd('setup');
+_register_cmd('upload');
+_register_cmd('add');
+_register_cmd('pack');
 
 sub run_command
 {
@@ -459,6 +462,8 @@ sub _convert_to_hardisk
         );
 
     $converter->process_dir_tree('only-newer' => 1);
+
+    return;
 }
 
 sub _get_file_mtime
@@ -560,6 +565,8 @@ sub _render_all_contents_traverse_callback
             }
         }
     }
+
+    return;
 }
 
 sub _render_file
@@ -610,6 +617,8 @@ sub _render_file
         $error->{'src_filename'} = $filename;
         die $error;
     }
+
+    return;
 }
 
 =begin Removed
@@ -690,6 +699,8 @@ sub _render_all_contents
         );
 
     $quadpres_obj->traverse_tree(sub {$self->_render_all_contents_traverse_callback(@_)});
+
+    return;
 }
 
 sub perform_clear_command
@@ -995,6 +1006,8 @@ sub _traverse_pack_callback
             copy_with_creating_dir($src_filename, $filename);
         }
     }
+
+    return;
 }
 
 sub src_archive_dir
