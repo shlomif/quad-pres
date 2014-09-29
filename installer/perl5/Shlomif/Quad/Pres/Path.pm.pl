@@ -1,12 +1,9 @@
 package Shlomif::Quad::Pres::Path;
 
 use strict;
+use warnings;
 
-use Shlomif::Gamla::Object;
-
-use vars qw(@ISA);
-
-@ISA=qw(Shlomif::Gamla::Object);
+use parent 'Games::Solitaire::Verify::Base';
 
 # This variable will be converted to its right value by the make
 # process.

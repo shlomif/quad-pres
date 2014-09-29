@@ -3,27 +3,24 @@ package Shlomif::Quad::Pres::Config;
 use strict;
 use warnings;
 
-use parent (qw(Shlomif::Gamla::Object));
+use parent 'Games::Solitaire::Verify::Base';
 
 use Cwd;
 
 use Config::IniFiles;
 use Template;
 
-sub initialize
+__PACKAGE__->mk_acc_ref([qw( base_path cfg )]);
+
+sub _init
 {
     my $self = shift;
 
-    my $base_path = ".";
+    my %args = @_;
 
-    $self->initialize_analyze_args(
-        {
-            '[Pp]ath' => sub { my $new_path = shift; $base_path = $new_path; }
-        },
-        @_
-    );
+    my $base_path = $args{path} || ".";
 
-    $self->{'base_path'} = $base_path;
+    $self->base_path( $base_path );
 
     my $cfg =
         Config::IniFiles->new(
@@ -35,7 +32,7 @@ sub initialize
         die "Could not open the configuration file!";
     }
 
-    $self->{'cfg'} = $cfg;
+    $self->cfg($cfg);
 
     return 0;
 }
@@ -43,7 +40,7 @@ sub initialize
 sub _get_raw_val
 {
     my $self = shift;
-    return $self->{'cfg'}->val(@_);
+    return $self->cfg->val(@_);
 }
 
 sub _get_tt_driver
