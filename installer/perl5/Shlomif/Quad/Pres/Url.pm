@@ -6,11 +6,20 @@ use warnings;
 use List::MoreUtils qw( notall );
 use Carp;
 
-use parent (qw( Shlomif::Gamla::Object ));
-
+use parent 'Games::Solitaire::Verify::Base';
 use Data::Dumper;
 
-sub initialize
+__PACKAGE__->mk_acc_ref(
+    [
+        qw(
+        is_dir
+        mode
+        url
+        )
+    ]
+);
+
+sub _init
 {
     $Carp::RefArgFormatter = sub { require Data::Dumper; Dumper([$_[0]],);
     };
@@ -30,14 +39,14 @@ sub initialize
         {
             Carp::confess("URL passed FOOundef.");
         }
-        $self->{'url'} = [@$url];
+        $self->url( [@$url] );
     }
     else
     {
-        $self->{'url'} = [ split(/\//, $url) ];
+        $self->url( [ split(/\//, $url) ] );
     }
-    $self->{'is_dir'} = shift || 0;
-    $self->{'mode'} = shift || 'server';
+    $self->is_dir(shift || 0);
+    $self->mode(shift || 'server');
 
     return 0;
 }
@@ -46,14 +55,7 @@ sub get_url
 {
     my $self = shift;
 
-    return [ @{$self->{'url'}} ];
-}
-
-sub is_dir
-{
-    my $self = shift;
-
-    return $self->{'is_dir'};
+    return [ @{$self->url}];
 }
 
 sub get_relative_url
@@ -111,7 +113,7 @@ sub _get_url_worker
         }
     }
 
-    if (($base->{'mode'} eq "harddisk") && ($to->is_dir()))
+    if (($base->mode eq "harddisk") && ($to->is_dir()))
     {
         push @other_url, "index.html";
     }
@@ -131,7 +133,7 @@ sub _get_url_worker
                 pop(@this_url);
             }
             $ret .= join("/", (map { ".." } @this_url), @other_url);
-            if ($to->is_dir() && ($base->{'mode'} ne "harddisk"))
+            if ($to->is_dir() && ($base->mode ne "harddisk"))
             {
                 $ret .= "/";
             }
@@ -145,7 +147,7 @@ sub _get_url_worker
         push @components, (("..") x ($base->is_dir ? @this_url : @this_url - 1));
         push @components, @other_url;
         $ret .= join("/", @components);
-        if (($to->is_dir()) && ($base->{'mode'} ne "harddisk") && scalar(@components))
+        if (($to->is_dir()) && ($base->mode ne "harddisk") && scalar(@components))
         {
             $ret .= "/";
         }
