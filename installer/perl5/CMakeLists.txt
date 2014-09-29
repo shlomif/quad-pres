@@ -41,8 +41,7 @@ install( FILES "${CMAKE_CURRENT_BINARY_DIR}/quadp" DESTINATION bin )
 
 #	cat quadp.pl | sed 's!{QP_MODULES_DIR}!$(modulesdir)!g' | sed '1 s!/usr/bin/perl!$(PATH_PERL)!' > quadp
 
-INSTALL(
-    FILES
+SET( myfiles
         Shlomif/Arad/Object.pm
         Shlomif/Gamla/Object.pm
         Shlomif/Quad/Pres.pm
@@ -54,15 +53,23 @@ INSTALL(
         Shlomif/Quad/Pres/Getopt.pm
         Shlomif/Quad/Pres/Url.pm
         Shlomif/Quad/Pres/WriteContents.pm
-    DESTINATION
-        "${PATH_PERL}"
 )
+
+FOREACH (f ${myfiles})
+    STRING (REGEX REPLACE "/[^/]+$" "" dirname "${f}")
+    INSTALL (
+        FILES
+            "${f}"
+        DESTINATION
+            "${PATH_PERL}/${dirname}"
+    )
+ENDFOREACH (f ${myfiles})
 
 INSTALL(
     FILES
         "${CMAKE_CURRENT_BINARY_DIR}/Shlomif/Quad/Pres/Path.pm"
     DESTINATION
-        "${PATH_PERL}"
+        "${PATH_PERL}/Shlomif/Quad/Pres"
 )
 
 #original Makefile.am contents follow:
