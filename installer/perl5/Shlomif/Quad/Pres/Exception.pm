@@ -5,6 +5,11 @@ use warnings;
 
 use parent 'Games::Solitaire::Verify::Base';
 
+sub _init
+{
+    return;
+}
+
 sub throw
 {
     my $class = shift;

@@ -17,6 +17,11 @@ my $template_dir = "$pkg_data_dir/template";
 
 my $wml_dir = "$pkg_data_dir/wml";
 
+sub _init
+{
+    return;
+}
+
 sub get_modules_dir
 {
     my $self = shift;
