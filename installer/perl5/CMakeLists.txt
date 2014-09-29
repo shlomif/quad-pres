@@ -10,7 +10,7 @@ SET (d "quadp")
 ADD_CUSTOM_COMMAND(
     OUTPUT "${d}"
     COMMAND "${PERL_EXECUTABLE}"
-    ARGS "-E" "use IO::All; my $t = io->file(\"${s}\")->slurp; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#/usr/bin/perl#${PATH_PERL}#g; io->file(\"${d}\")->print($t)"
+    ARGS "-E" "use IO::All; my $t = io->file(\"${s}\")->slurp; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#/usr/bin/perl#${PERL_EXECUTABLE}#g; io->file(\"${d}\")->print($t); chmod(0755, \"${d}\");"
     DEPENDS "${s}"
     VERBATIM
 )
@@ -37,7 +37,7 @@ ADD_CUSTOM_TARGET(
     DEPENDS "${d}"
 )
 
-install( FILES "${CMAKE_CURRENT_BINARY_DIR}/quadp" DESTINATION bin )
+install( PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/quadp" DESTINATION bin )
 
 #	cat quadp.pl | sed 's!{QP_MODULES_DIR}!$(modulesdir)!g' | sed '1 s!/usr/bin/perl!$(PATH_PERL)!' > quadp
 
