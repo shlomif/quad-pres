@@ -1,7 +1,7 @@
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
-SET (wmldir "${libdir}/wml")
+SET (wmldir "${DATADIR}/wml")
 
 SET (WML_FILES
     "quadpres_main.wml"
@@ -11,12 +11,15 @@ SET (WML_FILES
 )
 ########### install files ###############
 
-install(FILES
-        ${WML_FILES}
-    DESTINATION
-        "${wmldir}"
-)
-
+FOREACH (f ${WML_FILES})
+    STRING (REGEX REPLACE "/[^/]+$" "" dirname "${f}")
+    INSTALL (
+        FILES
+            "${f}"
+        DESTINATION
+            "${wmldir}/${dirname}"
+    )
+ENDFOREACH (f ${myfiles})
 
 
 #original Makefile.am contents follow:
