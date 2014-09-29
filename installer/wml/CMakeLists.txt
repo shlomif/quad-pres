@@ -1,7 +1,7 @@
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
-SET (wmldir "${DATADIR}/wml")
+SET (wmldir "${PKGDATADIR}/wml")
 
 SET (WML_FILES
     "quadpres_main.wml"
