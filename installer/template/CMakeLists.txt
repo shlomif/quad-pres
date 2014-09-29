@@ -1,12 +1,10 @@
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
-
+SET (MYFILES style.css template.html.wml)
 ########### install files ###############
 
-install(FILES  $(MYFILES) DESTINATION )
-
-
+install(FILES  ${MYFILES} DESTINATION "${pkgdatadir}/template")
 
 #original Makefile.am contents follow:
 

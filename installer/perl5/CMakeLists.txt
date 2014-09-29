@@ -3,7 +3,9 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
 ########### install files ###############
 
-install(FILES  quadp DESTINATION )
+install(FILES  quadp DESTINATION bin )
+
+SET (PATH_PERL "${libdir}/perl5")
 
 INSTALL(
     FILES
