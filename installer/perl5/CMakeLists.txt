@@ -3,19 +3,27 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
 ########### install files ###############
 
-install(FILES  quadp DESTINATION bin )
 
 SET (s "${CMAKE_CURRENT_SOURCE_DIR}/quadp.pl")
 SET (d "quadp")
 
+SET (libdir "${CMAKE_INSTALL_PREFIX}/lib")
 SET (PATH_PERL "${libdir}/perl5")
 ADD_CUSTOM_COMMAND(
     OUTPUT "${d}"
-    COMMAND ${PERL_EXECUTABLE}
-    ARGS "-E" "use IO::All; my $t = io->file(\"${s}\")->slurp; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#/usr/bin/perl#${PATH_PERL}#ge; io->file(\"${d}\")->print($t)"
+    COMMAND "${PERL_EXECUTABLE}"
+    ARGS "-E" "use IO::All; my $t = io->file(\"${s}\")->slurp; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#/usr/bin/perl#${PATH_PERL}#g; io->file(\"${d}\")->print($t)"
     DEPENDS "${s}"
     VERBATIM
 )
+
+# The custom command needs to be assigned to a target.
+ADD_CUSTOM_TARGET(
+    quadp_bin ALL
+    DEPENDS "${d}"
+)
+
+install( FILES "${CMAKE_CURRENT_BINARY_DIR}/quadp" DESTINATION bin )
 
 #	cat quadp.pl | sed 's!{QP_MODULES_DIR}!$(modulesdir)!g' | sed '1 s!/usr/bin/perl!$(PATH_PERL)!' > quadp
 
