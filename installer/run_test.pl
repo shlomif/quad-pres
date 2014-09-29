@@ -21,4 +21,6 @@ $ENV{PERL5LIB} = "$myprefix/sharequad-pres/perl5:$ENV{PERL5LIB}";
 $ENV{QUAD_PRES_NO_HOME_LIB} = 1;
 $ENV{PATH} = "$myprefix/bin:$ENV{PATH}}";
 
-exec("cd tests && make check");
+exec(
+    qq#cd tests && prove ../../installer/tests/perl/t/*.t#
+);
