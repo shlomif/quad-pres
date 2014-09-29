@@ -3,21 +3,19 @@ package Shlomif::Quad::Pres::FS;
 use strict;
 use warnings;
 
-use parent (qw( Shlomif::Gamla::Object ));
+use parent 'Games::Solitaire::Verify::Base';
 
-sub initialize
+__PACKAGE__->mk_acc_ref([qw( gid group )]);
+
+sub _init
 {
     my $self = shift;
 
+    my %args = @_;
+
     my $group;
 
-    $self->initialize_analyze_args(
-        {
-            '[Gg]roup' => sub { my $new_group = shift; $group = $new_group; },
-        },
-        @_
-    );
-
+    $group = $args{group};
     $self->set_group($group);
 
     # Set the umask to ensure that other users which are a member of $group
@@ -33,7 +31,7 @@ sub set_group
 
     my $group = shift;
 
-    $self->{'group'} = $group;
+    $self->group($group);
 
     my $gid;
 
@@ -53,7 +51,7 @@ sub set_group
             }
         }
 
-        $self->{'gid'} = $gid;
+        $self->gid($gid);
     }
 
     return 0;
@@ -65,12 +63,14 @@ sub my_chown
 
     my $path = shift;
 
-    if (!exists($self->{gid}))
+    if (!defined($self->gid))
     {
         return;
     }
 
-    chown(-1,$self->{'gid'}, $path);
+    chown(-1,$self->gid, $path);
+
+    return;
 }
 
 
@@ -92,6 +92,8 @@ sub make_dest_dir
         # And that subsequent directories inside will also be SGID.
         chmod(02775, $dest_dir);
     }
+
+    return;
 }
 
 
