@@ -10,8 +10,10 @@ cmake_minimum_required(VERSION 2.8)
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
+SET (PKGDATADIR "${DATADIR}/quad-pres")
+
 SET (libdir "${CMAKE_INSTALL_PREFIX}/lib")
-SET (PATH_PERL "${DATADIR}/perl5")
+SET (PATH_PERL "${PKGDATADIR}/perl5")
 
 add_subdirectory(perl5)
 add_subdirectory(wml)
