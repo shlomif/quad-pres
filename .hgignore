@@ -7,4 +7,5 @@ Bundle-QuadPres/MYMETA.json
 Bundle-QuadPres/MYMETA.yml
 Bundle-QuadPres/blib
 installer/cmake/Shlomif_Common.cmake
+installer/tests/perl/t/data
 B

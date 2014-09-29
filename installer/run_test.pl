@@ -22,5 +22,5 @@ $ENV{QUAD_PRES_NO_HOME_LIB} = 1;
 $ENV{PATH} = "$myprefix/bin:$ENV{PATH}}";
 
 exec(
-    qq#cd tests && prove ../../installer/tests/perl/t/*.t#
+    qq#cd tests && cd ../../installer/tests/perl/ && prove t/*.t#
 );
