@@ -7,8 +7,6 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 SET (s "${CMAKE_CURRENT_SOURCE_DIR}/quadp.pl")
 SET (d "quadp")
 
-SET (libdir "${CMAKE_INSTALL_PREFIX}/lib")
-SET (PATH_PERL "${libdir}/perl5")
 ADD_CUSTOM_COMMAND(
     OUTPUT "${d}"
     COMMAND "${PERL_EXECUTABLE}"
