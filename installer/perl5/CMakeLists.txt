@@ -54,7 +54,7 @@ SET( myfiles
 )
 
 FOREACH (f ${myfiles})
-    STRING (REGEX REPLACE "/[^/]+$" "" dirname "${f}")
+    STRING (REGEX REPLACE "(^|/)[^/]+$" "" dirname "${f}")
     INSTALL (
         FILES
             "${f}"
