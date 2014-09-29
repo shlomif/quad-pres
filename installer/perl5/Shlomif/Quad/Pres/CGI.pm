@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::CGI;
 use strict;
 use warnings;
 
-use parent (qw( Shlomif::Gamla::Object ));
+use parent 'Games::Solitaire::Verify::Base';
 
 use CGI;
 use Contents;

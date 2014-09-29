@@ -7,10 +7,6 @@ use warnings;
 
 use Scalar::Util qw(blessed);
 
-# use vars qw(@ISA);
-
-# @ISA=qw(Shlomif::Gamla::Object);
-
 use English qw( -no_match_vars );
 use Pod::Usage (qw( pod2usage ));
 use Cwd (qw( getcwd ));
