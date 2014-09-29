@@ -25,7 +25,7 @@ use File::Spec;
 use HTML::Links::Localize;
 use File::Glob ':glob';
 
-use IO::All;
+use IO::All qw/ io /;
 
 use Shlomif::Quad::Pres::Path;
 use Shlomif::Quad::Pres::Exception;
@@ -817,11 +817,12 @@ sub add_filename_to_path
 
     my @fn_path = split(/\//, $filename);
 
+    COMPS:
     foreach my $component (@fn_path)
     {
         if ($component eq ".")
         {
-            next;
+            next COMPS;
         }
         if ($component eq "..")
         {
@@ -839,7 +840,7 @@ sub add_filename_to_path
             {
                 pop(@path);
             }
-            next;
+            next COMPS;
         }
         push(@path, $component);
     }
@@ -891,9 +892,9 @@ sub perform_add_command
     foreach my $component (@$file_path[0 .. ($#$file_path-1)])
     {
         my $next_section;
-        SUB_SECT_SEARCH: foreach my $sub_sect (@{$current_section->{'subs'}})
+        SUB_SECT_SEARCH: foreach my $sub_sect (@{$current_section->{subs}})
         {
-            if ($sub_sect->{'url'} eq $component)
+            if ($sub_sect->{url} eq $component)
             {
                 $next_section = $sub_sect;
                 last SUB_SECT_SEARCH;
@@ -920,8 +921,8 @@ sub perform_add_command
         );
     }
     $last_component =~ s/\.wml$//;
-    if ( (grep { $_->{'url'} eq $last_component } @{$current_section->{'subs'}})
-       || (grep { $_ eq $last_component } @{$current_section->{'images'}}))
+    if ( (grep { $_->{url} eq $last_component } @{$current_section->{subs}})
+       || (grep { $_ eq $last_component } @{$current_section->{images}}))
     {
         $error_class->throw(
             {
@@ -931,11 +932,11 @@ sub perform_add_command
     }
     my $is_dir = (-d $filename);
     my $title = "My Title";
-    push @{$current_section->{'subs'}},
+    push @{$current_section->{subs}},
         {
-            'url' => $last_component,
-            'title' => $title,
-            ($is_dir ? ('subs' => []) : ())
+            url => $last_component,
+            title => $title,
+            ($is_dir ? (subs => []) : ())
         };
 
     my $writer =
