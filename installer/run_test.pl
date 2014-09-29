@@ -21,6 +21,8 @@ $ENV{PERL5LIB} = "$myprefix/lib/perl5:$ENV{PERL5LIB}";
 $ENV{QUAD_PRES_NO_HOME_LIB} = 1;
 $ENV{PATH} = "$myprefix/bin:$ENV{PATH}}";
 
+# system("bash");
+
 exec(
     qq#cd tests && cd ../../installer/tests/perl/ && prove t/*.t#
 );
