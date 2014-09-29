@@ -1,12 +1,20 @@
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
-add_subdirectory(themes)
+SET (wmldir "${libdir}/wml")
 
-
+SET (WML_FILES
+    quadpres_main wml_helpers.wml
+    themes/alon-altman-text/template.wml
+    themes/shlomif-text/template.wml
+)
 ########### install files ###############
 
-install(FILES  $(WML_FILES) DESTINATION )
+install(FILES
+        ${WML_FILES}
+    DESTINATION
+        "${wmldir}"
+)
 
 
 

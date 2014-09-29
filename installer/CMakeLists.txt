@@ -1,4 +1,6 @@
 
+cmake_minimum_required(VERSION 2.8)
+
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
 add_subdirectory(perl5)
