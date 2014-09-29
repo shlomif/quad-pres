@@ -21,7 +21,7 @@ Language and Perl 5.
 %build
 
 ./configure --prefix=%_prefix --mandir=%{_mandir}
-make RPM_OPT_FLAGS="$RPM_OPT_FLAGS" 
+make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -59,7 +59,7 @@ rm -rf $RPM_BUILD_ROOT
 * Mon Feb 03 2002 Shlomi Fish <shlomif@vipe.technion.ac.il> 0.7.17-1
 - Initial SPEC Version.
 - Modified the texts.
-- Removed the cd to the man dir. 
+- Removed the cd to the man dir.
 - Added the scripts directory.
 
 
