@@ -20,8 +20,17 @@ add_subdirectory(template)
 
 ########### install files ###############
 
+ENABLE_TESTING()
 
+ADD_TEST(
+    NAME perl_run_tests
+    COMMAND "perl" "${CMAKE_CURRENT_SOURCE_DIR}/run_test.pl"
+)
 
+ADD_CUSTOM_TARGET(
+    "check"
+    "perl" "${CMAKE_CURRENT_SOURCE_DIR}/run_test.pl"
+)
 
 #original Makefile.am contents follow:
 
