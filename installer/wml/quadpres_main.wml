@@ -1,5 +1,8 @@
 #include "wml_helpers.wml"
-
+<:
+    use strict;
+    use warnings;
+:>
 <:{
 sub uniprint
 {
@@ -13,16 +16,26 @@ sub uniprint
     use Shlomif::Quad::Pres;
     use Contents;
 
-    # I guess each embedded perl code has its own scope 
+    use vars (qw(
+            $contents_tree
+            $document_name
+            $qp
+            $subject
+            $text
+            $title
+            @controls
+    ));
+
+    # I guess each embedded perl code has its own scope
     #my ($text, $qp, $subject);
 
     sub get_everything
     {
-    
+
         my $contents = Contents::get_contents();
-        
+
         $document_name = "$(FILENAME)" ;
-        
+
         $document_name =~ s/^\.//;
         $document_name =~ s!\.wml$!!;
         $document_name =~ s/index\.html$//;
@@ -31,8 +44,8 @@ sub uniprint
         my $render_type = "server";
 
         $qp = Shlomif::Quad::Pres->new(
-            $contents, 
-            'doc_id' => $document_name, 
+            $contents,
+            'doc_id' => $document_name,
             'mode' => $render_type
             );
 
@@ -45,7 +58,7 @@ sub uniprint
         $title = $qp->get_title();
    }
 
-    @controls = 
+    @controls =
         (
             { 'title' => "Contents", 'link' => "top", 'func' => "get_contents_url"},
             { 'title' => "Up", 'link' => "up", 'func' => "get_up_url"},
@@ -54,7 +67,7 @@ sub uniprint
             { 'title' => "First", 'link' => "first", 'func' => "get_contents_url", 'hide' => 1, },
             { 'title' => "Last", 'link' => "last", 'func' => "get_last_url", 'hide' => 1, },
         );
-   
+
 
    &get_everything();
 
@@ -96,7 +109,7 @@ foreach my $c (@controls)
     my $func = $c->{'func'};
     my $url = $c->{'url'};
     my $title = $c->{'title'};
-    
+
     next if (!defined($url));
     uniprint("<link rel=\"" . $c->{'link'} . "\" href=\"$url\" />\n");
 }
@@ -155,7 +168,7 @@ foreach my $c (@controls)
 </define-tag>
 
 <define-tag qp:html:bodystart>
-<ifeq "<get-var "qp_body_dir" />" "rtl" 
+<ifeq "<get-var "qp_body_dir" />" "rtl"
     "<body dir="rtl">"
     "<body>"
     />

@@ -6,8 +6,11 @@
 
 <table class="page-nav-bar <get-var placement />"><tr><:{
 
+    use vars (qw(
+        $translate_control_text
+    ));
     # Assign a default to $translate_control_text
-    $translate_control_text ||= 
+    $translate_control_text ||=
     sub {
         my $title = shift;
         return $title;
@@ -16,10 +19,10 @@
     my $with_key = "<get-var withkey />";
 
     if (!defined($text))
-    {    
+    {
         get_everything();
     }
-    
+
 
     foreach my $c (@controls)
     {
@@ -27,14 +30,14 @@
         {
             next;
         }
-            
+
         my $url = $c->{'url'};
         my $title = $c->{'title'};
         uniprint "<td>\n";
 
         # The translated title.
         my $trans_title = $translate_control_text->($title);
-        
+
         if (!defined($url))
         {
             uniprint "<b>$trans_title</b>";
