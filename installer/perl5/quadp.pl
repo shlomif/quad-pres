@@ -1,6 +1,7 @@
-#!/usr/bin/perl -w -I{QP_MODULES_DIR}
+#!/usr/bin/perl -I{QP_MODULES_DIR}
 
 use strict;
+use warnings;
 
 use Shlomif::Quad::Pres::CmdLine;
 
