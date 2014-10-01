@@ -19,7 +19,7 @@ if (system("mkdir $build_dir && cd $build_dir && cmake -DCMAKE_INSTALL_PREFIX=$m
 
 $ENV{PERL5LIB} = "$myprefix/lib/perl5:$ENV{PERL5LIB}";
 $ENV{QUAD_PRES_NO_HOME_LIB} = 1;
-$ENV{PATH} = "$myprefix/bin:$ENV{PATH}}";
+$ENV{PATH} = "$myprefix/bin:$ENV{PATH}";
 
 # system("bash");
 
