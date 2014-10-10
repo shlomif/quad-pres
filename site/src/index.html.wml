@@ -70,6 +70,13 @@ are the final forms of the sample lectures</a>.
 
 <h2 id="news">News</h2>
 
+<h3 id="news_2014_10_10">10-Oct-2014</h3>
+
+<p>
+A new stable version - 0.14.0 - was released today. This version added a
+test suite and converted to use CMake instead of GNU Autotools.
+</p>
+
 <h3 id="news_2006_08_27">27-Aug-2006</h3>
 
 <p>
