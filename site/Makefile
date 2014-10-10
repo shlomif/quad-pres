@@ -60,7 +60,9 @@ $(PACKAGES_DESTS) :: $(PACKAGES_DIR)/% : ./temp/lk-module-compiler-final/%
 #	(cd dest && $(RSYNC) -r * shlomif@vipe.technion.ac.il:public_html/quadpres/)
 
 upload: all
-	(cd dest && $(RSYNC) -r * shlomif@shell.berlios.de:/home/groups/quad-pres/htdocs/)
+	(cd dest && $(RSYNC) -a * $${__HOMEPAGE_REMOTE_PATH}/quad-pres)
+
+# (cd dest && $(RSYNC) -r * shlomif@shell.berlios.de:/home/groups/quad-pres/htdocs/)
 
 ARC_NAME = CLAN-$(shell date +%Y-%m-%d).tar.gz
 
