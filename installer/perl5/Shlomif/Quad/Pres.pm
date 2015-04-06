@@ -15,7 +15,7 @@ use Shlomif::Quad::Pres::Url;
 
 use Carp;
 
-use CGI ();
+use HTML::Widgets::NavMenu::EscapeHtml qw(escape_html);
 
 my $navigation_style_class = "nav";
 my $contents_style_class = "contents";
@@ -837,7 +837,7 @@ sub get_breadcrumbs_trail
     {
         my @coords = @abs_coords[0 .. $end];
         my $s = "<a href=\""
-            . CGI::escapeHTML($qp->get_control_url($qp->get_url_by_coords(\@coords)))
+            . escape_html($qp->get_control_url($qp->get_url_by_coords(\@coords)))
             . "\">"
             . $qp->get_subject_by_coords(\@coords) .
             "</a>"
