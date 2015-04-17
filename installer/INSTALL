@@ -1,13 +1,16 @@
 1. Installing from Source
 
-The Trio of Commands:
+The commands:
 
-./configure
+mkdir B
+cd B
+cmake ..
 make
-make install (possibly as root)
+make install
 
-Should compile and install this program. Add a --prefix=[prefix] command
-to ./configure to install it under a different location in the tree. For
+Should compile and install this program. Add a
+-DCMAKE_INSTALL_PREFIX=[prefix] option
+to cmake to install it under a different location in the tree. For
 more information on ./configure's flags type ./configure --help.
 
 2. Compiling an RPM.
