@@ -3,7 +3,7 @@
 
 <p>
 Quad-Pres stands for "Quick and Dirty Presentations" and is a Perl and
-<a href="http://thewml.org/">Web Meta Language</a> based framework to
+<a href="http://thewml.org/">Website Meta Language</a> based framework to
 create HTML presentations.
 </p>
 
@@ -18,7 +18,7 @@ have any other questions contact me at
 
 <ol>
 <li>
-Uses <a href="http://thewml.org/">Web Meta Language</a>.
+Uses <a href="http://thewml.org/">Website Meta Language</a>.
 </li>
 <li>
 Organizes the lecture into a hierarchy of sections and subections.
