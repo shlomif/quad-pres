@@ -29,11 +29,11 @@ RPM of the program. You can then install it by using "rpm -U".
     - HTML::Hard::Disk
 
     And these, that are normally distributed with Perl:
-    
-    - CGI    
-    - Data::Dumper    
+
+    - CGI
+    - Data::Dumper
     - File::Find
-    - Getopt::Long    
+    - Getopt::Long
     - Pod::Usage
 
 All of them can be installed by installing Bundle::QuadPres using
