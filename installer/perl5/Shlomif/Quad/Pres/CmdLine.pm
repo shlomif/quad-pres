@@ -777,8 +777,8 @@ sub perform_upload_command
         @command = split(/\s+/, $cmd_line);
         foreach (@command)
         {
-            s/\${local}/$last_component/g;
-            s/\${remote_path}/$upload_path/g;
+            s/\$\{local\}/$last_component/g;
+            s/\$\{remote_path\}/$upload_path/g;
         }
     }
     else
