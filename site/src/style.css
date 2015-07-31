@@ -1,9 +1,9 @@
 a:hover, img.highlight:hover { background-color : lightgreen }
-td.navbar 
-{ 
+td.navbar
+{
     background-image : url(./images/pa051.jpg) ;
-    background-color: #C5CAE2 ;  
-    width : 20% ; 
+    background-color: #C5CAE2 ;
+    width : 20% ;
     border-color : green;
     border-width : thick;
     border-style : double;

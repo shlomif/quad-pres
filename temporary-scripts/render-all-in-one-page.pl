@@ -28,9 +28,9 @@ my $group = $cfg->get_setgid_group();
 
 my $render_all = 0;
 
-my $quadpres_obj = 
+my $quadpres_obj =
     Shlomif::Quad::Pres->new(
-        $contents, 
+        $contents,
         'doc_id' => "/",
         'mode' => "server",
     );
@@ -77,7 +77,7 @@ sub calc_page_id
 sub render_to_all_in_one
 {
     my (%arguments) = (@_);
-    
+
     my $path_ref = $arguments{'path'};
     my $branch = $arguments{'branch'};
 
@@ -155,7 +155,7 @@ sub render_to_all_in_one
                         pop(@link_path);
                         $is_current_dir = 1;
                     }
-                    
+
                     push @link_path, $component;
                 }
             }
@@ -175,12 +175,12 @@ sub render_to_all_in_one
             ;
 
         my $id_attr = qq{ id="} . calc_page_id(\@path) .qq{"};
-        
+
         if ($text !~ s{(<body[^>]*>)}{$1$div_tag}ms)
         {
             $text = $div_tag . $text;
         }
-        
+
         $text =~ s{<h1>}{<h1$id_attr>};
 
         print {$all_in_one_out_fh} $text, qq{\n</div>\n};
@@ -192,7 +192,7 @@ sub render_to_all_in_one
         {
             my $src_filename = $dest_dir . "/" . $p . "/" . $image ;
             my $dest_filename = $all_in_one_dir . "/" . $p . "/" . $image ;
-            
+
             my $src_mtime = _get_file_mtime(undef, $src_filename);
             my $dest_mtime = _get_file_mtime(undef, $dest_filename);
 
@@ -204,7 +204,7 @@ sub render_to_all_in_one
             }
         }
     }
-    
+
 }
 
 $quadpres_obj->traverse_tree(\&render_to_all_in_one);
@@ -213,7 +213,7 @@ print {$all_in_one_out_fh} "\n</body></html>\n";
 close($all_in_one_out_fh);
 
 # Remming out - was only temporary for testing.
-# system("cp", "-a", $all_in_one_dir, 
+# system("cp", "-a", $all_in_one_dir,
 #    "/var/www/html/shlomi/perl/p4n-lecture1-all-in-one"
 # );
 

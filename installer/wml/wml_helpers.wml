@@ -1,5 +1,5 @@
 <define-tag default-var>
-<if <var-exists "%0" /> 
+<if <var-exists "%0" />
     ""
     <set-var %0="%1" />
     />
