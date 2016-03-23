@@ -286,10 +286,10 @@ environment variables.
 
 The Quad-Pres Homepage:
 
-L<http://vipe.technion.ac.il/~shlomif/quadpres/>
+L<http://www.shlomifish.org/quad-pres/>
 
 =head1 AUTHOR
 
-Shlomi Fish E<lt>F<shlomif@vipe.technion.ac.il>E<gt>
+Shlomi Fish, L<http://www.shlomifish.org/>.
 
 =cut
