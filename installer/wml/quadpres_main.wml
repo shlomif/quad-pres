@@ -195,7 +195,7 @@ foreach my $c (@controls)
     {
         if ($document_name eq "")
         {
-            uniprint "<p><a href=\"http://quad-pres.berlios.de/made_with.html\"><i>Made with Quad-Pres</i></a></p>";
+            uniprint "<p><a href=\"http://www.shlomifish.org/quad-pres/made_with.html\"><i>Made with Quad-Pres</i></a></p>";
         }
     }
 }:>
