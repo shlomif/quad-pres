@@ -70,6 +70,14 @@ are the final forms of the sample lectures</a>.
 
 <h2 id="news">News</h2>
 
+<h3 id="news_2016_04_02">02-Apr-2016</h3>
+
+<p>
+A new stable version - 0.18.0 - was released today. This version fixes
+fixes the RPM .spec to use the .tar.xz file, and removes carriage returns
+and trailing whitespace.
+</p>
+
 <h3 id="news_2016_03_23">23-Mar-2016</h3>
 
 <p>
