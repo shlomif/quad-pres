@@ -1,3 +1,9 @@
+Version 0.18.0 - shlomif - 2016-04-02
+
+	* Remove trailing whitespace and CRs/"\r"s.
+
+	* Fix the rpm .spec to use the .tar.xz archive.
+
 Version 0.16.0 - shlomif - 2016-03-23
 
 	* Fix the rpm .spec generation and modernised/updated the rpm .spec.

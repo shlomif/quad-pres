@@ -3,7 +3,7 @@ Version: @VERSION@
 Release: 1
 License: MIT
 Group: Publishing
-Source: http://www.shlomifish.org/quad-pres/quad-pres-%{version}.tar.gz
+Source: http://www.shlomifish.org/quad-pres/quad-pres-%{version}.tar.xz
 URL: http://www.shlomifish.org/quad-pres/
 BuildArch: noarch
 Summary: The Quad-Pres Presentation Preparation System
