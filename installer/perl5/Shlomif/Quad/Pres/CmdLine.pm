@@ -29,6 +29,8 @@ use Shlomif::Quad::Pres;
 use Shlomif::Quad::Pres::FS;
 use Shlomif::Quad::Pres::WriteContents;
 
+use lib getcwd();
+
 use Moose qw(has);
 
 has 'dest_dir' => (isa => 'Str', 'is' => 'rw');
