@@ -7,7 +7,7 @@ SOURCES = $(addprefix src/,$(addsuffix .html.wml,$(PAGES)))
 
 DESTS = $(patsubst src/%.html.wml,$(TARGET)/%.html,$(SOURCES))
 
-RAW_FILES = style.css images/pa051.jpg quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lecture.tar.gz W2L-Basic-Use-Lecture.tar.gz quad-pres-0.14.0.tar.bz2 quad-pres-0.16.0.tar.xz quad-pres-0.18.0.tar.xz
+RAW_FILES = style.css images/pa051.jpg quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lecture.tar.gz W2L-Basic-Use-Lecture.tar.gz quad-pres-0.14.0.tar.bz2 quad-pres-0.16.0.tar.xz quad-pres-0.18.0.tar.xz quad-pres-0.20.0.tar.xz
 RAW_FILES_SOURCES = $(addprefix src/,$(RAW_FILES))
 RAW_FILES_DEST = $(addprefix $(TARGET)/,$(RAW_FILES))
 
