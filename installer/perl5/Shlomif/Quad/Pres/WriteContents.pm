@@ -5,7 +5,7 @@ use warnings;
 
 use autodie;
 
-use Moose;
+use MooX qw/ late /;
 
 has '_contents' => (isa => "HashRef", is => "ro", init_arg => "contents");
 
@@ -148,4 +148,3 @@ sub dump_contents
 }
 
 1;
-
