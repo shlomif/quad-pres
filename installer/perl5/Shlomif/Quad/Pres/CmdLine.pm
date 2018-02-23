@@ -31,7 +31,7 @@ use Shlomif::Quad::Pres::WriteContents;
 
 use lib getcwd();
 
-use Moose qw(has);
+use MooX qw/ late /;
 
 has 'dest_dir' => (isa => 'Str', 'is' => 'rw');
 has 'src_dir' => (isa => 'Str', 'is' => 'rw');
@@ -1063,4 +1063,3 @@ sub perform_pack_command
 }
 
 1;
-
