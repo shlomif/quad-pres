@@ -2,7 +2,13 @@ This is Quad-Pres, a
 [Website Meta Language](http://www.shlomifish.org/open-source/projects/website-meta-language/)
 and Perl 5-based tool for creating presentations.
 
-It uses CMake as the installer, so consult INSTALL for installation
+**NOTE**: this is old, legacy, software that fell out of favour so you should
+probably not use it. See [reveal.js](https://github.com/hakimel/reveal.js/)
+amd similar for more modern takes on this task.
+
+---------------
+
+Quad-Pres uses CMake as the installer, so consult INSTALL for installation
 instructions.
 
 After it is installed type "quadp -man" for usage instructions.
