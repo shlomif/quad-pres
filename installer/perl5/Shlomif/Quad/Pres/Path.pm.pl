@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::Path;
 use strict;
 use warnings;
 
-use parent 'Games::Solitaire::Verify::Base';
+use parent 'Shlomif::Quad::Pres::Base';
 
 # This variable will be converted to its right value by the make
 # process.

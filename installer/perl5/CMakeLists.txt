@@ -37,6 +37,7 @@ install( PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/quadp" DESTINATION bin )
 
 SET( myfiles
         Shlomif/Quad/Pres.pm
+        Shlomif/Quad/Pres/Base.pm
         Shlomif/Quad/Pres/CGI.pm
         Shlomif/Quad/Pres/CmdLine.pm
         Shlomif/Quad/Pres/Config.pm

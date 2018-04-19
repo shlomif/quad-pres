@@ -5,7 +5,7 @@ use warnings;
 
 use utf8;
 
-use parent 'Games::Solitaire::Verify::Base';
+use parent 'Shlomif::Quad::Pres::Base';
 
 use IO::All;
 

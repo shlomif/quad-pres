@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::Config;
 use strict;
 use warnings;
 
-use parent 'Games::Solitaire::Verify::Base';
+use parent 'Shlomif::Quad::Pres::Base';
 
 use Cwd;
 

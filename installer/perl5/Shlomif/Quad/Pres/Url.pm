@@ -6,7 +6,7 @@ use warnings;
 use List::MoreUtils qw( notall );
 use Carp;
 
-use parent 'Games::Solitaire::Verify::Base';
+use parent 'Shlomif::Quad::Pres::Base';
 use Data::Dumper;
 
 __PACKAGE__->mk_acc_ref(

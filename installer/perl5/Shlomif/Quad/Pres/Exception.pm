@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::Exception;
 use strict;
 use warnings;
 
-use parent 'Games::Solitaire::Verify::Base';
+use parent 'Shlomif::Quad::Pres::Base';
 
 sub _init
 {

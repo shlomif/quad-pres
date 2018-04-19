@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::Config;
 use strict;
 use warnings;
 
-use parent 'Games::Solitaire::Verify::Base';
+use parent 'Shlomif::Quad::Pres::Base';
 
 __PACKAGE__->mk_acc_ref([qw( base_path cfg )]);
 
