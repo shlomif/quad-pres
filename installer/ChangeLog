@@ -1,3 +1,8 @@
+Version 0.20.0 - shlomif - Unknown
+
+	* Convert use of File::Glob::glob() to bsd_glob() to get rid of a
+	deprecation warning.
+
 Version 0.18.0 - shlomif - 2016-04-02
 
 	* Remove trailing whitespace and CRs/"\r"s.

@@ -1031,7 +1031,7 @@ sub perform_pack_command
     foreach my $file (
         sort { $a cmp $b }
         grep { -f $_ }
-        map { glob($_) }
+        map { bsd_glob($_) }
         qw(*.pm *.wml *.html quadpres.ini *.pl *.sh .quadpres/* .wmlrc)
     )
     {
