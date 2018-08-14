@@ -6,7 +6,7 @@ before_install:
     - sudo dpkg-divert --local --divert /usr/bin/ack --rename --add /usr/bin/ack-grep
 install:
     - which python3
-    - sudo cpanm --notest Bundle::QuadPres Path::Tiny
+    - sudo cpanm --notest Bundle::QuadPres IO::All Path::Tiny
     - perl CI-testing/continuous-integration-testing.pl install_deps
 perl:
     - "5.26"
