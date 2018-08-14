@@ -39,7 +39,7 @@ dest/download.html : src/download.html.wml template.wml $(DEVEL_VERSION_FILE)
 $(RAW_FILES_DEST) : $(TARGET)/% : src/%
 	cp -f $< $@
 
-dest $(SUBDIRS_DEST) : % : unchanged
+dest $(SUBDIRS_DEST) : % :
 	mkdir -p $@
 
 $(PODS_DESTS) : $(TARGET)/% : src/%
