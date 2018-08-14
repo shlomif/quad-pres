@@ -1,6 +1,6 @@
 TARGET = dest
 
-PAGES = index made_with
+PAGES = download index made_with
 
 SOURCES = $(addprefix src/,$(addsuffix .html.wml,$(PAGES)))
 
@@ -30,10 +30,7 @@ RSYNC = rsync --progress --verbose --rsh=ssh
 # all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) $(PODS_DESTS) $(PODS_DESTS_HTMLS) $(PACKAGES_DESTS)
 all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) dest/download.html
 
-$(DESTS) : $(TARGET)/% : src/%.wml template.wml
-	(cd src && wml $(WML_FLAGS) -DFILENAME=$(patsubst src/%.wml,%,$<) $(patsubst src/%,%,$<)) > $@
-
-dest/download.html : src/download.html.wml template.wml $(DEVEL_VERSION_FILE)
+$(DESTS) : $(TARGET)/% : src/%.wml template.wml $(DEVEL_VERSION_FILE)
 	(cd src && wml $(WML_FLAGS) -DFILENAME=$(patsubst src/%.wml,%,$<) -DDEVEL_VERSION=$(DEVEL_VERSION) $(patsubst src/%,%,$<)) > $@
 
 $(RAW_FILES_DEST) : $(TARGET)/% : src/%
