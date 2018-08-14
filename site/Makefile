@@ -10,10 +10,6 @@ RAW_FILES = style.css images/pa051.jpg quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lec
 RAW_FILES_SOURCES = $(addprefix src/,$(RAW_FILES))
 RAW_FILES_DEST = $(addprefix $(TARGET)/,$(RAW_FILES))
 
-PODS = $(addprefix docs/,roadmap spec whitepaper version-0.2-spec)
-PODS_DESTS_HTMLS = $(patsubst %,$(TARGET)/%.html,$(PODS))
-PODS_DESTS_PODS = $(patsubst %,$(TARGET)/%.pod,$(PODS))
-
 PACKAGES_DIR = $(TARGET)/download/arcs
 # PACKAGES = $(shell cd temp && cd lk-module-compiler-final && ls)
 PACKAGES =
@@ -27,7 +23,7 @@ WML_FLAGS += --passoption=2,-X --passoption=7,"-S imgsize" -DROOT~.
 
 RSYNC = rsync --progress --verbose --rsh=ssh
 
-# all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) $(PODS_DESTS) $(PODS_DESTS_HTMLS) $(PACKAGES_DESTS)
+# all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) $(PODS_DESTS)
 all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) dest/download.html
 
 $(DESTS) : $(TARGET)/% : src/%.wml template.wml $(DEVEL_VERSION_FILE)
@@ -41,9 +37,6 @@ dest $(SUBDIRS_DEST) : % :
 
 $(PODS_DESTS) : $(TARGET)/% : src/%
 	cp -f $< $@
-
-$(PODS_DESTS_HTMLS) : $(TARGET)/%.html : src/%.pod
-	pod2html $< > $@
 
 $(PACKAGES_DESTS) : $(PACKAGES_DIR)/% : ./temp/lk-module-compiler-final/%
 	cp -f $< $@
