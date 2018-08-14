@@ -33,7 +33,8 @@ my $cmd = shift @ARGV;
 
 my @dzil_dirs = ('Task-QuadPres');
 
-my $CPAN = sprintf( '%scpanm', ( $IS_WIN ? '' : 'sudo ' ) );
+# my $CPAN = sprintf( '%scpanm', ( $IS_WIN ? '' : 'sudo ' ) );
+my $CPAN = sprintf( '%scpanm', ( 1 ? '' : 'sudo ' ) );
 if ( $cmd eq 'install_deps' )
 {
     foreach my $d (@dzil_dirs)
