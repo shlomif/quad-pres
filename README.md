@@ -18,3 +18,5 @@ The Quad-Pres homepage is at:
 http://www.shlomifish.org/quad-pres/
 
 Consult it for instructions on how to build presentations with it.
+
+[![Build Status](https://travis-ci.org/shlomif/quad-pres.svg?branch=master)](https://travis-ci.org/shlomif/quad-pres)
