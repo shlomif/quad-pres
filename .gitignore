@@ -1,3 +1,5 @@
+/Task-QuadPres/.build/
+/Task-QuadPres/.tidyall.d/
 /installer/cmake/Shlomif_Common.cmake
 /installer/quad-pres.spec
 /site/dest/
