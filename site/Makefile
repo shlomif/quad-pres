@@ -1,4 +1,3 @@
-
 TARGET = dest
 
 PAGES = index made_with
@@ -31,29 +30,25 @@ RSYNC = rsync --progress --verbose --rsh=ssh
 # all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) $(PODS_DESTS) $(PODS_DESTS_HTMLS) $(PACKAGES_DESTS)
 all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) dest/download.html
 
-
-dest:
-	if [ ! -e $@ ] ; then mkdir $@ ; fi
-
-$(DESTS) :: $(TARGET)/% : src/%.wml template.wml
+$(DESTS) : $(TARGET)/% : src/%.wml template.wml
 	(cd src && wml $(WML_FLAGS) -DFILENAME=$(patsubst src/%.wml,%,$<) $(patsubst src/%,%,$<)) > $@
 
 dest/download.html : src/download.html.wml template.wml $(DEVEL_VERSION_FILE)
 	(cd src && wml $(WML_FLAGS) -DFILENAME=$(patsubst src/%.wml,%,$<) -DDEVEL_VERSION=$(DEVEL_VERSION) $(patsubst src/%,%,$<)) > $@
 
-$(RAW_FILES_DEST) :: $(TARGET)/% : src/%
+$(RAW_FILES_DEST) : $(TARGET)/% : src/%
 	cp -f $< $@
 
-$(SUBDIRS_DEST) :: % : unchanged
-	if [ ! -e $@ ] ; then mkdir $@ ; fi
+dest $(SUBDIRS_DEST) : % : unchanged
+	mkdir -p $@
 
-$(PODS_DESTS) :: $(TARGET)/% : src/%
+$(PODS_DESTS) : $(TARGET)/% : src/%
 	cp -f $< $@
 
-$(PODS_DESTS_HTMLS) :: $(TARGET)/%.html : src/%.pod
+$(PODS_DESTS_HTMLS) : $(TARGET)/%.html : src/%.pod
 	pod2html $< > $@
 
-$(PACKAGES_DESTS) :: $(PACKAGES_DIR)/% : ./temp/lk-module-compiler-final/%
+$(PACKAGES_DESTS) : $(PACKAGES_DIR)/% : ./temp/lk-module-compiler-final/%
 	cp -f $< $@
 
 #upload_vipe:
@@ -78,6 +73,3 @@ $(ARC_NAME):
 
 upload_arc: arc
 	$(RSYNC) $(ARC_NAME) shlomif@shell.berlios.de:
-
-
-
