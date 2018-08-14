@@ -24,6 +24,7 @@ if (
     die "cmake Failed";
 }
 
+$ENV{PERL5LIB} //= '';
 $ENV{PERL5LIB}              = "$myprefix/share/quad-pres/perl5:$ENV{PERL5LIB}";
 $ENV{QUAD_PRES_NO_HOME_LIB} = 1;
 $ENV{PATH}                  = "$myprefix/bin:$ENV{PATH}";
