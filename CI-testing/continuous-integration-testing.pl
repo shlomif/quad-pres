@@ -31,7 +31,7 @@ my $cmd = shift @ARGV;
 
 # do_system({cmd => ["cd black-hole-solitaire/Games-Solitaire-BlackHole-Solver/ && dzil test --all"]});
 
-my @dzil_dirs = ();
+my @dzil_dirs = ('Task-QuadPres');
 
 my $CPAN = sprintf( '%scpanm', ( $IS_WIN ? '' : 'sudo ' ) );
 if ( $cmd eq 'install_deps' )
