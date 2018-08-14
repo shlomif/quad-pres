@@ -7,6 +7,7 @@ before_install:
 install:
     - which python3
     - sudo cpanm --notest Bundle::QuadPres Class::XSAccessor File::Copy::Recursive File::Find::Object::Rule HTML::Lint HTML::Widgets::NavMenu::EscapeHtml IO::All MooX MooX::late Path::Tiny Template Test::Trap
+    - sudo cpanm --notest Dist::Zilla
     - perl CI-testing/continuous-integration-testing.pl install_deps
 perl:
     - "5.26"
