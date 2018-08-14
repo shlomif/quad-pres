@@ -10,11 +10,6 @@ RAW_FILES = style.css images/pa051.jpg quad-pres-0.8.0.tar.gz CatB-Quad-Pres-Lec
 RAW_FILES_SOURCES = $(addprefix src/,$(RAW_FILES))
 RAW_FILES_DEST = $(addprefix $(TARGET)/,$(RAW_FILES))
 
-PACKAGES_DIR = $(TARGET)/download/arcs
-# PACKAGES = $(shell cd temp && cd lk-module-compiler-final && ls)
-PACKAGES =
-PACKAGES_DESTS = $(addprefix $(PACKAGES_DIR)/,$(PACKAGES))
-
 SUBDIRS = images
 
 SUBDIRS_DEST = $(addprefix $(TARGET)/,$(SUBDIRS))
@@ -23,7 +18,6 @@ WML_FLAGS += --passoption=2,-X --passoption=7,"-S imgsize" -DROOT~.
 
 RSYNC = rsync --progress --verbose --rsh=ssh
 
-# all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) $(PODS_DESTS)
 all: dest $(SUBDIRS_DEST) $(DESTS) $(RAW_FILES_DEST) dest/download.html
 
 $(DESTS) : $(TARGET)/% : src/%.wml template.wml $(DEVEL_VERSION_FILE)
@@ -35,31 +29,5 @@ $(RAW_FILES_DEST) : $(TARGET)/% : src/%
 dest $(SUBDIRS_DEST) : % :
 	mkdir -p $@
 
-$(PODS_DESTS) : $(TARGET)/% : src/%
-	cp -f $< $@
-
-$(PACKAGES_DESTS) : $(PACKAGES_DIR)/% : ./temp/lk-module-compiler-final/%
-	cp -f $< $@
-
-#upload_vipe:
-#	(cd dest && $(RSYNC) -r * shlomif@vipe.technion.ac.il:public_html/quadpres/)
-
 upload: all
 	(cd dest && $(RSYNC) -a * $${__HOMEPAGE_REMOTE_PATH}/quad-pres)
-
-# (cd dest && $(RSYNC) -r * shlomif@shell.berlios.de:/home/groups/quad-pres/htdocs/)
-
-ARC_NAME = CLAN-$(shell date +%Y-%m-%d).tar.gz
-
-arc: $(ARC_NAME)
-
-del_arc:
-	rm -f $(ARC_NAME)
-
-rearc: del_arc arc
-
-$(ARC_NAME):
-	(cd temp && ./make-archive.sh)
-
-upload_arc: arc
-	$(RSYNC) $(ARC_NAME) shlomif@shell.berlios.de:
