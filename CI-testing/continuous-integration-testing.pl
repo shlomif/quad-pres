@@ -58,7 +58,7 @@ elsif ( $cmd eq 'test' )
             cmd => [
                       "cd installer/ && mkdir B && cd B && $^X ..${SEP}Tatzer "
                     . ( defined($cmake_gen) ? qq#--gen="$cmake_gen"# : "" )
-                    . " .. && $MAKE && $MAKE test"
+                    . " .. && $MAKE && $MAKE check"
             ]
         }
     );
