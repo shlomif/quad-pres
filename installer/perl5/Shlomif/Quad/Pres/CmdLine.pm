@@ -33,6 +33,9 @@ use lib getcwd();
 
 use MooX qw/ late /;
 
+use lib do { `wml-params-conf --show-privlib` =~ s#[\r\n]+\z##r };
+use WML_Frontends::Wml::Runner ();
+
 has 'dest_dir' => (isa => 'Str', 'is' => 'rw');
 has 'src_dir' => (isa => 'Str', 'is' => 'rw');
 has 'main_files_mtimes' => (isa => 'ArrayRef', 'is' => 'rw');
@@ -46,6 +49,10 @@ has 'path_man' => (is => 'ro', lazy => 1, default => sub {
     },
 );
 has 'cmd_line' => (isa => 'ArrayRef', is => 'ro', required => 1);
+has '_wml_obj' => (is => 'ro', lazy => 1, default => sub {
+        return WML_Frontends::Wml::Runner->new;
+    },
+);
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
 
@@ -579,7 +586,6 @@ sub _render_file
         ;
 
     my @command = (
-        "wml",
         "-I", $wml_dir,
         @local_wml,
         "-DFILENAME=$filename",
@@ -590,13 +596,21 @@ sub _render_file
 
     if (! $ENV{"QUAD_PRES_QUIET"})
     {
-        print join(" ", @command), "\n";
+        print join(" ", 'wml', @command), "\n";
     }
 
-    my $ret = system(@command);
+    my $ret = -1;
+
+    eval {
+        $ret = $self->_wml_obj->run_with_ARGV(
+            {
+                ARGV => [@command],
+            }
+        );
+    };
 
     # If it failed.
-    if ($ret != 0)
+    if ($@ or $ret != 0)
     {
         # Clean-up the file so it will have to be regenerated
         my $error = Shlomif::Quad::Pres::Exception::RenderFile->new();
