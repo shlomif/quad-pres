@@ -1,5 +1,6 @@
 cache:
-    - $HOME/perl5
+    directories:
+        - $HOME/perl_modules
 os: linux
 dist: trusty
 before_install:
