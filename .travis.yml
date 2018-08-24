@@ -13,6 +13,7 @@ install:
     - cpanm Bundle::QuadPres Class::XSAccessor File::Copy::Recursive File::Find::Object::Rule HTML::Lint HTML::Widgets::NavMenu::EscapeHtml IO::All MooX MooX::late Path::Tiny Template Test::Trap
     - cpanm Dist::Zilla Pod::Weaver::Section::Support
     - perl CI-testing/continuous-integration-testing.pl install_deps
+    - bash scripts/install-git-cmakey-program-system-wide.bash 'git' 'src' 'https://github.com/thewml/website-meta-language.git'
 perl:
     - "5.26"
 python:
