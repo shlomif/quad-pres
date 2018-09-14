@@ -34,7 +34,7 @@ use lib getcwd();
 use MooX qw/ late /;
 
 use lib do { `wml-params-conf --show-privlib` =~ s#[\r\n]+\z##r };
-use WML_Frontends::Wml::Runner ();
+use TheWML::Frontends::Wml::Runner ();
 
 has 'dest_dir' => (isa => 'Str', 'is' => 'rw');
 has 'src_dir' => (isa => 'Str', 'is' => 'rw');
@@ -50,7 +50,7 @@ has 'path_man' => (is => 'ro', lazy => 1, default => sub {
 );
 has 'cmd_line' => (isa => 'ArrayRef', is => 'ro', required => 1);
 has '_wml_obj' => (is => 'ro', lazy => 1, default => sub {
-        return WML_Frontends::Wml::Runner->new;
+        return TheWML::Frontends::Wml::Runner->new;
     },
 );
 
