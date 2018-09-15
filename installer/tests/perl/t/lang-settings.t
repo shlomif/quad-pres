@@ -9,7 +9,7 @@ use File::Path;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
-use HTML::Lint;
+use HTML::Tidy5;
 
 # TEST:$num_cfg=2*2*2*2;
 
@@ -93,7 +93,7 @@ sub verify_lang_settings
     my $text = io()->file($filename)->slurp();
 
     if (($text =~ /<\?xml version="1.0" encoding="$charset"\?>/) &&
-        ($text =~ /<meta http-equiv="content-type" content="text\/html; charset=$charset"(\s+\/)?>/) &&
+        ($text =~ /<meta charset="\Q$charset\E"(\s+\/)?>/) &&
         ($text =~ /<html.*xml:lang="$lang" lang="$lang">/m))
     {
         return 0;
@@ -152,13 +152,18 @@ EOF
     );
     chdir($pwd);
 
-    my $output_file = "$test_dir-output/index.html";
-    my $lint = HTML::Lint->new;
+sub calc_tidy
+{
+    return HTML::Tidy5->new( { input_xml => 1, output_xhtml => 1, } );
+}
 
-    $lint->parse_file($output_file);
+    my $output_file = "$test_dir-output/index.html";
+    my $lint = calc_tidy;
+
+    $lint->parse($output_file, io->file($output_file)->utf8->all);
 
     # TEST*$num_cfg
-    ok (!scalar($lint->errors()),
+    ok (!scalar($lint->messages()),
         "HTML is valid for test No. '$test_idx'."
     );
 

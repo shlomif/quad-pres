@@ -9,11 +9,11 @@ use File::Path;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
-use HTML::Lint;
+use HTML::Tidy5;
 
 my $io_dir = "t/data/in-out-body-dir";
-rmtree ($io_dir);
-mkpath ($io_dir);
+rmtree($io_dir);
+mkpath($io_dir);
 
 # TEST:$num_themes=2;
 my @themes = (qw(alon-altman-text shlomif-text));
@@ -22,7 +22,6 @@ my @themes = (qw(alon-altman-text shlomif-text));
 my @dirs = (qw(ltr rtl));
 
 # TEST:$num_cfgs=$num_dirs*$num_themes;
-
 
 my $test_idx = 0;
 
@@ -36,19 +35,20 @@ sub perform_test
 
     $test_idx++;
     my $theme = shift;
-    my $dir = shift;
+    my $dir   = shift;
 
     my $test_dir = "testhtml$test_idx";
 
     my $pwd = Cwd::getcwd();
 
     # TEST:$n++;
-    ok (!system(
-            "quadp", "setup", $test_dir, "--dest-dir=$pwd/${test_dir}-output",
+    ok(
+        !system(
+            "quadp",   "setup",
+            $test_dir, "--dest-dir=$pwd/${test_dir}-output",
         ),
         "setup for test $test_idx is successful.",
     );
-
 
     my $wml_rc = io->file("$test_dir/.wmlrc");
 
@@ -69,33 +69,32 @@ EOF
     chdir($test_dir);
 
     # TEST:$n++;
-    ok(
-        !system(qw(quadp render -a)),
-        "quadp render -a for test $test_idx",
-    );
+    ok( !system(qw(quadp render -a)), "quadp render -a for test $test_idx", );
     chdir($pwd);
 
-    my $output_file="$test_dir-output/index.html";
+    my $output_file = "$test_dir-output/index.html";
 
-    my $lint = HTML::Lint->new;
+    sub calc_tidy
+    {
+        return HTML::Tidy5->new( { input_xml => 1, output_xhtml => 1, } );
+    }
+    my $lint = calc_tidy;
 
-
-    $lint->parse_file("$test_dir-output/index.html");
+    $lint->parse( "$test_dir-output/index.html",
+        io->file("$test_dir-output/index.html")->utf8->all );
 
     # TEST:$n++;
-    ok (!scalar($lint->errors()),
-        "HTML is valid for test No. $test_idx."
-    );
+    ok( !scalar( $lint->messages() ), "HTML is valid for test No. $test_idx." );
 
-    my $body_str="<body>";
-    if ($dir eq "rtl")
+    my $body_str = "<body>";
+    if ( $dir eq "rtl" )
     {
         $body_str = q{<body dir="rtl">};
     }
 
     # TEST:$n++;
     like(
-        scalar(io()->file($output_file)->slurp),
+        scalar( io()->file($output_file)->slurp ),
         qr{\Q$body_str\E},
         "output file contains the right body tag - $test_idx.",
     );
@@ -110,7 +109,7 @@ for my $theme (@themes)
 {
     for my $dir (@dirs)
     {
-        perform_test($theme,$dir);
+        perform_test( $theme, $dir );
     }
 }
 
