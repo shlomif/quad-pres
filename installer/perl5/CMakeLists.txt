@@ -45,6 +45,7 @@ SET( myfiles
         Shlomif/Quad/Pres/FS.pm
         Shlomif/Quad/Pres/Getopt.pm
         Shlomif/Quad/Pres/Url.pm
+        Shlomif/Quad/Pres/VimIface.pm
         Shlomif/Quad/Pres/WriteContents.pm
 )
 

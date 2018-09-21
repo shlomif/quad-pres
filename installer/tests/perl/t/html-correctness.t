@@ -3,9 +3,9 @@
 use strict;
 use warnings;
 
-use Test::More tests => 6;
+use Test::More tests => 8;
 
-use File::Path;
+use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
@@ -87,3 +87,20 @@ foreach my $theme (@themes)
     perform_test($theme);
 }
 
+my $src_dir = "t/data/p4n5/";
+my $s       = "t/data/p4n5-copy/";
+rmtree([$s]);
+dircopy( $src_dir, $s );
+
+chdir($s);
+mkdir("rendered");
+
+# TEST
+ok( !system( "quadp", "render", "-a" ),
+    "quadp render -a ran successfully for theme ''." );
+
+# TEST
+ok(
+    !system( "quadp", "render_all_in_one_page", "--output-dir=all-in" ),
+    "quadp render_all_in_one_page ran successfully for theme ''."
+);

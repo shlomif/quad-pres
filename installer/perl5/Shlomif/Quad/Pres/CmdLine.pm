@@ -1108,14 +1108,15 @@ sub perform_render_all_in_one_page_command
 
     my $contents = Contents::get_contents();
 
-    my $dest_dir = $self->dest_dir;
+    my $cfg = Shlomif::Quad::Pres::Config->new();
+
+    my $dest_dir = $cfg->get_server_dest_dir();
 
     if ( $dest_dir !~ m{/\z} )
     {
         $dest_dir .= "/";
     }
 
-    my $cfg   = Shlomif::Quad::Pres::Config->new();
     my $group = $cfg->get_setgid_group();
 
     my $quadpres_obj = Shlomif::Quad::Pres->new(
