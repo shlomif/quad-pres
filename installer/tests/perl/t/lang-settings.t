@@ -9,7 +9,12 @@ use File::Path;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
-use HTML::Tidy5;
+use HTML::T5;
+
+sub calc_tidy
+{
+    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
+}
 
 # TEST:$num_cfg=2*2*2*2;
 
@@ -151,11 +156,6 @@ EOF
         "quadp render -a was successful for test No. $test_idx"
     );
     chdir($pwd);
-
-sub calc_tidy
-{
-    return HTML::Tidy5->new( { input_xml => 1, output_xhtml => 1, } );
-}
 
     my $output_file = "$test_dir-output/index.html";
     my $lint = calc_tidy;

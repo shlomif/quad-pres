@@ -9,7 +9,7 @@ use File::Path;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
-use HTML::Tidy5;
+use HTML::T5;
 
 my $io_dir = "t/data/in-out-body-dir";
 rmtree($io_dir);
@@ -24,6 +24,11 @@ my @dirs = (qw(ltr rtl));
 # TEST:$num_cfgs=$num_dirs*$num_themes;
 
 my $test_idx = 0;
+
+sub calc_tidy
+{
+    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
+}
 
 # TEST:$n=0;
 sub perform_test
@@ -74,10 +79,6 @@ EOF
 
     my $output_file = "$test_dir-output/index.html";
 
-    sub calc_tidy
-    {
-        return HTML::Tidy5->new( { input_xml => 1, output_xhtml => 1, } );
-    }
     my $lint = calc_tidy;
 
     $lint->parse( "$test_dir-output/index.html",

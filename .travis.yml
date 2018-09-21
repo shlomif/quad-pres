@@ -13,8 +13,7 @@ install:
     - eval "$(perl -Mlocal::lib=$HOME/perl_modules)"
     - cpanm Alien::Tidyp App::XML::DocBook::Builder Pod::Xhtml YAML::XS
     - cpanm --notest HTML::Tidy
-    - cpanm Alien::TidyHTML5
-    - (git clone https://github.com/robrwo/html-tidy5 && cd html-tidy5 && cpanm --installdeps . && perl Makefile.PL && make && make test && make install) && rm -fr html-tidy5
+    - cpanm HTML::T5
     - cpanm Bundle::QuadPres Class::XSAccessor File::Copy::Recursive File::Find::Object::Rule HTML::Widgets::NavMenu::EscapeHtml IO::All MooX MooX::late Path::Tiny Template Test::Trap
     - cpanm Dist::Zilla Pod::Weaver::Section::Support
     # For wml

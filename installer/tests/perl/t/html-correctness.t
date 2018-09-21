@@ -9,7 +9,7 @@ use File::Path;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
-use HTML::Tidy5;
+use HTML::T5;
 
 my $io_dir = "t/data/in-out-html-correctness";
 rmtree($io_dir);
@@ -17,6 +17,11 @@ mkpath($io_dir);
 
 # TEST:$num_themes=2;
 my @themes = (qw(alon-altman-text shlomif-text));
+
+sub calc_tidy
+{
+    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
+}
 
 sub check_files
 {
@@ -66,10 +71,6 @@ EOF
         "quadp render -a ran successfully for theme '$theme'." );
     chdir($pwd);
 
-    sub calc_tidy
-    {
-        return HTML::Tidy5->new( { input_xml => 1, output_xhtml => 1, } );
-    }
     my $lint = calc_tidy;
 
     $lint->parse( "$test_dir-output/index.html",
