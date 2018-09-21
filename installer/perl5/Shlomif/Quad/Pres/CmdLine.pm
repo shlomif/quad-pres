@@ -1225,7 +1225,7 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
              {$1 . $fix_internal_link->($2) . $3}egms
                 ;
 
-            my $div_tag = qq{<div class="page">\n};
+            my $div_tag = qq{<section class="page">\n};
 
             my $id_attr = qq{ id="} . _calc_page_id( \@path ) . qq{"};
 
@@ -1235,8 +1235,9 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
             }
 
             $text =~ s{<h1>}{<h1$id_attr>};
+            $text =~ s%</?main>%%g;
 
-            print {$all_in_one_out_fh} $text, qq{\n</div>\n};
+            print {$all_in_one_out_fh} $text, qq{\n</section>\n};
             close($in);
         }
         if ( exists( $branch->{'images'} ) )
