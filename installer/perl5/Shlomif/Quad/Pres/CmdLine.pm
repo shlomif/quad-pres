@@ -1164,7 +1164,8 @@ sub perform_render_all_in_one_page_command
 
             if ( !$is_first )
             {
-                $text =~ s{.*?(<table class="page-nav-bar top")}{$1}ms;
+                $text =~
+                    s{.*?(<nav>[\s\n\r]*<table class="page-nav-bar top")}{$1}ms;
             }
             else
             {
@@ -1175,7 +1176,7 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
             $is_first = 0;
 
             # Remove the trailing stuff.
-            $text =~ s{<table class="page-nav-bar bottom".*}{}ms;
+            $text =~ s{<nav>[\s\n\r]*<table class="page-nav-bar bottom".*}{}ms;
 
             my $fix_internal_link = sub {
                 my $link_text = shift;

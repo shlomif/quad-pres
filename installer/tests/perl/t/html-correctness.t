@@ -3,13 +3,15 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
-
+use Test::More tests => 9;
+use Test::Differences qw/ eq_or_diff /;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
 use HTML::T5;
+
+my $orig_dir = Cwd::getcwd();
 
 my $io_dir = "t/data/in-out-html-correctness";
 rmtree($io_dir);
@@ -36,8 +38,6 @@ sub check_files
 sub perform_test
 {
     my $theme = shift;
-
-    my $orig_dir = Cwd::getcwd();
 
     chdir($io_dir);
     my $test_dir   = "testhtml-$theme";
@@ -89,7 +89,7 @@ foreach my $theme (@themes)
 
 my $src_dir = "t/data/p4n5/";
 my $s       = "t/data/p4n5-copy/";
-rmtree([$s]);
+rmtree( [$s] );
 dircopy( $src_dir, $s );
 
 chdir($s);
@@ -104,3 +104,11 @@ ok(
     !system( "quadp", "render_all_in_one_page", "--output-dir=all-in" ),
     "quadp render_all_in_one_page ran successfully for theme ''."
 );
+my $lint = calc_tidy;
+
+$lint->parse( "all-in/index.html", io->file("all-in/index.html")->utf8->all );
+
+# TEST
+eq_or_diff( [ $lint->messages() ], [], "HTML is valid for all-in-one." );
+
+chdir($orig_dir);
