@@ -1,0 +1,23 @@
+#include 'template.wml'
+
+<p>
+Before Perl 5 came out and Perl got lexical scoping and the <code>my</code>
+keyword, an older <code>local</code> keyword was made available for programmers to
+temporarily "localise" the values of variables (or parts there of) in Perl.
+</p>
+
+<p>
+As opposed to <code>my</code>, which is lexically scoped, <code>local</code> is
+<a href="http://en.wikipedia.org/wiki/Scope_%28programming%29#Dynamic_scoping">dynamically scoped</a>. What happens when one writes a
+<code>local $myvar = NEW_VALUE_EXPR();</code> (which will work only for package
+variables) is that perl will store the previous value of the variable somewhere
+safe, allow the programmer to tamper with it as it pleases, and restore its
+value to its previous, saved state, when the block exits. As opposed to
+my, the new localised value will survive function calls in different functions.
+</p>
+
+<p>
+So when should local be used?
+</p>
+
+<qpcontents />

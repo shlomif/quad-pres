@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+ <head>
+  <title>src/module-build-and-starter/MyMath-Ops-with-MyMath-Ops-Add-pm/lib/MyMath/Ops/Add.pm</title>
+  <style>
+/*
+ * A stylesheet designed to be used with the HTML output of the
+ * Perl module Text::VimColor.
+ *
+ * This is designed to make the highlighting look like the default gvim
+ * colour scheme, with 'background=light'.
+ *
+ * Geoff Richards (qef@laxan.com)
+ *
+ * This CSS file (light.css) is public domain.  Do what you want with it.
+ * That doesn't mean that HTML with this CSS in is public domain.
+ */
+
+body { color: black; background: white none }
+
+A:link { color: #00F; background: white none }
+A:visited { color: #909; background: white none }
+A:hover { color: #F00; background: white none }
+A:active { color: #F00; background: white none }
+
+.synComment    { color: #0000FF }
+.synConstant   { color: #FF00FF }
+.synIdentifier { color: #008B8B }
+.synStatement  { color: #A52A2A ; font-weight: bold }
+.synPreProc    { color: #A020F0 }
+.synType       { color: #2E8B57 ; font-weight: bold }
+.synSpecial    { color: #6A5ACD }
+.synUnderlined { color: #000000 ; text-decoration: underline }
+.synError      { color: #FFFFFF ; background: #FF0000 none }
+.synTodo       { color: #0000FF ; background: #FFFF00 none }
+</style>
+ </head>
+ <body>
+
+<pre><span class="synStatement">package</span><span class="synType"> MyMath::Ops::Add</span>;
+
+<span class="synStatement">use warnings</span>;
+<span class="synStatement">use strict</span>;
+
+<span class="synStatement">=head1</span><span class="synConstant"> NAME</span>
+
+MyMath::Ops::Add - The great new MyMath::Ops::Add!
+
+<span class="synStatement">=head1</span><span class="synConstant"> VERSION</span>
+
+Version 0.01
+
+<span class="synStatement">=cut</span>
+
+<span class="synStatement">our</span> <span class="synIdentifier">$VERSION</span> = <span class="synConstant">'0.01'</span>;
+
+<span class="synStatement">=head1</span><span class="synConstant"> SYNOPSIS</span>
+
+Quick summary of what the module does.
+
+Perhaps a little code snippet.
+
+<span class="synPreProc">    use MyMath::Ops::Add;</span>
+
+<span class="synPreProc">    my $foo = MyMath::Ops::Add-&gt;new();</span>
+<span class="synPreProc">    ...</span>
+
+<span class="synStatement">=head1</span><span class="synConstant"> EXPORT</span>
+
+A list of functions that can be exported.  You can delete this section
+if you don't export anything, such as for a purely object-oriented module.
+
+<span class="synStatement">=head1</span><span class="synConstant"> FUNCTIONS</span>
+
+<span class="synStatement">=head2</span><span class="synConstant"> new</span>
+
+Construct a new object.
+
+<span class="synStatement">=cut</span>
+
+<span class="synStatement">sub </span><span class="synIdentifier">new</span>
+{
+    <span class="synStatement">my</span> <span class="synIdentifier">$class</span> = <span class="synStatement">shift</span>;
+
+    <span class="synStatement">my</span> <span class="synIdentifier">$self</span> = <span class="synStatement">bless</span> {}, <span class="synIdentifier">$class</span>;
+
+    <span class="synIdentifier">$self-&gt;_init</span>(<span class="synIdentifier">@_</span>);
+
+    <span class="synStatement">return</span> <span class="synIdentifier">$self</span>;
+}
+
+<span class="synStatement">sub </span><span class="synIdentifier">_init</span>
+{
+    <span class="synStatement">my</span> <span class="synIdentifier">$self</span> = <span class="synStatement">shift</span>;
+
+    <span class="synStatement">return</span>;
+}
+
+<span class="synStatement">=head2</span><span class="synConstant"> $self-&gt;add($x, $y)</span>
+
+Adds two numbers.
+
+<span class="synStatement">=cut</span>
+
+<span class="synStatement">sub </span><span class="synIdentifier">add</span>
+{
+    <span class="synStatement">my</span> <span class="synIdentifier">$self</span> = <span class="synStatement">shift</span>;
+
+    <span class="synStatement">my</span> (<span class="synIdentifier">$x</span>, <span class="synIdentifier">$y</span>) = <span class="synIdentifier">@_</span>;
+    <span class="synStatement">return</span> <span class="synIdentifier">$x</span>+<span class="synIdentifier">$y</span>;
+}
+
+<span class="synStatement">=head2</span><span class="synConstant"> function1</span>
+
+<span class="synStatement">=cut</span>
+
+<span class="synStatement">sub </span><span class="synIdentifier">function1 </span>{
+}
+
+<span class="synStatement">=head2</span><span class="synConstant"> function2</span>
+
+<span class="synStatement">=cut</span>
+
+<span class="synStatement">sub </span><span class="synIdentifier">function2 </span>{
+}
+
+<span class="synStatement">=head1</span><span class="synConstant"> AUTHOR</span>
+
+Perl Newbie, <span class="synIdentifier">C&lt;&lt; &lt;perl-newbie at perl-begin.org&gt; &gt;&gt;</span>
+
+<span class="synStatement">=head1</span><span class="synConstant"> BUGS</span>
+
+Please report any bugs or feature requests to <span class="synIdentifier">C&lt;bug-mymath::ops at rt.cpan.org&gt;</span>, or through
+the web interface at <span class="synIdentifier">L&lt;http://rt.cpan.org/NoAuth/ReportBug.html?Queue=MyMath::Ops&gt;</span>.  I will be notified, and then you'll
+automatically be notified of progress on your bug as I make changes.
+
+
+
+
+<span class="synStatement">=head1</span><span class="synConstant"> SUPPORT</span>
+
+You can find documentation for this module with the perldoc command.
+
+<span class="synPreProc">    perldoc MyMath::Ops::Add</span>
+
+
+You can also look for information at:
+
+<span class="synStatement">=over</span> <span class="synConstant">4</span>
+
+<span class="synStatement">=item</span><span class="synConstant"> * RT: CPAN's request tracker</span>
+
+<span class="synIdentifier">L&lt;http://rt.cpan.org/NoAuth/Bugs.html?Dist=MyMath::Ops&gt;</span>
+
+<span class="synStatement">=item</span><span class="synConstant"> * AnnoCPAN: Annotated CPAN documentation</span>
+
+<span class="synIdentifier">L&lt;http://annocpan.org/dist/MyMath::Ops&gt;</span>
+
+<span class="synStatement">=item</span><span class="synConstant"> * CPAN Ratings</span>
+
+<span class="synIdentifier">L&lt;http://cpanratings.perl.org/d/MyMath::Ops&gt;</span>
+
+<span class="synStatement">=item</span><span class="synConstant"> * Search CPAN</span>
+
+<span class="synIdentifier">L&lt;http://metacpan.org/release/MyMath::Ops/&gt;</span>
+
+<span class="synStatement">=back</span>
+
+
+<span class="synStatement">=head1</span><span class="synConstant"> ACKNOWLEDGEMENTS</span>
+
+
+<span class="synStatement">=head1</span><span class="synConstant"> COPYRIGHT &amp; LICENSE</span>
+
+Copyright 2009 Perl Newbie.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
+
+<span class="synStatement">=cut</span>
+
+<span class="synConstant">1</span>; <span class="synComment"># End of MyMath::Ops::Add</span>
+</pre>
+
+ </body>
+</html>

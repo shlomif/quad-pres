@@ -1,0 +1,9 @@
+#include 'template.wml'
+
+<p>
+Here's an example class with some accessors and a script that uses it:
+</p>
+
+<quadpres_code_file filename="src/accessors/Person.pm" />
+
+<quadpres_code_file filename="src/accessors/test-person.pl" />

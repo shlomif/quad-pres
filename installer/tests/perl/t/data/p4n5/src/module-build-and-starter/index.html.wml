@@ -1,0 +1,29 @@
+#include 'template.wml'
+
+<p>
+Now let's tie everything together. When you download a Perl package from
+CPAN, there's a standard way to build and install it -
+<code>perl Makefile.PL</code>, <code>make</code>, <code>make test</code> and
+<code>make install</code> (or alternatively a similar process with
+<code>perl Build.PL</code> and <code>./Build</code> ).
+</p>
+
+<p>
+When creating packages of Perl code, it is preferable to
+make them capable of being built this way, even if they are intended for
+internal use. That is because packaging them this way gives you many
+advantages, among them the ability to specify CPAN (and in-house)
+dependencies, integrity tests, configurability in building and installation,
+and simplification of the preparation of system packages (such as
+<code>.rpm</code>s or <code>.deb</code>s).
+</p>
+
+<p>
+In this section we'll learn how to prepare your own CPAN-like package of
+Perl 5 code using
+<a href="http://metacpan.org/release/Module-Starter/">module-starter</a> and
+<a href="http://metacpan.org/release/Module-Build/">Module-Build</a>.
+There are some variations on this theme, but it should get you started.
+</p>
+
+<qpcontents />

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+ <head>
+  <title>src/new-features/copy.pl</title>
+  <style>
+/*
+ * A stylesheet designed to be used with the HTML output of the
+ * Perl module Text::VimColor.
+ *
+ * This is designed to make the highlighting look like the default gvim
+ * colour scheme, with 'background=light'.
+ *
+ * Geoff Richards (qef@laxan.com)
+ *
+ * This CSS file (light.css) is public domain.  Do what you want with it.
+ * That doesn't mean that HTML with this CSS in is public domain.
+ */
+
+body { color: black; background: white none }
+
+A:link { color: #00F; background: white none }
+A:visited { color: #909; background: white none }
+A:hover { color: #F00; background: white none }
+A:active { color: #F00; background: white none }
+
+.synComment    { color: #0000FF }
+.synConstant   { color: #FF00FF }
+.synIdentifier { color: #008B8B }
+.synStatement  { color: #A52A2A ; font-weight: bold }
+.synPreProc    { color: #A020F0 }
+.synType       { color: #2E8B57 ; font-weight: bold }
+.synSpecial    { color: #6A5ACD }
+.synUnderlined { color: #000000 ; text-decoration: underline }
+.synError      { color: #FFFFFF ; background: #FF0000 none }
+.synTodo       { color: #0000FF ; background: #FFFF00 none }
+</style>
+ </head>
+ <body>
+
+<pre><span class="synPreProc">#!/usr/bin/perl</span>
+
+<span class="synComment"># This is just for demonstration. A better way would be to use File::Copy :</span>
+<span class="synComment">#</span>
+<span class="synComment"># http://perldoc.perl.org/File/Copy.html</span>
+<span class="synComment">#</span>
+
+<span class="synStatement">use strict</span>;
+<span class="synStatement">use warnings</span>;
+
+<span class="synStatement">my</span> <span class="synIdentifier">$source_fn</span> = <span class="synStatement">shift</span>(<span class="synIdentifier">@ARGV</span>);
+<span class="synStatement">my</span> <span class="synIdentifier">$dest_fn</span> = <span class="synStatement">shift</span>(<span class="synIdentifier">@ARGV</span>);
+
+<span class="synStatement">if</span> ( (!<span class="synStatement">defined</span>(<span class="synIdentifier">$source_fn</span>)) || (!<span class="synStatement">defined</span>(<span class="synIdentifier">$dest_fn</span>)) )
+{
+    <span class="synStatement">die</span> <span class="synConstant">&quot;You must specify two arguments - source and destination.&quot;</span>
+}
+
+<span class="synStatement">open</span> <span class="synStatement">my</span> <span class="synIdentifier">$source_handle</span>, <span class="synConstant">&quot;&lt;&quot;</span>, <span class="synIdentifier">$source_fn</span>
+    <span class="synStatement">or</span> <span class="synStatement">die</span> <span class="synConstant">&quot;Could not open '</span><span class="synIdentifier">$source_fn</span><span class="synConstant">' - </span><span class="synIdentifier">$!</span><span class="synConstant">.&quot;</span>;
+<span class="synStatement">open</span> <span class="synStatement">my</span> <span class="synIdentifier">$dest_handle</span>, <span class="synConstant">&quot;&gt;&quot;</span>, <span class="synIdentifier">$dest_fn</span>
+    <span class="synStatement">or</span> <span class="synStatement">die</span> <span class="synConstant">&quot;Could not open '</span><span class="synIdentifier">$dest_fn</span><span class="synConstant">' - </span><span class="synIdentifier">$!</span><span class="synConstant">.&quot;</span>;
+
+<span class="synStatement">while</span> (<span class="synStatement">my</span> <span class="synIdentifier">$line</span> = &lt;<span class="synIdentifier">$source_handle</span>&gt;)
+{
+    <span class="synStatement">print</span> <span class="synStatement">{</span><span class="synIdentifier">$dest_handle</span><span class="synStatement">}</span> <span class="synIdentifier">$line</span>;
+}
+
+<span class="synStatement">close</span>(<span class="synIdentifier">$source_handle</span>);
+<span class="synStatement">close</span>(<span class="synIdentifier">$dest_handle</span>);
+</pre>
+
+ </body>
+</html>
