@@ -1097,13 +1097,13 @@ sub perform_render_all_in_one_page_command
             { text => 'render must be followed by filenames or flags' } );
     }
 
-    my $render_all            = 0;
-    my $render_hard_disk_html = 0;
+    my $all_in_one_dir;
+    $getopt->getoptions( 'output-dir=s' => \$all_in_one_dir, );
+    if ( !defined $all_in_one_dir )
+    {
+        $error_class->throw( { text => 'please specify an --output-dir.', } );
+    }
 
-    $getopt->getoptions(
-        'a|all!'        => \$render_all,
-        'hd|hard-disk!' => \$render_hard_disk_html,
-    );
     require Contents;
 
     my $contents = Contents::get_contents();
@@ -1124,7 +1124,6 @@ sub perform_render_all_in_one_page_command
         'mode'   => "server",
     );
 
-    my $all_in_one_dir = "all-in-one";
     mkdir($all_in_one_dir);
     my $all_fn = "$all_in_one_dir/index.html";
     open my $all_in_one_out_fh, ">", $all_fn;
