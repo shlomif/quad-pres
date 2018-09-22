@@ -3,13 +3,14 @@
 use strict;
 use warnings;
 
-use Test::More tests => 9;
+use Test::More tests => 10;
 use Test::Differences qw/ eq_or_diff /;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
 use HTML::T5;
+use XML::LibXML ();
 
 my $orig_dir = Cwd::getcwd();
 
@@ -106,9 +107,15 @@ ok(
 );
 my $lint = calc_tidy;
 
-$lint->parse( "all-in/index.html", io->file("all-in/index.html")->utf8->all );
+my $fn = "all-in/index.html";
+$lint->parse( $fn, io->file($fn)->utf8->all );
 
 # TEST
 eq_or_diff( [ $lint->messages() ], [], "HTML is valid for all-in-one." );
 
+my $xml = XML::LibXML->new( load_ext_dtd => 1 );
+$xml->parse_file($fn);
+
+# TEST
+pass("XML validation for '$fn'.");
 chdir($orig_dir);
