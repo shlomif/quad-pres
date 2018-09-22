@@ -1236,6 +1236,8 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
 
             $text =~ s{<h1>}{<h1$id_attr>};
             $text =~ s%</?main>%%g;
+            $text =~
+                s%(<table(?:\s+(?:class|style)="[^"]*"\s*)*) summary=""%$1%g;
 
             print {$all_in_one_out_fh} $text, qq{\n</section>\n};
             close($in);
