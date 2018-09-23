@@ -65,13 +65,15 @@
 <qp:html:header />
 <qp:html:bodystart />
 {#QUADPRES_BEFORE_TOP_NAV_BAR#}
+<main>
+<header>
+<h1><qp:title /></h1>
+</header>
 <nav>
 <qpnavigationbar withkey="1" placement="top" />
 <quadpres_breadcrumbs_trail />
 </nav>
-<main>
 {#QUADPRES_AFTER_TOP_NAV_BAR#}
-<h1><qp:title /></h1>
 {#BODY#}
 <hr />
 {#QUADPRES_BEFORE_BOTTOM_NAV_BAR#}

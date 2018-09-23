@@ -1234,7 +1234,8 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
                 $text = $div_tag . $text;
             }
 
-            $text =~ s{<h1>}{<h1$id_attr>};
+            $text =~ s{<h1>}{<h2$id_attr>};
+            $text =~ s{</h1>}{</h2>};
             $text =~ s%</?main>%%g;
             $text =~
                 s%(<table(?:\s+(?:class|style)="[^"]*"\s*)*) summary=""%$1%g;
