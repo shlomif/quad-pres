@@ -1,3 +1,9 @@
+Version 0.22.0 - shlomif - 2018-09-23
+
+	* Allow to output XHTML5 output.
+
+	* Add the "quadp render_all_in_one_page" subcommand.
+
 Version 0.20.0 - shlomif - Unknown
 
 	* Convert use of File::Glob::glob() to bsd_glob() to get rid of a
