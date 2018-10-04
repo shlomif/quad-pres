@@ -322,8 +322,8 @@ EOF
         )
     );
 
-    "\n\n#include \"quadpres_main.wml\"\n\n" >
-        io->file("$src_dir_name/template.wml");
+    io->file("$src_dir_name/template.wml")
+        ->print("\n\n#include \"quadpres_main.wml\"\n\n");
 
     my $modules_dir = $self->path_man()->get_modules_dir();
 
@@ -520,7 +520,8 @@ sub _render_all_contents_traverse_callback
                 mkdir($dir_name);
             }
 
-            io->file("template.html.wml") > io->file($src_filename);
+            io->file($src_filename)
+                ->print( io->file("template.html.wml")->all );
         }
 
         {
@@ -766,10 +767,8 @@ sub perform_upload_command
 
     if ( $util eq "rsync" )
     {
-        @command = (
-            qw(rsync --progress --verbose --rsh=ssh -a),
-            $last_component . "/", $upload_path
-        );
+        @command =
+            ( qw(rsync --verbose -a), $last_component . "/", $upload_path );
     }
     elsif ( $util eq "scp" )
     {
