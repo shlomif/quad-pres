@@ -5,7 +5,7 @@ os: linux
 dist: trusty
 before_install:
     - sudo apt-get update -qq
-    - sudo apt-get install -y cmake cmake-data ninja-build python3-pip ack-grep cpanminus perl libdb5.3-dev libgd-dev libperl-dev libxml2-dev lynx valgrind vim wml
+    - sudo apt-get --no-install-recommends install -y cmake cmake-data ninja-build python3-pip ack-grep cpanminus perl libdb5.3-dev libgd-dev libperl-dev libxml2-dev lynx valgrind vim wml
     - sudo dpkg-divert --local --divert /usr/bin/ack --rename --add /usr/bin/ack-grep
 install:
     - which python3
