@@ -1163,16 +1163,20 @@ sub perform_render_all_in_one_page_command
 
             if ( !$is_first )
             {
-                $text =~
-                    s{.*?(<nav>[\s\n\r]*<table class="page-nav-bar top")}{$1}ms;
+                die "clam" if $text !~ m{<header>};
+                $text =~ s{.*?(<header)}{$1}ms;
+                die "prio" if $text !~ m{<header>};
             }
             else
             {
                 $text =~ s{<link rel="(?:top|next|first|last)".*?/>}{}gms;
+                die "forty" if $text !~ m{<header>};
                 $text =~
 s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wonderful ad code. -->\E}{}ms;
             }
             $is_first = 0;
+
+            die "torty" if $text !~ m{<header>};
 
             # Remove the trailing stuff.
             $text =~ s{<nav>[\s\n\r]*<table class="page-nav-bar bottom".*}{}ms;
@@ -1227,6 +1231,7 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
             my $div_tag = qq{<section class="page">\n};
 
             my $id_attr = qq{ id="} . _calc_page_id( \@path ) . qq{"};
+            die "jo" if $text !~ m{<header>};
 
             if ( $text !~ s{(<body[^>]*>)}{$1$div_tag}ms )
             {
@@ -1238,6 +1243,8 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
             $text =~ s%</?main>%%g;
             $text =~
                 s%(<table(?:\s+(?:class|style)="[^"]*"\s*)*) summary=""%$1%g;
+
+            die "foo" if $text !~ m{<header>};
 
             print {$all_in_one_out_fh} $text, qq{\n</section>\n};
             close($in);
