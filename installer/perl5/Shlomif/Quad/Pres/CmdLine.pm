@@ -1097,7 +1097,11 @@ sub perform_render_all_in_one_page_command
     }
 
     my $all_in_one_dir;
-    $getopt->getoptions( 'output-dir=s' => \$all_in_one_dir, );
+    my $direction = 'ltr';
+    $getopt->getoptions(
+        'output-dir=s' => \$all_in_one_dir,
+        'html-dir=s'   => \$direction,
+    );
     if ( !defined $all_in_one_dir )
     {
         $error_class->throw( { text => 'please specify an --output-dir.', } );
@@ -1173,6 +1177,13 @@ sub perform_render_all_in_one_page_command
                 die "forty" if $text !~ m{<header>};
                 $text =~
 s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wonderful ad code. -->\E}{}ms;
+                if ( $direction eq 'rtl' )
+                {
+                    my $pivot = qq#dir="$direction"#;
+                    $text =~ s%(<html)([^>]+)(>)%
+                        my ($s, $m, $e) = ($1, $2, $3);
+                    $s . ($m =~ /$pivot/ ? $m : "$m $pivot") . $e%e;
+                }
             }
             $is_first = 0;
 
