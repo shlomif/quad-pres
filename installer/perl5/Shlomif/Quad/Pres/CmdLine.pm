@@ -768,7 +768,7 @@ sub perform_upload_command
     if ( $util eq "rsync" )
     {
         @command =
-            ( qw(rsync --verbose -a), $last_component . "/", $upload_path );
+            ( qw(rsync --verbose -r), $last_component . "/", $upload_path );
     }
     elsif ( $util eq "scp" )
     {
