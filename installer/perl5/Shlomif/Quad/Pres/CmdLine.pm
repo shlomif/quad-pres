@@ -11,23 +11,22 @@ use English qw( -no_match_vars );
 use Pod::Usage (qw( pod2usage ));
 use Cwd        (qw( getcwd ));
 use Data::Dumper;
-use File::Copy     (qw( copy ));
-use File::Path     ();
-use File::Basename (qw( dirname));
-use Carp           ();
-use File::Spec;
-use HTML::Links::Localize;
+use File::Copy            (qw( copy ));
+use File::Path            ();
+use File::Basename        (qw( dirname));
+use Carp                  ();
+use HTML::Links::Localize ();
 use File::Glob ':glob';
 
 use IO::All qw/ io /;
 
-use Shlomif::Quad::Pres::Path;
-use Shlomif::Quad::Pres::Exception;
-use Shlomif::Quad::Pres::Getopt;
-use Shlomif::Quad::Pres::Config;
-use Shlomif::Quad::Pres;
-use Shlomif::Quad::Pres::FS;
-use Shlomif::Quad::Pres::WriteContents;
+use Shlomif::Quad::Pres::Path          ();
+use Shlomif::Quad::Pres::Exception     ();
+use Shlomif::Quad::Pres::Getopt        ();
+use Shlomif::Quad::Pres::Config        ();
+use Shlomif::Quad::Pres                ();
+use Shlomif::Quad::Pres::FS            ();
+use Shlomif::Quad::Pres::WriteContents ();
 
 use lib getcwd();
 
@@ -48,7 +47,7 @@ has 'getopt'            => (
     },
 );
 has 'invocation_path' => ( isa => "ArrayRef", is => "rw" );
-has 'path_man' => (
+has 'path_man'        => (
     is      => 'ro',
     lazy    => 1,
     default => sub {
@@ -366,7 +365,7 @@ sub chdir_to_base
     my $self = shift;
 
     my $current_path = getcwd();
-    my @path = split( /\//, $current_path );
+    my @path         = split( /\//, $current_path );
 
     my $levels_num = 0;
 
