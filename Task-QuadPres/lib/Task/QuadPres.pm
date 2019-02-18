@@ -37,7 +37,7 @@ L<http://www.shlomifish.org/quad-pres/>
 
 =pkg HTML::Widgets::NavMenu::EscapeHtml
 
-=pkg HTML::Tidy5
+=pkg HTML::T5
 
 =pkg IO::All
 
