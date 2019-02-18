@@ -3,15 +3,41 @@
 use strict;
 use warnings;
 
-use Shlomif::Quad::Pres::CmdLine;
+use Shlomif::Quad::Pres::CmdLine ();
 
-my $cmd_line =
-    Shlomif::Quad::Pres::CmdLine->new(
-        'cmd_line' => [@ARGV],
-        );
+if ( @ARGV and $ARGV[0] eq 'multi_run' )
+{
+    shift @ARGV;
+    push @ARGV, ';';
+    my @cmd;
+    foreach my $arg (@ARGV)
+    {
+        if ( $arg eq ';' )
+        {
+            if (@cmd)
+            {
+                my $cmd_line =
+                    Shlomif::Quad::Pres::CmdLine->new( 'cmd_line' => [@cmd], );
 
-exit($cmd_line->run());
+                if ( my $ret = $cmd_line->run() )
+                {
+                    exit($ret);
+                }
+            }
+            @cmd = ();
+        }
+        else
+        {
+            push @cmd, $arg;
+        }
+    }
+}
+else
+{
+    my $cmd_line = Shlomif::Quad::Pres::CmdLine->new( 'cmd_line' => [@ARGV], );
 
+    exit( $cmd_line->run() );
+}
 __END__
 
 =head1 NAME
