@@ -35,5 +35,5 @@ RPM of the program. You can then install it by using "rpm -U".
     - Getopt::Long
     - Pod::Usage
 
-All of them can be installed by installing Bundle::QuadPres using
+All of them can be installed by installing Task::QuadPres using
 the CPAN interface.
