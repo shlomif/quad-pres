@@ -41,9 +41,12 @@ if ( $cmd eq 'install_deps' )
     {
         do_system(
             {
-                cmd => [
-"cd $d && (dzil authordeps --missing | $CPAN) && (dzil listdeps --author --missing | $CPAN)"
-                ]
+                cmd => ["cd $d && (dzil authordeps --missing | $CPAN)"]
+            }
+        );
+        do_system(
+            {
+                cmd => ["cd $d && (dzil listdeps --author --missing | $CPAN)"]
             }
         );
     }
