@@ -1,3 +1,7 @@
+Version 0.24.1 - shlomif - 2019-02-22
+
+	* Include a missing .cmake file.
+
 Version 0.24.0 - shlomif - 2019-02-21
 
 	* Add the "quadp multi_run" batch subcommand.
