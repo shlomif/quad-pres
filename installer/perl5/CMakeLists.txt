@@ -40,6 +40,7 @@ SET( myfiles
         Shlomif/Quad/Pres/Base.pm
         Shlomif/Quad/Pres/CGI.pm
         Shlomif/Quad/Pres/CmdLine.pm
+        Shlomif/Quad/Pres/CmdLineMulti.pm
         Shlomif/Quad/Pres/Config.pm
         Shlomif/Quad/Pres/Exception.pm
         Shlomif/Quad/Pres/FS.pm

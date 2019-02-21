@@ -1,3 +1,7 @@
+Version 0.24.0 - shlomif - 2019-02-21
+
+	* Add the "quadp multi_run" batch subcommand.
+
 Version 0.22.0 - shlomif - 2018-09-23
 
 	* Allow to output XHTML5 output.
