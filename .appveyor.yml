@@ -35,7 +35,7 @@ install:
       # - c:\cygwin64\bin\bash -e -l -c "export PERL_MM_USE_DEFAULT=1 CFLAGS='-Wformat'; cpan -i App::cpanminus; eval ""$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)"" ; cpan -T -i Bit::Vector Class::XSAccessor File::Which Getopt::Long IO::All Image::Size Perl::Tidy Test::Code::TidyAll Term::ReadKey || true"
     - git clone https://github.com/htacg/tidy-html5
     - "%perl% -E \"mkdir(q[b]);chdir(q[b]);system(q[cmake ../tidy-html5 && make install]) and die $!;\""
-    - "%cpanm% -n --verbose Text::VimColor"
+    - "%cpanm% -n Text::VimColor"
     - "%cpanm% -n Alien::Tidyp App::XML::DocBook::Builder Pod::Xhtml YAML::XS"
     - "%cpanm% -n HTML::T5"
     - "%cpanm% -n Class::XSAccessor File::Copy::Recursive File::Find::Object::Rule HTML::Widgets::NavMenu::EscapeHtml IO::All MooX MooX::late Path::Tiny Task::QuadPres Text::VimColor Template Test::Trap XML::LibXML"
