@@ -44,6 +44,7 @@ install:
     - "%cpanm% -n Bit::Vector Carp::Always Class::XSAccessor GD Getopt::Long IO::All Image::Size Term::ReadKey"
     # For quadp
     - "%cpanm% -n Class::XSAccessor Config::IniFiles HTML::Links::Localize"
+    - "%cpanm% --verbose DateTime::TimeZone::Local::Win32"
     - "%cpanm% --verbose Dist::Zilla::Plugin::Test::ChangesHasContent"
     - "%perl% CI-testing/continuous-integration-testing.pl install_deps"
 build: off
