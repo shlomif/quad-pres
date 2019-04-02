@@ -65,6 +65,15 @@ has '_wml_obj' => (
 
 my $error_class = "Shlomif::Quad::Pres::Exception";
 
+my $TIMESTAMP = $ENV{QUAD_PRES_SRC_TS} // 0;
+
+sub _set_time
+{
+    my ( $self, @paths ) = @_;
+
+    return utime( $TIMESTAMP, $TIMESTAMP, @paths );
+}
+
 sub _init_cmd_line
 {
     my ( $self, $cmd_line ) = @_;
@@ -973,14 +982,17 @@ sub _traverse_pack_callback
             {
                 mkdir($filename);
             }
-            copy( $src_dir . "/" . $p . "/index.html.wml",
-                "$filename/index.html.wml" );
+            my $target = "$filename/index.html.wml";
+            copy( $src_dir . "/" . $p . "/index.html.wml", $target );
+            $self->_set_time($target);
         }
         else
         {
             $filename     = ( $self->src_archive_src_dir() . "/" . $p );
             $src_filename = $src_dir . "/" . $p;
-            copy( $src_filename . ".wml", $filename . ".wml" );
+            my $target = $filename . ".wml";
+            copy( $src_filename . ".wml", $target );
+            $self->_set_time($target);
         }
     }
 
@@ -994,6 +1006,8 @@ sub _traverse_pack_callback
 
             File::Path::mkpath( [ dirname($filename) ] );
             copy_with_creating_dir( $src_filename, $filename );
+            $self->_set_time($filename);
+
         }
     }
 
@@ -1038,7 +1052,9 @@ sub perform_pack_command
         qw(*.pm *.wml *.html quadpres.ini *.pl *.sh .quadpres/* .wmlrc)
         )
     {
-        copy( $file, $self->src_archive_dir() . "/$file" );
+        my $target = $self->src_archive_dir() . "/$file";
+        copy( $file, $target );
+        $self->_set_time($target);
     }
 
     mkdir( $self->src_archive_src_dir() );
