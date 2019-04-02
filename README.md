@@ -11,7 +11,7 @@ amd similar for more modern takes on this task.
 Quad-Pres uses CMake as the installer, so consult INSTALL for installation
 instructions.
 
-After it is installed type "quadp -man" for usage instructions.
+After it is installed, type "quadp -man" for usage instructions.
 
 The Quad-Pres homepage is at:
 
