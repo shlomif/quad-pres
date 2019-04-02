@@ -1036,8 +1036,8 @@ sub perform_pack_command
 
     $self->_assign_src_dir();
 
-    my $src_archive_name = $cfg->get_src_archive_path()
-        || ( $cfg->get_server_dest_dir() . "/" . "src.tar.gz" );
+    my $src_archive_name__base = $cfg->get_src_archive_path()
+        || ( $cfg->get_server_dest_dir() . "/" . "src.tar" );
 
     File::Path::rmtree( [ $self->src_archive_dir() ], 0, 0 );
 
@@ -1074,7 +1074,9 @@ sub perform_pack_command
         }
     );
 
-    system( "tar", "-czf", $src_archive_name, $self->src_archive_dir() );
+    system( "tar", "-cf", $src_archive_name__base,
+        io()->dir( $self->src_archive_dir() )->All_Files );
+    system( "gzip", "--best", "-n", $src_archive_name__base );
 
     return 0;
 }
