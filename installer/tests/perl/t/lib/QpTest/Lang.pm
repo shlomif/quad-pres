@@ -111,6 +111,7 @@ sub perform_test
     ) = @params;
 
     my $test_dir = "test_lang$test_idx";
+    io->dir($test_dir)->rmtree;
 
     my $pwd = Cwd::getcwd();
 
