@@ -3,4 +3,5 @@
 /installer/cmake/Shlomif_Common.cmake
 /installer/quad-pres.spec
 /installer/tests/perl/t/data/in-out-*
+/installer/tests/perl/t/lang-set-*.t
 /site/dest/
