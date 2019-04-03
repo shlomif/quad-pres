@@ -193,7 +193,7 @@ C<first/hello.png>
 
 =head1 Format of the template.wml file
 
-The template.wml file is the master Web Meta Language template file for the
+The template.wml file is the master Website Meta Language template file for the
 slides. Within it one can put definitions of macros that are used in several
 slides of the lecture. The file contains one statement:
 

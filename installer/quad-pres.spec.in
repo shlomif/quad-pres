@@ -9,8 +9,8 @@ BuildArch: noarch
 Summary: The Quad-Pres Presentation Preparation System
 
 %description
-Quad-Pres is a system for preparing HTML presentations. It is based on Web Meta
-Language and Perl 5.
+Quad-Pres is a system for preparing HTML presentations. It is based on Website
+Meta Language and Perl 5.
 
 %prep
 %setup
@@ -18,7 +18,7 @@ Language and Perl 5.
 
 %build
 %cmake
-%make
+%make_build
 
 %install
 %{make_install} -C build
@@ -49,5 +49,3 @@ rm -rf $RPM_BUILD_ROOT
 - Modified the texts.
 - Removed the cd to the man dir.
 - Added the scripts directory.
-
-
