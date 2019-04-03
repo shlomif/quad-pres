@@ -41,8 +41,7 @@ foreach my $lang1 ( "", "he-IL" )
         {
             foreach my $char2 ( "", "iso-8859-8" )
             {
-                io->file("$SRC/tests/perl/t/lang-set-$test_idx.t")
-                    ->print(<<"EOF");
+                io->file("$SRC/t/lang-set-$test_idx.t")->print(<<"EOF");
 use lib "./t/lib";
 
 use QpTest::Lang qw/ perform_test /;
@@ -55,4 +54,5 @@ EOF
         }
     }
 }
-exec(qq#cd $SRC/tests/perl/ && prove t/*.t#);
+chdir($SRC);
+exit( system( "prove", glob("t/*.t") ) );
