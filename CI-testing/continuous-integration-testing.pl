@@ -19,6 +19,7 @@ sub do_system
 my $IS_WIN = ( $^O eq "MSWin32" );
 my $SEP    = $IS_WIN ? "\\" : '/';
 my $MAKE   = $IS_WIN ? 'gmake' : 'make';
+local $ENV{WMLOPTS} //= "-q";
 
 my $cmake_gen;
 if ($IS_WIN)
