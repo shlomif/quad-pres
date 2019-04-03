@@ -60,8 +60,8 @@ elsif ( $cmd eq 'test' )
     do_system(
         {
             cmd => [
-                      "cd installer/ && mkdir B && cd B && $^X ..${SEP}Tatzer "
-                    . ( defined($cmake_gen) ? qq#--gen="$cmake_gen"# : "" )
+                      "cd installer/ && mkdir B && cd B && cmake .. "
+                    . ( defined($cmake_gen) ? qq#-G "$cmake_gen"# : "" )
                     . " .. && $MAKE && $MAKE check"
             ]
         }
