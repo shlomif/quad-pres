@@ -3,14 +3,17 @@
 use strict;
 use warnings;
 
-use Test::More tests => 10;
+use Test::More tests => 6;
 use Test::Differences qw/ eq_or_diff /;
 use File::Path qw/ mkpath rmtree /;
-use File::Copy::Recursive qw(dircopy fcopy);
-use Cwd;
-use IO::All;
-use HTML::T5;
-use XML::LibXML ();
+use Cwd ();
+use IO::All qw/ io /;
+use HTML::T5 ();
+
+sub calc_tidy
+{
+    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
+}
 
 my $orig_dir = Cwd::getcwd();
 
@@ -20,11 +23,6 @@ mkpath($io_dir);
 
 # TEST:$num_themes=2;
 my @themes = (qw(alon-altman-text shlomif-text));
-
-sub calc_tidy
-{
-    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
-}
 
 sub check_files
 {
@@ -87,35 +85,3 @@ foreach my $theme (@themes)
 {
     perform_test($theme);
 }
-
-my $src_dir = "t/data/p4n5/";
-my $s       = "t/data/p4n5-copy/";
-rmtree( [$s] );
-dircopy( $src_dir, $s );
-
-chdir($s);
-mkdir("rendered");
-
-# TEST
-ok( !system( "quadp", "render", "-a" ),
-    "quadp render -a ran successfully for theme ''." );
-
-# TEST
-ok(
-    !system( "quadp", "render_all_in_one_page", "--output-dir=all-in" ),
-    "quadp render_all_in_one_page ran successfully for theme ''."
-);
-my $lint = calc_tidy;
-
-my $fn = "all-in/index.html";
-$lint->parse( $fn, io->file($fn)->utf8->all );
-
-# TEST
-eq_or_diff( [ $lint->messages() ], [], "HTML is valid for all-in-one." );
-
-my $xml = XML::LibXML->new( load_ext_dtd => 1 );
-$xml->parse_file($fn);
-
-# TEST
-pass("XML validation for '$fn'.");
-chdir($orig_dir);
