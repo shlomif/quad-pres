@@ -1,4 +1,0 @@
-wmldir = $(pkgdatadir)/wml
-
-wmlthemesdir = $(wmldir)/themes
-
