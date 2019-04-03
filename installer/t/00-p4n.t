@@ -51,6 +51,7 @@ sub p4n
     # TEST
     pass("XML validation for '$fn'.");
     chdir($orig_dir);
+    rmtree( [$s] );
 }
 
 p4n();
