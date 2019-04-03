@@ -5,42 +5,13 @@ Pressing After 0.10.x:
 
 * Add a feature to add a dot after the number in the title.
 
-* Find a way to integrate the creation of the manifests in the test
-directory with the rest of the packaging process, and verify its correctness.
-
-* Add the $root quadpres.ini variable to signify the root directory of the
-lecture.
-
 Long Term:
 ----------
-
-* Add a way to generate archives of:
-    - The Hard disk HTML slides.
-    - The source.
-
-* Refactor the tests suite to refer to $quadpres_root/ instead
-of ../installation/.
-
-* Enable reading parameters from the user $HOME/.quadpres directory
 
 * Multiple stages for slides.
 
 * quadp copy, quadp rm, quadp mv commands.
     - quadp order meta-command
 
-* Integration with Subversion.
-
-* Write more tests.
-
-* Write a path signature for the title:
-
-    Gimp Lecture ==> Areal Effects ==> Blur ==>
-    Motion Blur
-
-* Create a nice graphical button for the "Made with Quad-Pres" link.
-
 * Create a unified approach for setting credits for the lecture: E-mail,
 homepage URL, writer's name, etc.
-
-* Add an upgrade script for the lectures.
-
