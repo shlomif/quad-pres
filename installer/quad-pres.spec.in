@@ -25,7 +25,7 @@ Meta Language and Perl 5.
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog COPYING README TODO
+%doc AUTHORS ChangeLog COPYING README.md TODO
 %_bindir/quadp
 %dir %_datadir/quad-pres
 %dir %_datadir/quad-pres/perl5
