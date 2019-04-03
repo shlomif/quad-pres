@@ -2,6 +2,6 @@
 /Task-QuadPres/.tidyall.d/
 /installer/cmake/Shlomif_Common.cmake
 /installer/quad-pres.spec
-/installer/tests/perl/t/data/in-out-*
-/installer/tests/perl/t/lang-set-*.t
+/installer/t/data/in-out-*
+/installer/t/lang-set-*.t
 /site/dest/
