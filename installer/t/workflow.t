@@ -6,6 +6,7 @@ use warnings;
 use Test::More tests => 7;
 
 use File::Path;
+use List::Util qw/ all /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd;
 use IO::All;
@@ -21,11 +22,12 @@ sub check_files
 
     return ok(
         (
-            (
-                io->file("$output_dir/index.html")->all =~
-                    m#<link rel="stylesheet" href="style\.css"#
-            )
-                && ( -e "$output_dir/two.html" )
+            all
+            {
+                ( io->file("$output_dir/$_")->all =~
+                        m#<link rel="stylesheet" href="style\.css"# )
+            }
+            qw/index.html two.html/
         ),
         "The requested files exist in the output directory"
     );
