@@ -72,9 +72,8 @@ sub _get_url_worker
     my $base = shift;
     my $to = shift;
     my $slash_terminated = shift;
-    my $no_leading_dot = shift;
 
-    my $prefix = ($no_leading_dot ? "" : "./");
+    my $prefix = "";
 
     my @this_url = @{$base->get_url()};
     my @other_url = @{$to->get_url()};
