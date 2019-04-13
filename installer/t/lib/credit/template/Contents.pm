@@ -2,20 +2,15 @@ package Contents;
 
 use strict;
 
-my $contents =
-{
+my $contents = {
     'title' => "My Lecture Title",
-    'subs' =>
-    [
+    'subs'  => [
         {
-            'url' => "two.html",
+            'url'   => "two.html",
             'title' => "Child Node",
         },
     ],
-    'images' =>
-    [
-        'style.css',
-    ],
+    'images' => [ 'style.css', ],
 };
 
 sub get_contents

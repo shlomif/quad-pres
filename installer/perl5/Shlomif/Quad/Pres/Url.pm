@@ -12,30 +12,31 @@ use Data::Dumper;
 __PACKAGE__->mk_acc_ref(
     [
         qw(
-        is_dir
-        mode
-        url
-        )
+            is_dir
+            mode
+            url
+            )
     ]
 );
 
 sub _init
 {
-    $Carp::RefArgFormatter = sub { require Data::Dumper; Dumper([$_[0]],);
+    $Carp::RefArgFormatter = sub {
+        require Data::Dumper;
+        Dumper( [ $_[0] ], );
     };
     my $self = shift;
 
     my $url = shift;
 
-    if (!defined($url))
+    if ( !defined($url) )
     {
         Carp::confess("URL passed undef.");
     }
 
-
-    if (ref($url) eq 'ARRAY')
+    if ( ref($url) eq 'ARRAY' )
     {
-        if (notall { defined } @$url)
+        if ( notall { defined } @$url )
         {
             Carp::confess("URL passed FOOundef.");
         }
@@ -43,10 +44,10 @@ sub _init
     }
     else
     {
-        $self->url( [ split(/\//, $url) ] );
+        $self->url( [ split( /\//, $url ) ] );
     }
-    $self->is_dir(shift || 0);
-    $self->mode(shift || 'server');
+    $self->is_dir( shift || 0 );
+    $self->mode( shift   || 'server' );
 
     return 0;
 }
@@ -55,7 +56,7 @@ sub get_url
 {
     my $self = shift;
 
-    return [ @{$self->url}];
+    return [ @{ $self->url } ];
 }
 
 sub get_relative_url
@@ -64,44 +65,42 @@ sub get_relative_url
 
     my $url = $base->_get_url_worker(@_);
 
-    return ( ($url eq "") ? "./" : $url);
+    return ( ( $url eq "" ) ? "./" : $url );
 }
 
 sub _get_url_worker
 {
-    my $base = shift;
-    my $to = shift;
+    my $base             = shift;
+    my $to               = shift;
     my $slash_terminated = shift;
 
     my $prefix = "";
 
-    my @this_url = @{$base->get_url()};
-    my @other_url = @{$to->get_url()};
+    my @this_url  = @{ $base->get_url() };
+    my @other_url = @{ $to->get_url() };
 
     my $ret;
 
-    my @this_url_bak = @this_url;
+    my @this_url_bak  = @this_url;
     my @other_url_bak = @other_url;
 
-    while(
-        scalar(@this_url) &&
-        scalar(@other_url) &&
-        ($this_url[0] eq $other_url[0])
-    )
+    while (scalar(@this_url)
+        && scalar(@other_url)
+        && ( $this_url[0] eq $other_url[0] ) )
     {
         shift(@this_url);
         shift(@other_url);
     }
 
-    if ((! @this_url) && (! @other_url))
+    if ( ( !@this_url ) && ( !@other_url ) )
     {
-        if ((!$base->is_dir() ) ne (!$to->is_dir()))
+        if ( ( !$base->is_dir() ) ne ( !$to->is_dir() ) )
         {
             Carp::confess("Two identical URLs with non-matching is_dir()'s");
         }
-        if (! $base->is_dir())
+        if ( !$base->is_dir() )
         {
-            if (scalar(@this_url_bak))
+            if ( scalar(@this_url_bak) )
             {
                 return $prefix . $this_url_bak[-1];
             }
@@ -112,7 +111,7 @@ sub _get_url_worker
         }
     }
 
-    if (($base->mode eq "harddisk") && ($to->is_dir()))
+    if ( ( $base->mode eq "harddisk" ) && ( $to->is_dir() ) )
     {
         push @other_url, "index.html";
     }
@@ -121,18 +120,18 @@ sub _get_url_worker
 
     if ($slash_terminated)
     {
-        if ((scalar(@this_url) == 0) && (scalar(@other_url) == 0))
+        if ( ( scalar(@this_url) == 0 ) && ( scalar(@other_url) == 0 ) )
         {
             $ret = $prefix;
         }
         else
         {
-            if (! $base->is_dir())
+            if ( !$base->is_dir() )
             {
                 pop(@this_url);
             }
-            $ret .= join("/", (map { ".." } @this_url), @other_url);
-            if ($to->is_dir() && ($base->mode ne "harddisk"))
+            $ret .= join( "/", ( map { ".." } @this_url ), @other_url );
+            if ( $to->is_dir() && ( $base->mode ne "harddisk" ) )
             {
                 $ret .= "/";
             }
@@ -143,10 +142,13 @@ sub _get_url_worker
         $ret .= $prefix;
 
         my @components;
-        push @components, (("..") x ($base->is_dir ? @this_url : @this_url - 1));
+        push @components,
+            ( ("..") x ( $base->is_dir ? @this_url : @this_url - 1 ) );
         push @components, @other_url;
-        $ret .= join("/", @components);
-        if (($to->is_dir()) && ($base->mode ne "harddisk") && scalar(@components))
+        $ret .= join( "/", @components );
+        if (   ( $to->is_dir() )
+            && ( $base->mode ne "harddisk" )
+            && scalar(@components) )
         {
             $ret .= "/";
         }
@@ -156,6 +158,5 @@ sub _get_url_worker
 
     return $ret;
 }
-
 
 1;

@@ -13,7 +13,7 @@ sub _init
 sub throw
 {
     my $class = shift;
-    my $args = shift;
+    my $args  = shift;
 
     my $exception = $class->new();
     $exception->{'text'} = $args->{text};
@@ -32,8 +32,7 @@ package Shlomif::Quad::Pres::Exception::RenderFile;
 
 use vars qw(@ISA);
 
-@ISA=qw(Shlomif::Quad::Pres::Exception);
+@ISA = qw(Shlomif::Quad::Pres::Exception);
 
 1;
-
 

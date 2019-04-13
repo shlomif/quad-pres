@@ -20,10 +20,10 @@ sub _init
     my $self = shift;
     my $args = shift;
 
-    $self->_first_name($args->{'first_name'});
-    $self->_last_name($args->{'last_name'});
+    $self->_first_name( $args->{'first_name'} );
+    $self->_last_name( $args->{'last_name'} );
 
-    $self->_age($args->{'age'});
+    $self->_age( $args->{'age'} );
 
     return;
 }
@@ -80,7 +80,7 @@ sub increment_age
 {
     my $self = shift;
 
-    $self->_age($self->_age()+1);
+    $self->_age( $self->_age() + 1 );
 
     return;
 }

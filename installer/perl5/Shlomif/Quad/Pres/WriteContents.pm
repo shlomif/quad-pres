@@ -7,35 +7,33 @@ use autodie;
 
 use MooX qw/ late /;
 
-has '_contents' => (isa => "HashRef", is => "ro", init_arg => "contents");
+has '_contents' => ( isa => "HashRef", is => "ro", init_arg => "contents" );
 
 my @output_contents_keys_order = (qw(url title subs images));
 
-my %output_contents_keys_values = (map { $output_contents_keys_order[$_] => $_ } (0 .. $#output_contents_keys_order));
+my %output_contents_keys_values =
+    ( map { $output_contents_keys_order[$_] => $_ }
+        ( 0 .. $#output_contents_keys_order ) );
 
 sub output_contents_get_value
 {
     my ($key) = (@_);
 
-    return exists($output_contents_keys_values{$key}) ?
-        $output_contents_keys_values{$key} :
-        scalar(@output_contents_keys_order);
+    return
+        exists( $output_contents_keys_values{$key} )
+        ? $output_contents_keys_values{$key}
+        : scalar(@output_contents_keys_order);
 }
 
 sub output_contents_sort_keys
 {
     my ($hash) = @_;
-    return
-        [
-            sort
-            {
-                output_contents_get_value($a) <=> output_contents_get_value($b)
-            }
+    return [
+        sort { output_contents_get_value($a) <=> output_contents_get_value($b) }
             keys(%$hash)
-        ];
+    ];
 }
-my %special_chars =
-(
+my %special_chars = (
     "\n" => "\\n",
     "\t" => "\\t",
     "\r" => "\\r",
@@ -61,7 +59,8 @@ sub update_contents
     my ($self) = @_;
 
     open my $contents_fh, ">", "Contents.pm";
-    print {$contents_fh} "package Contents;\n\nuse strict;\n\nmy \$contents = \n";
+    print {$contents_fh}
+        "package Contents;\n\nuse strict;\n\nmy \$contents = \n";
 
     print {$contents_fh} $self->dump_contents();
 
@@ -86,54 +85,56 @@ sub dump_contents
 
     my $indent = "    ";
 
-    my @branches = ({ 'b' => $contents, 'i' => -1 });
+    my @branches = ( { 'b' => $contents, 'i' => -1 } );
 
     my $ret = "";
 
-    MAIN_LOOP: while (@branches > 0)
+MAIN_LOOP: while ( @branches > 0 )
     {
         my $last_element = $branches[$#branches];
-        my $b = $last_element->{'b'};
-        my $i = $last_element->{'i'};
-        my $p1 = $indent x (2*(scalar(@branches)-1));
-        my $p2 = $p1 . $indent;
-        my $p3 = $p2 . $indent;
-        if ($i < 0)
+        my $b            = $last_element->{'b'};
+        my $i            = $last_element->{'i'};
+        my $p1           = $indent x ( 2 * ( scalar(@branches) - 1 ) );
+        my $p2           = $p1 . $indent;
+        my $p3           = $p2 . $indent;
+        if ( $i < 0 )
         {
             $ret .= "${p1}\{\n";
             foreach my $field (qw(url title))
             {
-                if (exists($b->{$field}))
+                if ( exists( $b->{$field} ) )
                 {
-                    $ret .= "${p2}'$field' => \"" . string_to_perl($b->{$field}) . "\",\n";
+                    $ret .= "${p2}'$field' => \""
+                        . string_to_perl( $b->{$field} ) . "\",\n";
                 }
             }
 
-
-            if (exists($b->{'subs'}))
+            if ( exists( $b->{'subs'} ) )
             {
                 $ret .= "${p2}'subs' =>\n";
                 $ret .= "${p2}\[\n";
+
                 # push @branches { 'b' => $b->{'subs'} }
             }
             $last_element->{'i'} = 0;
             next MAIN_LOOP;
         }
-        elsif ((!exists($b->{'subs'})) || ($i >= scalar(@{$b->{'subs'}})))
+        elsif (( !exists( $b->{'subs'} ) )
+            || ( $i >= scalar( @{ $b->{'subs'} } ) ) )
         {
-            $ret .= "${p2}],\n" if (exists($b->{'subs'}));
-            if (exists ($b->{'images'}))
+            $ret .= "${p2}],\n" if ( exists( $b->{'subs'} ) );
+            if ( exists( $b->{'images'} ) )
             {
                 $ret .= "${p2}'images' =>\n";
                 $ret .= "${p2}\[\n";
-                foreach my $img (@{$b->{'images'}})
+                foreach my $img ( @{ $b->{'images'} } )
                 {
                     $ret .= "${p3}\"" . string_to_perl($img) . "\",\n";
                 }
                 $ret .= "${p2}],\n";
             }
             pop(@branches);
-            $ret .= "${p1}}" . ((@branches > 0) ? "," : ";") ."\n";
+            $ret .= "${p1}}" . ( ( @branches > 0 ) ? "," : ";" ) . "\n";
             next MAIN_LOOP;
         }
         else

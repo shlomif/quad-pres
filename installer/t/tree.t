@@ -8,7 +8,7 @@ use Test::More tests => 9;
 # TEST
 use_ok("Shlomif::Quad::Pres");
 
-binmode STDOUT, ":utf8";
+binmode STDOUT, ":encoding(UTF-8)";
 {
     my $contents1 = {
         'title' => "Do it with the GIMP",

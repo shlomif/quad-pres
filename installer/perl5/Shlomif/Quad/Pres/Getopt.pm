@@ -13,7 +13,7 @@ use Getopt::Long '2.24';
 sub new
 {
     my $class = shift;
-    my $self = {};
+    my $self  = {};
 
     bless $self, $class;
 
@@ -59,9 +59,9 @@ sub getoptions
     my $getopt = $self->get_getopt();
 
     {
-        local @ARGV = @{$self->{'args'}};
+        local @ARGV = @{ $self->{'args'} };
         @ret = $getopt->getoptions(@params);
-        @{$self->{'args'}} = @ARGV;
+        @{ $self->{'args'} } = @ARGV;
     }
 
     return @ret;

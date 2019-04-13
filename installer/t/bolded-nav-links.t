@@ -11,8 +11,8 @@ use Cwd;
 use IO::All;
 
 my $io_dir = "t/data/in-out-bolded-nav-links";
-rmtree ($io_dir);
-mkpath ($io_dir);
+rmtree($io_dir);
+mkpath($io_dir);
 
 my $test_idx = 0;
 
@@ -24,39 +24,31 @@ sub perform_test
 
     $test_idx++;
 
-    my $test_dir = "testhtml$test_idx";
+    my $test_dir   = "testhtml$test_idx";
     my $output_dir = "$test_dir-output";
 
     my $pwd = Cwd::getcwd();
 
     # TEST
-    ok(
-        !system(
-        "quadp", "setup", $test_dir, "--dest-dir=./rendered"
-        ),
-        "Running quadp setup was succesful."
-    );
+    ok( !system( "quadp", "setup", $test_dir, "--dest-dir=./rendered" ),
+        "Running quadp setup was succesful." );
 
     my $tmpl_dir = "$orig_dir/t/lib/bolded-nav-links/template";
 
-    fcopy("$tmpl_dir/Contents.pm", "$test_dir/Contents.pm",);
+    fcopy( "$tmpl_dir/Contents.pm", "$test_dir/Contents.pm", );
     rmtree("$test_dir/src");
-    dircopy("$tmpl_dir/src", "$test_dir/src");
+    dircopy( "$tmpl_dir/src", "$test_dir/src" );
 
     # TEST
-    ok(
-        !system("cd $test_dir && quadp render -a"),
-        "quadp render -a",
-    );
+    ok( !system("cd $test_dir && quadp render -a"), "quadp render -a", );
 
-    # For debug
-    # system("( echo 'Foobar'; ls -lR $test_dir ; for I in \$( find $test_dir -type f ) ; do echo \"===\$I===\" ; echo ; cat \$I ; done) 1>&2");
+# For debug
+# system("( echo 'Foobar'; ls -lR $test_dir ; for I in \$( find $test_dir -type f ) ; do echo \"===\$I===\" ; echo ; cat \$I ; done) 1>&2");
 
     # TEST
     like(
-        scalar(io->file("$test_dir/rendered/finale/books.html")->slurp),
-        qr{<b>Next</b>},
-        "Next link was bolded",
+        scalar( io->file("$test_dir/rendered/finale/books.html")->slurp ),
+        qr{<b>Next</b>}, "Next link was bolded",
     );
 
     chdir($orig_dir);

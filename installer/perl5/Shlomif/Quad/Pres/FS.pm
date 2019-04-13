@@ -5,7 +5,7 @@ use warnings;
 
 use parent 'Shlomif::Quad::Pres::Base';
 
-__PACKAGE__->mk_acc_ref([qw( gid group )]);
+__PACKAGE__->mk_acc_ref( [qw( gid group )] );
 
 sub _init
 {
@@ -36,9 +36,9 @@ sub set_group
     my $gid;
 
     # Check if the group is not empty.
-    if (defined($group) && ($group !~ /^\s*$/))
+    if ( defined($group) && ( $group !~ /^\s*$/ ) )
     {
-        if ($group =~ /^\d+$/)
+        if ( $group =~ /^\d+$/ )
         {
             $gid = $group;
         }
@@ -63,16 +63,15 @@ sub my_chown
 
     my $path = shift;
 
-    if (!defined($self->gid))
+    if ( !defined( $self->gid ) )
     {
         return;
     }
 
-    chown(-1,$self->gid, $path);
+    chown( -1, $self->gid, $path );
 
     return;
 }
-
 
 sub make_dest_dir
 {
@@ -82,21 +81,21 @@ sub make_dest_dir
 
     # Check if the destination directory exists and if not -
     # create it.
-    if (! -e $dest_dir)
+    if ( !-e $dest_dir )
     {
         mkdir($dest_dir);
+
         # Make it belong to the common group
         $self->my_chown($dest_dir);
+
         # Make it a SGID directory
         # This means that subsequent files will belong to its group.
         # And that subsequent directories inside will also be SGID.
-        chmod(02775, $dest_dir);
+        chmod( 02775, $dest_dir );
     }
 
     return;
 }
 
-
 1;
-
 
