@@ -175,7 +175,7 @@ foreach my $c (@controls)
 <ifeq <get-var qp_html_std /> "xhtml5"
     <meta charset="<get-var qp_charset />" />
     <meta http-equiv="content-type" content="text/html; charset=<get-var qp_charset />" /> />
-<link rel="stylesheet" href="<qp:contentsurl />style.css" type="text/css" />
+<link rel="stylesheet" href="<: print $qp->get_style_css_url :>" type="text/css" />
 <qp:head:links />
 
 <title><qp:subject /></title>

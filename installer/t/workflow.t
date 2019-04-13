@@ -20,8 +20,15 @@ sub check_files
     my $output_dir = shift;
 
     return ok(
-        ( ( -e "$output_dir/index.html" ) && ( -e "$output_dir/two.html" ) ),
-        "The requested files exist in the output directory" );
+        (
+            (
+                io->file("$output_dir/index.html")->all =~
+                    m#<link rel="stylesheet" href="style\.css"#
+            )
+                && ( -e "$output_dir/two.html" )
+        ),
+        "The requested files exist in the output directory"
+    );
 }
 
 sub perform_test

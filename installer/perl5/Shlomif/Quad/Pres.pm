@@ -544,6 +544,15 @@ sub get_title
     return $indexes_str . $self->get_subject();
 }
 
+sub get_style_css_url
+{
+    my $self = shift;
+
+    return $self->doc_id->get_relative_url(
+        Shlomif::Quad::Pres::Url->new( ["style.css"], 0, $self->mode ),
+        $self->doc_id_slash_terminated );
+}
+
 sub get_header
 {
     my $self = shift;
@@ -556,10 +565,9 @@ sub get_header
     $text .= "<html>\n";
     $text .= "<head>\n";
     $text .= "<title>" . $self->get_subject() . "</title>\n";
-    $text .= "<link rel=\"StyleSheet\" href=\""
-        . $self->doc_id->get_relative_url(
-        Shlomif::Quad::Pres::Url->new( ["style.css"], 0, $self->mode ),
-        $self->doc_id_slash_terminated )
+    $text .=
+          "<link rel=\"StyleSheet\" href=\""
+        . $self->get_style_css_url
         . "\" type=\"text/css\">\n";
 
     $text .= "</head>\n";
