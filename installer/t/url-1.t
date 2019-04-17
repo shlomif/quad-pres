@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More tests => 2;
 
-use Shlomif::Quad::Pres::Url;
+use Shlomif::Quad::Pres::Url ();
 
 {
     my $u = Shlomif::Quad::Pres::Url->new( 'foo.html', );

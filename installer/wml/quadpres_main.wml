@@ -13,10 +13,10 @@ sub uniprint
 }:>
 <:{
 
-    use Shlomif::Quad::Pres;
+    use Shlomif::Quad::Pres ();
     use Cwd qw/ getcwd /;
     use lib getcwd();
-    use Contents;
+    use Contents ();
 
     use vars (qw(
             $contents_tree

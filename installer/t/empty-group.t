@@ -5,11 +5,9 @@ use warnings;
 
 use Test::More tests => 3;
 
-use Shlomif::Quad::Pres::FS;
+use Shlomif::Quad::Pres::FS ();
 
-my ( $test_num, @inputs );
-
-@inputs = ( undef, "", "     " );
+my @inputs = ( undef, "", "     " );
 
 my $filename = "test-for_chown.stub";
 
@@ -17,7 +15,8 @@ sub my_test
 {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    my $fs = shift;
+    my $test_num = shift;
+    my $fs       = shift;
 
     my $i = $inputs[$test_num];
     unlink($filename);
@@ -36,11 +35,11 @@ sub my_test
 use IO::All qw / io /;
 io->file($filename)->print("");
 
-for ( $test_num = 0 ; $test_num < @inputs ; $test_num++ )
+for my $test_num ( keys @inputs )
 {
     my $fs = Shlomif::Quad::Pres::FS->new( 'group' => $inputs[$test_num] );
 
-    my_test($fs);
+    my_test( $test_num, $fs );
 
     $fs->my_chown($filename);
 }

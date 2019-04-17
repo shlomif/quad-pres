@@ -8,9 +8,8 @@ use warnings;
 use Scalar::Util qw(blessed);
 
 use English qw( -no_match_vars );
-use Pod::Usage (qw( pod2usage ));
-use Cwd        (qw( getcwd ));
-use Data::Dumper;
+use Pod::Usage            (qw( pod2usage ));
+use Cwd                   (qw( getcwd ));
 use File::Copy            (qw( copy ));
 use File::Path            ();
 use File::Basename        (qw( dirname));

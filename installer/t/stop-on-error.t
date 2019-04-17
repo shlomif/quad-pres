@@ -5,13 +5,13 @@ use warnings;
 
 use Test::More tests => 4;
 
-use File::Path;
+use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
-use Cwd;
-use IO::All;
+use Cwd ();
+use IO::All qw/ io /;
 use Test::Trap
     qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
-use File::Spec;
+use File::Spec ();
 
 my $io_dir_proto = "t/data/in-out-stop-on-error";
 my $io_dir       = File::Spec->rel2abs($io_dir_proto);

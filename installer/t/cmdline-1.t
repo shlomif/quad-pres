@@ -4,8 +4,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 1;
-
-use Shlomif::Quad::Pres::CmdLine;
+use Shlomif::Quad::Pres::CmdLine ();
 
 {
     my $o =

@@ -5,10 +5,8 @@ use warnings;
 
 use parent 'Shlomif::Quad::Pres::Base';
 
-use Cwd;
-
-use Config::IniFiles;
-use Template;
+use Config::IniFiles ();
+use Template         ();
 
 __PACKAGE__->mk_acc_ref( [qw( base_path cfg )] );
 

@@ -7,14 +7,10 @@ use utf8;
 
 use parent 'Shlomif::Quad::Pres::Base';
 
-use IO::All;
-
-use Data::Dumper;
-
-use Shlomif::Quad::Pres::Url;
-
-use Carp;
-
+use IO::All qw/ io /;
+use Data::Dumper             ();
+use Shlomif::Quad::Pres::Url ();
+use Carp                     ();
 use HTML::Widgets::NavMenu::EscapeHtml qw(escape_html);
 
 my $navigation_style_class = "nav";

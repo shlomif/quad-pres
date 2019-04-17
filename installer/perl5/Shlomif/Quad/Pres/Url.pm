@@ -4,10 +4,10 @@ use strict;
 use warnings;
 
 use List::MoreUtils qw( notall );
-use Carp;
+use Carp ();
 
 use parent 'Shlomif::Quad::Pres::Base';
-use Data::Dumper;
+use Data::Dumper qw/ Dumper /;
 
 __PACKAGE__->mk_acc_ref(
     [
@@ -22,7 +22,6 @@ __PACKAGE__->mk_acc_ref(
 sub _init
 {
     $Carp::RefArgFormatter = sub {
-        require Data::Dumper;
         Dumper( [ $_[0] ], );
     };
     my $self = shift;

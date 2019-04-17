@@ -5,10 +5,10 @@ use warnings;
 
 use Test::More tests => 4;
 
-use File::Path;
+use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
-use Cwd;
-use IO::All;
+use Cwd ();
+use IO::All qw/ io /;
 
 my $io_dir = "t/data/in-out-update-images";
 rmtree($io_dir);

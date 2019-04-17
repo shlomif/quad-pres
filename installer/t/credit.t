@@ -2,13 +2,11 @@
 
 use strict;
 use warnings;
-
 use Test::More tests => 16;
-
-use File::Path;
+use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
-use Cwd;
-use IO::All;
+use Cwd ();
+use IO::All qw/ io /;
 
 my $io_dir_proto = "t/data/in-out-credit";
 my $io_dir       = File::Spec->rel2abs($io_dir_proto);
@@ -107,4 +105,3 @@ foreach my $theme (@themes)
         perform_test( $theme, $credit );
     }
 }
-

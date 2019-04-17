@@ -5,20 +5,15 @@ use warnings;
 
 use parent 'Shlomif::Quad::Pres::Base';
 
-use CGI;
-use Contents;
-
-use MIME::Types;
-
-use IO::All;
-
-use POSIX;
-
-use English;
-
-use Shlomif::Quad::Pres::Config;
-use Shlomif::Quad::Pres::FS;
-use Shlomif::Quad::Pres::Path;
+use CGI         ();
+use Contents    ();
+use MIME::Types ();
+use IO::All qw/ io /;
+use POSIX ();
+use English qw( -no_match_vars );
+use Shlomif::Quad::Pres::Config ();
+use Shlomif::Quad::Pres::FS     ();
+use Shlomif::Quad::Pres::Path   ();
 
 sub is_older
 {
@@ -255,3 +250,4 @@ sub run
     }
 }
 
+1;
