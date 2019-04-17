@@ -36,14 +36,6 @@ install( PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/quadp" DESTINATION bin )
 #	cat quadp.pl | sed 's!{QP_MODULES_DIR}!$(modulesdir)!g' | sed '1 s!/usr/bin/perl!$(PATH_PERL)!' > quadp
 
 SET( myfiles
-        QuadPres.pm
-        QuadPres/Base.pm
-        QuadPres/Config.pm
-        QuadPres/Exception.pm
-        QuadPres/FS.pm
-        QuadPres/Url.pm
-        QuadPres/VimIface.pm
-        QuadPres/WriteContents.pm
         Shlomif/Quad/Pres/CGI.pm
         Shlomif/Quad/Pres/CmdLine.pm
         Shlomif/Quad/Pres/CmdLineMulti.pm
