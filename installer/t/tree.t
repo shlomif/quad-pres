@@ -5,7 +5,7 @@ use utf8;
 use Test::More tests => 9;
 
 # TEST
-use_ok("Shlomif::Quad::Pres");
+use_ok("QuadPres");
 
 binmode STDOUT, ":encoding(UTF-8)";
 {
@@ -351,7 +351,7 @@ binmode STDOUT, ":encoding(UTF-8)";
     };
 
     {
-        my $qp = Shlomif::Quad::Pres->new(
+        my $qp = QuadPres->new(
             $contents1,
             'doc_id' => 'intro/',
             'mode'   => "server",
@@ -370,7 +370,7 @@ binmode STDOUT, ":encoding(UTF-8)";
     }
 
     {
-        my $qp = Shlomif::Quad::Pres->new(
+        my $qp = QuadPres->new(
             $contents1,
             'doc_id' => 'features/colour_modes.html',
             'mode'   => "server",
@@ -388,7 +388,7 @@ q{<a href="../">Do it with the GIMP</a> → <a href="./">Overview of Features</a
     }
 
     {
-        my $qp = Shlomif::Quad::Pres->new(
+        my $qp = QuadPres->new(
             $contents1,
             'doc_id' => 'areal/sharpen/',
             'mode'   => "server",

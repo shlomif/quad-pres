@@ -1,16 +1,16 @@
-package Shlomif::Quad::Pres;
+package QuadPres;
 
 use strict;
 use warnings;
 
 use utf8;
 
-use parent 'Shlomif::Quad::Pres::Base';
+use parent 'QuadPres::Base';
 
 use IO::All qw/ io /;
-use Data::Dumper             ();
-use Shlomif::Quad::Pres::Url ();
-use Carp                     ();
+use Data::Dumper  ();
+use QuadPres::Url ();
+use Carp          ();
 use HTML::Widgets::NavMenu::EscapeHtml qw(escape_html);
 
 my $navigation_style_class = "nav";
@@ -70,7 +70,7 @@ sub _populate_doc_id
     }
 
     $self->doc_id(
-        Shlomif::Quad::Pres::Url->new(
+        QuadPres::Url->new(
             $doc_id_parsed, exists( $b->{'subs'} ),
             $self->mode,
         )
@@ -178,15 +178,14 @@ sub get_url_by_coords
         push @url, $comp;
     }
 
-    return Shlomif::Quad::Pres::Url->new( \@url, exists( $b->{'subs'} ),
-        $self->mode );
+    return QuadPres::Url->new( \@url, exists( $b->{'subs'} ), $self->mode );
 }
 
 sub get_contents_url
 {
     my $self = shift;
 
-    return Shlomif::Quad::Pres::Url->new( [], 1, $self->mode );
+    return QuadPres::Url->new( [], 1, $self->mode );
 }
 
 sub get_last_url
@@ -218,8 +217,7 @@ sub get_last_url
         $fetch->();
     }
 
-    return Shlomif::Quad::Pres::Url->new( [@path],
-        ( exists( $b->{subs} ) ? 1 : 0 ),
+    return QuadPres::Url->new( [@path], ( exists( $b->{subs} ) ? 1 : 0 ),
         $self->mode );
 }
 
@@ -545,7 +543,7 @@ sub get_style_css_url
     my $self = shift;
 
     return $self->doc_id->get_relative_url(
-        Shlomif::Quad::Pres::Url->new( ["style.css"], 0, $self->mode ),
+        QuadPres::Url->new( ["style.css"], 0, $self->mode ),
         $self->doc_id_slash_terminated );
 }
 
@@ -602,12 +600,10 @@ sub get_contents_helper
 
     my $text = "";
     $text .= "<li>";
-    $text .= "<a href=\""
+    $text .=
+        "<a href=\""
         . $self->doc_id->get_relative_url(
-        Shlomif::Quad::Pres::Url->new(
-            [@$url], exists( $branch->{'subs'} ),
-            $self->mode
-        )
+        QuadPres::Url->new( [@$url], exists( $branch->{'subs'} ), $self->mode )
         )
         . "\" class=\""
         . $contents_style_class . "\">";
@@ -858,4 +854,3 @@ sub get_breadcrumbs_trail
 }
 
 1;
-

@@ -11,9 +11,9 @@ use MIME::Types ();
 use IO::All qw/ io /;
 use POSIX ();
 use English qw( -no_match_vars );
-use Shlomif::Quad::Pres::Config ();
-use Shlomif::Quad::Pres::FS     ();
-use Shlomif::Quad::Pres::Path   ();
+use QuadPres::Config          ();
+use QuadPres::FS              ();
+use Shlomif::Quad::Pres::Path ();
 
 sub is_older
 {
@@ -33,11 +33,11 @@ sub is_newer
 
 sub run
 {
-    my $cfg = Shlomif::Quad::Pres::Config->new();
+    my $cfg = QuadPres::Config->new();
 
     my $group = $cfg->get_setgid_group();
 
-    my $fs_iface = Shlomif::Quad::Pres::FS->new( 'group' => $group );
+    my $fs_iface = QuadPres::FS->new( 'group' => $group );
 
     my $path_man    = Shlomif::Quad::Pres::Path->new();
     my $scripts_dir = $path_man->get_scripts_dir();

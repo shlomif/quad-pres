@@ -19,12 +19,12 @@ use File::Glob ':glob';
 
 use IO::All qw/ io /;
 
-use Shlomif::Quad::Pres::Path          ();
-use Shlomif::Quad::Pres::Exception     ();
-use Shlomif::Quad::Pres::Config        ();
-use Shlomif::Quad::Pres                ();
-use Shlomif::Quad::Pres::FS            ();
-use Shlomif::Quad::Pres::WriteContents ();
+use Shlomif::Quad::Pres::Path ();
+use QuadPres::Exception       ();
+use QuadPres::Config          ();
+use QuadPres                  ();
+use QuadPres::FS              ();
+use QuadPres::WriteContents   ();
 
 use lib getcwd();
 
@@ -62,7 +62,7 @@ has '_wml_obj' => (
     },
 );
 
-my $error_class = "Shlomif::Quad::Pres::Exception";
+my $error_class = "QuadPres::Exception";
 
 my $TIMESTAMP = $ENV{QUAD_PRES_SRC_TS} // 0;
 
@@ -434,7 +434,7 @@ sub perform_render_command
     my $error = $@;
     if (   $error
         && blessed($error)
-        && $error->isa('Shlomif::Quad::Pres::Exception::RenderFile') )
+        && $error->isa('QuadPres::Exception::RenderFile') )
     {
         $error_class->throw( { text => "Rendering Failed!" } );
     }
@@ -456,7 +456,7 @@ sub _convert_to_hardisk
 {
     my $self = shift;
 
-    my $cfg = Shlomif::Quad::Pres::Config->new();
+    my $cfg = QuadPres::Config->new();
 
     my $default_dest_dir = $cfg->get_server_dest_dir();
 
@@ -616,7 +616,7 @@ sub _render_file
     if ( $@ or $ret != 0 )
     {
         # Clean-up the file so it will have to be regenerated
-        my $error = Shlomif::Quad::Pres::Exception::RenderFile->new();
+        my $error = QuadPres::Exception::RenderFile->new();
         $error->{'src_filename'} = $filename;
         die $error;
     }
@@ -633,7 +633,7 @@ sub _render_file
         {
             # Clean-up the file so it will have to be regenerated
             unlink($filename);
-            my $error = Shlomif::Quad::Pres::Exception::RenderFile->new();
+            my $error = QuadPres::Exception::RenderFile->new();
             $error->{'src_filename'} = $src_filename;
             die $error;
         }
@@ -662,7 +662,7 @@ sub _render_all_contents
 {
     my $self = shift;
 
-    my $cfg = Shlomif::Quad::Pres::Config->new();
+    my $cfg = QuadPres::Config->new();
 
     my $default_dest_dir = $cfg->get_server_dest_dir();
     my $render_type      = "server";
@@ -683,7 +683,7 @@ sub _render_all_contents
 
     my $group = $cfg->get_setgid_group();
 
-    my $fs_iface = Shlomif::Quad::Pres::FS->new( 'group' => $group );
+    my $fs_iface = QuadPres::FS->new( 'group' => $group );
 
     # Check if the destination directory exists and if not -
     # create it.
@@ -697,7 +697,7 @@ sub _render_all_contents
         ]
     );
 
-    my $quadpres_obj = Shlomif::Quad::Pres->new(
+    my $quadpres_obj = QuadPres->new(
         $contents,
         'doc_id' => "/",
         'mode'   => "server",
@@ -735,7 +735,7 @@ sub perform_clear_command
     # Go to the base dir.
     $self->chdir_to_base();
 
-    my $cfg = Shlomif::Quad::Pres::Config->new();
+    my $cfg = QuadPres::Config->new();
 
     my $dest_dir = $cfg->get_server_dest_dir();
 
@@ -750,7 +750,7 @@ sub perform_upload_command
 
     $self->chdir_to_base();
 
-    my $cfg = Shlomif::Quad::Pres::Config->new();
+    my $cfg = QuadPres::Config->new();
 
     my $util = $cfg->get_upload_util();
 
@@ -938,8 +938,7 @@ sub perform_add_command
         ( $is_dir ? ( subs => [] ) : () )
         };
 
-    my $writer =
-        Shlomif::Quad::Pres::WriteContents->new( contents => $contents );
+    my $writer = QuadPres::WriteContents->new( contents => $contents );
     $writer->update_contents();
 
     return 0;
@@ -1032,7 +1031,7 @@ sub perform_pack_command
 {
     my $self = shift;
 
-    my $cfg = Shlomif::Quad::Pres::Config->new();
+    my $cfg = QuadPres::Config->new();
 
     $self->_assign_src_dir();
 
@@ -1062,7 +1061,7 @@ sub perform_pack_command
     require Contents;
     my $contents = Contents::get_contents();
 
-    my $quadpres_obj = Shlomif::Quad::Pres->new(
+    my $quadpres_obj = QuadPres->new(
         $contents,
         'doc_id' => "/",
         'mode'   => "server",
@@ -1129,7 +1128,7 @@ sub perform_render_all_in_one_page_command
 
     my $contents = Contents::get_contents();
 
-    my $cfg = Shlomif::Quad::Pres::Config->new();
+    my $cfg = QuadPres::Config->new();
 
     my $dest_dir = $cfg->get_server_dest_dir();
 
@@ -1140,7 +1139,7 @@ sub perform_render_all_in_one_page_command
 
     my $group = $cfg->get_setgid_group();
 
-    my $quadpres_obj = Shlomif::Quad::Pres->new(
+    my $quadpres_obj = QuadPres->new(
         $contents,
         'doc_id' => "/",
         'mode'   => "server",

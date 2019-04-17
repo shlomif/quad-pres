@@ -1,4 +1,4 @@
-package Shlomif::Quad::Pres::Base;
+package QuadPres::Base;
 
 use strict;
 use warnings;

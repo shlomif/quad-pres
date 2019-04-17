@@ -1,4 +1,4 @@
-package Shlomif::Quad::Pres::WriteContents;
+package QuadPres::WriteContents;
 
 use strict;
 use warnings;

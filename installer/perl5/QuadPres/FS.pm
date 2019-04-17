@@ -1,9 +1,9 @@
-package Shlomif::Quad::Pres::FS;
+package QuadPres::FS;
 
 use strict;
 use warnings;
 
-use parent 'Shlomif::Quad::Pres::Base';
+use parent 'QuadPres::Base';
 
 __PACKAGE__->mk_acc_ref( [qw( gid group )] );
 

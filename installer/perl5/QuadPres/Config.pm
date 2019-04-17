@@ -1,9 +1,9 @@
-package Shlomif::Quad::Pres::Config;
+package QuadPres::Config;
 
 use strict;
 use warnings;
 
-use parent 'Shlomif::Quad::Pres::Base';
+use parent 'QuadPres::Base';
 
 use Config::IniFiles ();
 use Template         ();

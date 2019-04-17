@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::Path;
 use strict;
 use warnings;
 
-use parent 'Shlomif::Quad::Pres::Base';
+use parent 'QuadPres::Base';
 
 # This variable will be converted to its right value by the make
 # process.
@@ -50,4 +50,3 @@ sub get_wml_dir
 }
 
 1;
-

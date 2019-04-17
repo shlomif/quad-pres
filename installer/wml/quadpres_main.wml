@@ -13,7 +13,7 @@ sub uniprint
 }:>
 <:{
 
-    use Shlomif::Quad::Pres ();
+    use QuadPres ();
     use Cwd qw/ getcwd /;
     use lib getcwd();
     use Contents ();
@@ -45,7 +45,7 @@ sub uniprint
 
         my $render_type = "server";
 
-        $qp = Shlomif::Quad::Pres->new(
+        $qp = QuadPres->new(
             $contents,
             'doc_id' => $document_name,
             'mode' => $render_type

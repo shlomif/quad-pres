@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More tests => 3;
 
-use Shlomif::Quad::Pres::FS ();
+use QuadPres::FS ();
 
 my @inputs = ( undef, "", "     " );
 
@@ -37,7 +37,7 @@ io->file($filename)->print("");
 
 for my $test_num ( keys @inputs )
 {
-    my $fs = Shlomif::Quad::Pres::FS->new( 'group' => $inputs[$test_num] );
+    my $fs = QuadPres::FS->new( 'group' => $inputs[$test_num] );
 
     my_test( $test_num, $fs );
 

@@ -1,4 +1,4 @@
-package Shlomif::Quad::Pres::Url;
+package QuadPres::Url;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use warnings;
 use List::MoreUtils qw( notall );
 use Carp ();
 
-use parent 'Shlomif::Quad::Pres::Base';
+use parent 'QuadPres::Base';
 use Data::Dumper qw/ Dumper /;
 
 __PACKAGE__->mk_acc_ref(

@@ -1,4 +1,4 @@
-package Shlomif::Quad::Pres::VimIface;
+package QuadPres::VimIface;
 
 use strict;
 use warnings;

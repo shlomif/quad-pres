@@ -1,7 +1,7 @@
 [PerlCritic]
 argv =
 select = **/*.{pl,pm,t} *.{pl,pm,t}
-ignore = t/data/**/* t/lang-set*.t perl5/Shlomif/Quad/Pres/Base.pm perl5/Shlomif/Quad/Pres/Path.pm.pl
+ignore = t/data/**/* t/lang-set*.t perl5/QuadPres/Base.pm perl5/Shlomif/Quad/Pres/Path.pm.pl
 
 [PerlTidy]
 argv = -ci=4 -bl -cti=0

@@ -1,9 +1,9 @@
-package Shlomif::Quad::Pres::Exception;
+package QuadPres::Exception;
 
 use strict;
 use warnings;
 
-use parent 'Shlomif::Quad::Pres::Base';
+use parent 'QuadPres::Base';
 
 sub _init
 {
@@ -28,11 +28,10 @@ sub text
     return $self->{'text'};
 }
 
-package Shlomif::Quad::Pres::Exception::RenderFile;
+package QuadPres::Exception::RenderFile;
 
 use vars qw(@ISA);
 
-@ISA = qw(Shlomif::Quad::Pres::Exception);
+@ISA = qw(QuadPres::Exception);
 
 1;
-
