@@ -21,7 +21,6 @@ use IO::All qw/ io /;
 
 use Shlomif::Quad::Pres::Path          ();
 use Shlomif::Quad::Pres::Exception     ();
-use Shlomif::Quad::Pres::Getopt        ();
 use Shlomif::Quad::Pres::Config        ();
 use Shlomif::Quad::Pres                ();
 use Shlomif::Quad::Pres::FS            ();
@@ -38,11 +37,12 @@ has 'dest_dir'          => ( isa => 'Str',      'is' => 'rw' );
 has 'src_dir'           => ( isa => 'Str',      'is' => 'rw' );
 has 'main_files_mtimes' => ( isa => 'ArrayRef', 'is' => 'rw' );
 has 'getopt'            => (
-    isa     => "Shlomif::Quad::Pres::Getopt",
+    isa     => "Getopt::Long::Parser",
     'is'    => "ro",
     lazy    => 1,
     default => sub {
-        return Shlomif::Quad::Pres::Getopt->new( shift->cmd_line );
+        use Getopt::Long ();
+        return Getopt::Long::Parser->new;
     },
 );
 has 'invocation_path' => ( isa => "ArrayRef", is => "rw" );
@@ -83,8 +83,6 @@ sub _init_cmd_line
     }
 
     $self->cmd_line($cmd_line);
-
-    $self->getopt( Shlomif::Quad::Pres::Getopt->new($cmd_line) );
 
     return;
 }
@@ -181,7 +179,8 @@ sub real_run
     my $getopt = $self->getopt();
 
     $getopt->configure('require_order');
-    $getopt->getoptions(
+    $getopt->getoptionsfromarray(
+        $self->cmd_line,
         'help|h|?' => \$help,
         'man'      => \$man,
     ) or pod2usage(2);
@@ -244,7 +243,8 @@ sub perform_setup_command
         "upload_path"     => "",
     );
 
-    $getopt->getoptions(
+    $getopt->getoptionsfromarray(
+        $self->cmd_line,
         'dest-dir=s'     => \$args{"server_dest_dir"},
         'setgid-group=s' => \$args{"setgid_group"},
         'upload-path=s'  => \$args{"upload_path"},
@@ -416,7 +416,8 @@ sub perform_render_command
     my $render_all            = 0;
     my $render_hard_disk_html = 0;
 
-    $getopt->getoptions(
+    $getopt->getoptionsfromarray(
+        $cmd_line,
         'a|all!'        => \$render_all,
         'hd|hard-disk!' => \$render_hard_disk_html,
     );
@@ -723,7 +724,7 @@ sub perform_clear_command
 
     my $clear_all = 0;
 
-    $getopt->getoptions( 'a|all!' => \$clear_all );
+    $getopt->getoptionsfromarray( $cmd_line, 'a|all!' => \$clear_all );
 
     if ( !$clear_all )
     {
@@ -1114,7 +1115,8 @@ sub perform_render_all_in_one_page_command
 
     my $all_in_one_dir;
     my $direction = 'ltr';
-    $getopt->getoptions(
+    $getopt->getoptionsfromarray(
+        $cmd_line,
         'output-dir=s' => \$all_in_one_dir,
         'html-dir=s'   => \$direction,
     );
