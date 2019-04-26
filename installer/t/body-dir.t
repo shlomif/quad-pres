@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use autodie;
 
 use Test::More tests => 16;
 
@@ -97,6 +98,7 @@ EOF
         qr{\Q$body_str\E},
         "output file contains the right body tag - $test_idx.",
     );
+    chdir($orig_dir);
 
     return;
 }
