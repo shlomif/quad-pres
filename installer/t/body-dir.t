@@ -62,11 +62,8 @@ Hello world!
 
 EOF
 
-    chdir($test_dir);
-
     # TEST:$n++;
-    ok( !system(qw(quadp render -a)), "quadp render -a for test $test_idx", );
-    chdir($pwd);
+    $obj->quadp_render;
 
     my $lint = calc_tidy;
 

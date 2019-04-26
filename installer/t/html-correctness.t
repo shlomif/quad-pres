@@ -50,12 +50,8 @@ Hello world!
 
 EOF
 
-    chdir($test_dir);
-
     # TEST*$num_themes
-    ok( !system( "quadp", "render", "-a" ),
-        "quadp render -a ran successfully for theme '$theme'." );
-    chdir($pwd);
+    $obj->quadp_render;
 
     my $lint = calc_tidy;
 

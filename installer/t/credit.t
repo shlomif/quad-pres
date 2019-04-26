@@ -48,11 +48,9 @@ sub perform_test
         fcopy( $file, "$test_dir/src" );
     }
 
-    chdir($test_dir);
-
     if ( !$credit )
     {
-        path("template.wml")->edit_raw(
+        path("$test_dir/template.wml")->edit_raw(
             sub {
                 $_ = qq{<set-var qp_avoid_credit="yes" />\n\n} . $_;
             }
@@ -60,10 +58,7 @@ sub perform_test
     }
 
     # TEST:$n++;
-    ok( !system( "quadp", "render", "-a" ),
-        "quadp render -a ran successfully for theme '$theme'." );
-    chdir($pwd);
-
+    $obj->quadp_render;
     my $contents = $obj->output_dir->child("index.html")->slurp_raw;
     my $re       = qr{Made with Quad-Pres};
 

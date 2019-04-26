@@ -93,5 +93,20 @@ sub quadp_setup
     );
 }
 
+sub quadp_render
+{
+    my $self = shift;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    chdir( $self->test_dir );
+
+    ok(
+        !system(qw(quadp render -a)),
+        "quadp render -a for test " . $self->test_idx,
+    );
+    chdir( $self->io_dir );
+}
+
 1;
 
