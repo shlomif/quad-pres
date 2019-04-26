@@ -8,7 +8,6 @@ use parent 'Exporter';
 
 our @EXPORT_OK = qw/ $io_dir perform_test /;
 
-use HTML::T5 ();
 use Test::More;
 use Path::Tiny qw/ path /;
 use QpTest::Obj ();
@@ -87,11 +86,6 @@ sub set_lang_settings
     }
 
     return ( $total_charset, $total_lang );
-}
-
-sub calc_tidy
-{
-    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
 }
 
 sub perform_test
