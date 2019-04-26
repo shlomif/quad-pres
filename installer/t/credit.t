@@ -6,7 +6,9 @@ use Test::More tests => 16;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Path::Tiny qw/ path tempdir tempfile cwd /;
-use Cwd ();
+use lib './t/lib';
+use QpTest::Obj ();
+use Cwd         ();
 use IO::All qw/ io /;
 
 my $io_dir_proto = "t/data/in-out-credit";
@@ -34,7 +36,8 @@ sub perform_test
     # diag("Test No. $test_idx : Theme=$theme credit=$credit");
     $test_idx++;
 
-    my $test_dir   = "testhtml-$test_idx";
+    my $obj = QpTest::Obj->new( { test_idx => $test_idx, theme => $theme } );
+    my $test_dir   = $obj->test_dir;
     my $output_dir = "$test_dir-output";
 
     my $pwd = Cwd::getcwd();
@@ -43,11 +46,7 @@ sub perform_test
     ok( !system( "quadp", "setup", $test_dir, "--dest-dir=$pwd/$output_dir" ),
         "Running quadp setup was succesful." );
 
-    path("$test_dir/.wmlrc")->edit_raw(
-        sub {
-            s{(-DTHEME=)[\w\-]+}{$1$theme};
-        }
-    );
+    $obj->set_theme;
     my $tmpl_dir = "$orig_dir/t/lib/credit/template";
 
     fcopy( "$tmpl_dir/Contents.pm", "$test_dir/Contents.pm", );

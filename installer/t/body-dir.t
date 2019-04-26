@@ -11,7 +11,8 @@ use Cwd ();
 use IO::All qw/ io /;
 use HTML::T5 ();
 
-use Path::Tiny qw/ path tempdir tempfile cwd /;
+use lib './t/lib';
+use QpTest::Obj ();
 
 my $io_dir = "t/data/in-out-body-dir";
 rmtree($io_dir);
@@ -44,9 +45,9 @@ sub perform_test
     my $theme = shift;
     my $dir   = shift;
 
-    my $test_dir = "testhtml$test_idx";
-
-    my $pwd = Cwd::getcwd();
+    my $obj = QpTest::Obj->new( { test_idx => $test_idx, theme => $theme } );
+    my $test_dir = $obj->test_dir;
+    my $pwd      = Cwd::getcwd();
 
     # TEST:$n++;
     ok(
@@ -57,12 +58,7 @@ sub perform_test
         "setup for test $test_idx is successful.",
     );
 
-    path("$test_dir/.wmlrc")->edit_raw(
-        sub {
-            s{(-DTHEME=)[\w\-]+}{$1$theme};
-        }
-    );
-
+    $obj->set_theme;
     io()->file("$test_dir/src/index.html.wml")->print(<<"EOF");
 <set-var qp_body_dir="$dir" />
 #include 'template.wml'

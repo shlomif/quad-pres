@@ -9,7 +9,8 @@ use File::Path qw/ mkpath rmtree /;
 use Cwd ();
 use IO::All qw/ io /;
 use HTML::T5 ();
-use Path::Tiny qw/ path tempdir tempfile cwd /;
+use lib './t/lib';
+use QpTest::Obj ();
 
 sub calc_tidy
 {
@@ -35,12 +36,15 @@ sub check_files
         "The requested files exist in the output directory" );
 }
 
+my $test_idx = 0;
+
 sub perform_test
 {
     my $theme = shift;
 
     chdir($io_dir);
-    my $test_dir   = "testhtml-$theme";
+    my $obj = QpTest::Obj->new( { test_idx => ++$test_idx, theme => $theme } );
+    my $test_dir   = $obj->test_dir;
     my $output_dir = "$test_dir-output";
 
     my $pwd = Cwd::getcwd();
@@ -48,13 +52,7 @@ sub perform_test
     # TEST*$num_themes
     ok( !system( "quadp", "setup", $test_dir, "--dest-dir=$pwd/$output_dir" ),
         "Running quadp setup was succesful." );
-
-    path("$test_dir/.wmlrc")->edit_raw(
-        sub {
-            s{(-DTHEME=)[\w\-]+}{$1$theme};
-        }
-    );
-
+    $obj->set_theme;
     io->file("$test_dir/src/index.html.wml")->print(<<'EOF');
 #include 'template.wml'
 
