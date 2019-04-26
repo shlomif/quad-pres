@@ -93,6 +93,13 @@ sub quadp_setup
     );
 }
 
+sub slurp_index
+{
+    my $self = shift;
+
+    return $self->output_dir->child("index.html")->slurp_utf8;
+}
+
 sub quadp_render
 {
     my $self = shift;

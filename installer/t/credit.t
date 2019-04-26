@@ -59,7 +59,7 @@ sub perform_test
 
     # TEST:$n++;
     $obj->quadp_render;
-    my $contents = $obj->output_dir->child("index.html")->slurp_raw;
+    my $contents = $obj->slurp_index;
     my $re       = qr{Made with Quad-Pres};
 
     # TEST:$n++

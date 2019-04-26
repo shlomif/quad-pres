@@ -67,8 +67,7 @@ EOF
 
     my $lint = calc_tidy;
 
-    $lint->parse( "$test_dir-output/index.html",
-        $obj->output_dir->child("index.html")->slurp_utf8 );
+    $lint->parse( "$test_dir-output/index.html", $obj->slurp_index, );
 
     # TEST:$n++;
     ok( !scalar( $lint->messages() ), "HTML is valid for test No. $test_idx." );
@@ -80,9 +79,7 @@ EOF
     }
 
     # TEST:$n++;
-    like(
-        $obj->output_dir->child("index.html")->slurp_utf8,
-        qr{\Q$body_str\E},
+    like( $obj->slurp_index, qr{\Q$body_str\E},
         "output file contains the right body tag - $test_idx.",
     );
     $obj->back;

@@ -55,8 +55,7 @@ EOF
 
     my $lint = calc_tidy;
 
-    $lint->parse( "$test_dir-output/index.html",
-        $obj->output_dir->child("index.html")->slurp_utf8 );
+    $lint->parse( "output/index.html", $obj->slurp_index, );
 
     # TEST*$num_themes
     ok( !scalar( $lint->messages() ), "HTML is valid for theme '$theme'." );
