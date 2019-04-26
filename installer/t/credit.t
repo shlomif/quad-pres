@@ -11,8 +11,7 @@ use QpTest::Obj ();
 use Cwd         ();
 use IO::All qw/ io /;
 
-my $io_dir_proto = "t/data/in-out-credit";
-my $io_dir       = File::Spec->rel2abs($io_dir_proto);
+my $io_dir = path("t/data/in-out-credit")->absolute;
 rmtree($io_dir);
 mkpath($io_dir);
 
@@ -33,7 +32,7 @@ sub perform_test
     $test_idx++;
 
     my $obj = QpTest::Obj->new(
-        { io_dir => path($io_dir), test_idx => $test_idx, theme => $theme } );
+        { io_dir => $io_dir, test_idx => $test_idx, theme => $theme } );
     $obj->cd;
     my $test_dir   = $obj->test_dir;
     my $output_dir = "$test_dir-output";
