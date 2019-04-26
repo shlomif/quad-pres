@@ -9,7 +9,6 @@ use Path::Tiny qw/ path tempdir tempfile cwd /;
 use lib './t/lib';
 use QpTest::Obj ();
 use Cwd         ();
-use IO::All qw/ io /;
 
 my $io_dir = path("t/data/in-out-credit")->absolute;
 rmtree($io_dir);
@@ -34,14 +33,17 @@ sub perform_test
     my $obj = QpTest::Obj->new(
         { io_dir => $io_dir, test_idx => $test_idx, theme => $theme } );
     $obj->cd;
-    my $test_dir   = $obj->test_dir;
-    my $output_dir = "$test_dir-output";
+    my $test_dir = $obj->test_dir;
 
     my $pwd = Cwd::getcwd();
 
     # TEST:$n++;
-    ok( !system( "quadp", "setup", $test_dir, "--dest-dir=$pwd/$output_dir" ),
-        "Running quadp setup was succesful." );
+    ok(
+        !system(
+            "quadp", "setup", $test_dir, "--dest-dir=" . $obj->output_dir
+        ),
+        "Running quadp setup was succesful."
+    );
 
     $obj->set_theme;
     my $tmpl_dir = $obj->orig_dir . "/t/lib/credit/template";
@@ -68,9 +70,8 @@ sub perform_test
         "quadp render -a ran successfully for theme '$theme'." );
     chdir($pwd);
 
-    my $output_file = $output_dir . "/index.html";
-    my $contents    = scalar( io->file($output_file)->slurp() );
-    my $re          = qr{Made with Quad-Pres};
+    my $contents = $obj->output_dir->child("index.html")->slurp_raw;
+    my $re       = qr{Made with Quad-Pres};
 
     # TEST:$n++
     if ($credit)
@@ -83,7 +84,7 @@ sub perform_test
     }
 
     # TEST:$n++;
-    unlike( scalar( io->file( $output_dir . "/two.html" )->slurp ),
+    unlike( $obj->output_dir->child("two.html")->slurp,
         $re, "No credit notice at the non-root-file." );
 
     $obj->back;

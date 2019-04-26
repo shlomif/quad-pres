@@ -24,6 +24,16 @@ has test_idx => (
     isa => 'Int',
 );
 
+has output_dir => (
+    is      => 'rw',
+    default => sub {
+        my $self = shift;
+        return $self->io_dir->child( "testhtml" . $self->test_idx . '-output' );
+    },
+    lazy => 1,
+
+    # other attributes
+);
 has test_dir => (
     is      => 'rw',
     default => sub {

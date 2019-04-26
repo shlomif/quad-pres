@@ -16,7 +16,7 @@ use Path::Tiny qw/ path tempdir tempfile cwd /;
 use lib './t/lib';
 use QpTest::Obj ();
 
-my $io_dir = "t/data/in-out-body-dir";
+my $io_dir = path("t/data/in-out-body-dir")->absolute;
 rmtree($io_dir);
 mkpath($io_dir);
 
@@ -44,7 +44,7 @@ sub perform_test
     my $dir   = shift;
 
     my $obj = QpTest::Obj->new(
-        { io_dir => path($io_dir), test_idx => $test_idx, theme => $theme } );
+        { io_dir => $io_dir, test_idx => $test_idx, theme => $theme } );
     $obj->cd;
     my $test_dir = $obj->test_dir;
     my $pwd      = Cwd::getcwd();

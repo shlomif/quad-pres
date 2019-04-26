@@ -18,22 +18,12 @@ sub calc_tidy
     return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
 }
 
-my $io_dir = "t/data/in-out-html-correctness";
+my $io_dir = path("t/data/in-out-html-correctness")->absolute;
 rmtree($io_dir);
 mkpath($io_dir);
 
 # TEST:$num_themes=2;
 my @themes = (qw(alon-altman-text shlomif-text));
-
-sub check_files
-{
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-    my $output_dir = shift;
-
-    return ok(
-        ( ( -e "$output_dir/index.html" ) && ( -e "$output_dir/two.html" ) ),
-        "The requested files exist in the output directory" );
-}
 
 my $test_idx = 0;
 
@@ -42,16 +32,19 @@ sub perform_test
     my $theme = shift;
 
     my $obj = QpTest::Obj->new(
-        { io_dir => path($io_dir), test_idx => ++$test_idx, theme => $theme } );
+        { io_dir => $io_dir, test_idx => ++$test_idx, theme => $theme } );
     $obj->cd;
-    my $test_dir   = $obj->test_dir;
-    my $output_dir = "$test_dir-output";
+    my $test_dir = $obj->test_dir;
 
     my $pwd = Cwd::getcwd();
 
     # TEST*$num_themes
-    ok( !system( "quadp", "setup", $test_dir, "--dest-dir=$pwd/$output_dir" ),
-        "Running quadp setup was succesful." );
+    ok(
+        !system(
+            "quadp", "setup", $test_dir, "--dest-dir=" . $obj->output_dir
+        ),
+        "Running quadp setup was succesful."
+    );
     $obj->set_theme;
     io->file("$test_dir/src/index.html.wml")->print(<<'EOF');
 #include 'template.wml'
@@ -72,7 +65,7 @@ EOF
     my $lint = calc_tidy;
 
     $lint->parse( "$test_dir-output/index.html",
-        io->file("$test_dir-output/index.html")->utf8->all );
+        $obj->output_dir->child("index.html")->slurp_utf8 );
 
     # TEST*$num_themes
     ok( !scalar( $lint->messages() ), "HTML is valid for theme '$theme'." );
