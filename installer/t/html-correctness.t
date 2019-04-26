@@ -41,7 +41,7 @@ sub perform_test
     # TEST*$num_themes
     $obj->quadp_setup;
     $obj->set_theme;
-    io->file("$test_dir/src/index.html.wml")->print(<<'EOF');
+    $obj->spew_index(<<'EOF');
 #include 'template.wml'
 
 <p>

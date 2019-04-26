@@ -51,7 +51,7 @@ sub perform_test
     # TEST:$n++;
     $obj->quadp_setup;
     $obj->set_theme;
-    io()->file("$test_dir/src/index.html.wml")->print(<<"EOF");
+    $obj->spew_index(<<"EOF");
 <set-var qp_body_dir="$dir" />
 #include 'template.wml'
 

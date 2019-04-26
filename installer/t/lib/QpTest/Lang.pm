@@ -11,16 +11,16 @@ use HTML::T5 ();
 use IO::All qw/ io /;
 use Cwd ();
 use Test::More;
+use Path::Tiny qw/ path tempdir tempfile cwd /;
+use QpTest::Obj ();
 
-our $io_dir = "t/data/in-out-lang-settings";
+our $io_dir = path("t/data/in-out-lang-settings")->absolute;
 
 sub verify_lang_settings
 {
-    my $charset  = shift;
-    my $lang     = shift;
-    my $filename = shift;
-
-    my $text = io()->file($filename)->slurp();
+    my $charset = shift;
+    my $lang    = shift;
+    my $text    = shift;
 
     if (   ( $text =~ /<\?xml version="1.0" encoding="$charset"\?>/ )
         && ( $text =~ /<meta charset="\Q$charset\E"(\s+\/)?>/ )
@@ -99,31 +99,20 @@ sub perform_test
 {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    my $orig_dir = Cwd::getcwd();
-
-    io->dir($io_dir)->mkpath;
-    chdir($io_dir);
-
     my @params = @_;
     my (
         $test_idx,          $global_to_set_lang, $global_to_set_charset,
         $local_to_set_lang, $local_to_set_charset
     ) = @params;
 
-    my $test_dir = "test_lang$test_idx";
-    io->dir($test_dir)->rmtree;
+    my $obj = QpTest::Obj->new(
+        { io_dir => $io_dir, test_idx => $test_idx, theme => 't' } );
+    $io_dir->mkpath;
+    $obj->cd;
+    $obj->test_dir->remove_tree;
 
-    my $pwd = Cwd::getcwd();
-
-    # TEST*$num_cfg
-    ok(
-        !system(
-            "quadp", "setup", $test_dir, "--dest-dir=$pwd/$test_dir-output",
-        ),
-        "quadp setup for $test_idx was successful.",
-    );
-
-    io("$test_dir/src/index.html.wml")->print(<<'EOF');
+    $obj->quadp_setup;
+    $obj->spew_index(<<'EOF');
 #include 'template.wml'
 
 <p>
@@ -131,32 +120,22 @@ Hello world!
 </p>
 EOF
 
-    my @wanted = set_lang_settings( $test_dir, @params );
+    my @wanted = set_lang_settings( $obj->test_dir, @params );
 
-    $pwd = Cwd::getcwd();
-    chdir($test_dir);
+    $obj->quadp_render;
+    my $lint = calc_tidy;
 
-    # TEST*$num_cfg
-    ok( !system(qw(quadp render -a)),
-        "quadp render -a was successful for test No. $test_idx" );
-    chdir($pwd);
+    $lint->parse( "output/index.html", $obj->slurp_index, );
 
-    my $output_file = "$test_dir-output/index.html";
-    my $lint        = calc_tidy;
-
-    $lint->parse( $output_file, io->file($output_file)->utf8->all );
-
-    # TEST*$num_cfg
     ok( !scalar( $lint->messages() ),
         "HTML is valid for test No. '$test_idx'." );
 
-    # TEST*$num_cfg
     is(
-        verify_lang_settings( @wanted, $output_file ),
+        verify_lang_settings( @wanted, $obj->slurp_index ),
         0, "File for '$test_idx' has proper language encodings",
     );
 
-    chdir($orig_dir);
+    $obj->back;
 }
 
 1;

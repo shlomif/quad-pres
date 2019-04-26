@@ -93,6 +93,13 @@ sub quadp_setup
     );
 }
 
+sub spew_index
+{
+    my $self = shift;
+
+    return $self->test_dir->child( "src", "index.html.wml" )->spew_utf8(@_);
+}
+
 sub slurp_index
 {
     my $self = shift;
