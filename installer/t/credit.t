@@ -38,13 +38,7 @@ sub perform_test
     my $pwd = Cwd::getcwd();
 
     # TEST:$n++;
-    ok(
-        !system(
-            "quadp", "setup", $test_dir, "--dest-dir=" . $obj->output_dir
-        ),
-        "Running quadp setup was succesful."
-    );
-
+    $obj->quadp_setup;
     $obj->set_theme;
     my $tmpl_dir = $obj->orig_dir . "/t/lib/credit/template";
 

@@ -50,14 +50,7 @@ sub perform_test
     my $pwd      = Cwd::getcwd();
 
     # TEST:$n++;
-    ok(
-        !system(
-            "quadp",   "setup",
-            $test_dir, "--dest-dir=$pwd/${test_dir}-output",
-        ),
-        "setup for test $test_idx is successful.",
-    );
-
+    $obj->quadp_setup;
     $obj->set_theme;
     io()->file("$test_dir/src/index.html.wml")->print(<<"EOF");
 <set-var qp_body_dir="$dir" />
@@ -75,12 +68,10 @@ EOF
     ok( !system(qw(quadp render -a)), "quadp render -a for test $test_idx", );
     chdir($pwd);
 
-    my $output_file = "$test_dir-output/index.html";
-
     my $lint = calc_tidy;
 
     $lint->parse( "$test_dir-output/index.html",
-        io->file("$test_dir-output/index.html")->utf8->all );
+        $obj->output_dir->child("index.html")->slurp_utf8 );
 
     # TEST:$n++;
     ok( !scalar( $lint->messages() ), "HTML is valid for test No. $test_idx." );
@@ -93,7 +84,7 @@ EOF
 
     # TEST:$n++;
     like(
-        scalar( io()->file($output_file)->slurp ),
+        $obj->output_dir->child("index.html")->slurp_utf8,
         qr{\Q$body_str\E},
         "output file contains the right body tag - $test_idx.",
     );

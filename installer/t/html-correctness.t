@@ -39,12 +39,7 @@ sub perform_test
     my $pwd = Cwd::getcwd();
 
     # TEST*$num_themes
-    ok(
-        !system(
-            "quadp", "setup", $test_dir, "--dest-dir=" . $obj->output_dir
-        ),
-        "Running quadp setup was succesful."
-    );
+    $obj->quadp_setup;
     $obj->set_theme;
     io->file("$test_dir/src/index.html.wml")->print(<<'EOF');
 #include 'template.wml'

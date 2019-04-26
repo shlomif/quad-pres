@@ -79,5 +79,19 @@ sub back
     return;
 }
 
+sub quadp_setup
+{
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    my $self = shift;
+
+    return ok(
+        !system(
+            "quadp",         "setup",
+            $self->test_dir, "--dest-dir=" . $self->output_dir
+        ),
+        "Running quadp setup was succesful."
+    );
+}
+
 1;
 
