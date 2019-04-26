@@ -18,8 +18,6 @@ my $io_dir       = File::Spec->rel2abs($io_dir_proto);
 rmtree($io_dir);
 mkpath($io_dir);
 
-my $test_idx = 0;
-
 sub check_files
 {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -33,8 +31,6 @@ sub check_files
 sub perform_test
 {
     my $orig_dir = Cwd::getcwd();
-
-    $test_idx++;
 
     chdir($io_dir);
     my $test_dir   = "testhtml";

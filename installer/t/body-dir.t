@@ -39,12 +39,11 @@ sub calc_tidy
 sub perform_test
 {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    $test_idx++;
     my $theme = shift;
     my $dir   = shift;
 
     my $obj = QpTest::Obj->new(
-        { io_dir => $io_dir, test_idx => $test_idx, theme => $theme } );
+        { io_dir => $io_dir, test_idx => ++$test_idx, theme => $theme } );
     $obj->cd;
     my $test_dir = $obj->test_dir;
     my $pwd      = Cwd::getcwd();
@@ -70,7 +69,8 @@ EOF
     $lint->parse( "$test_dir-output/index.html", $obj->slurp_index, );
 
     # TEST:$n++;
-    ok( !scalar( $lint->messages() ), "HTML is valid for test No. $test_idx." );
+    ok( !scalar( $lint->messages() ),
+        "HTML is valid for test No. " . $obj->test_idx );
 
     my $body_str = "<body>";
     if ( $dir eq "rtl" )
@@ -80,7 +80,7 @@ EOF
 
     # TEST:$n++;
     like( $obj->slurp_index, qr{\Q$body_str\E},
-        "output file contains the right body tag - $test_idx.",
+        "output file contains the right body tag - " . $obj->test_idx,
     );
     $obj->back;
 

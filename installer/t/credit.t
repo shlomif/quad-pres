@@ -27,11 +27,8 @@ sub perform_test
     my $theme  = shift;
     my $credit = shift;
 
-    # diag("Test No. $test_idx : Theme=$theme credit=$credit");
-    $test_idx++;
-
     my $obj = QpTest::Obj->new(
-        { io_dir => $io_dir, test_idx => $test_idx, theme => $theme } );
+        { io_dir => $io_dir, test_idx => ++$test_idx, theme => $theme } );
     $obj->cd;
     my $test_dir = $obj->test_dir;
 
