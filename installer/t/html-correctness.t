@@ -9,6 +9,7 @@ use File::Path qw/ mkpath rmtree /;
 use Cwd ();
 use IO::All qw/ io /;
 use HTML::T5 ();
+use Path::Tiny qw/ path tempdir tempfile cwd /;
 use lib './t/lib';
 use QpTest::Obj ();
 
@@ -16,8 +17,6 @@ sub calc_tidy
 {
     return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
 }
-
-my $orig_dir = Cwd::getcwd();
 
 my $io_dir = "t/data/in-out-html-correctness";
 rmtree($io_dir);
@@ -42,8 +41,9 @@ sub perform_test
 {
     my $theme = shift;
 
-    chdir($io_dir);
-    my $obj = QpTest::Obj->new( { test_idx => ++$test_idx, theme => $theme } );
+    my $obj = QpTest::Obj->new(
+        { io_dir => path($io_dir), test_idx => ++$test_idx, theme => $theme } );
+    $obj->cd;
     my $test_dir   = $obj->test_dir;
     my $output_dir = "$test_dir-output";
 
@@ -76,8 +76,7 @@ EOF
 
     # TEST*$num_themes
     ok( !scalar( $lint->messages() ), "HTML is valid for theme '$theme'." );
-
-    chdir($orig_dir);
+    $obj->back;
 }
 
 foreach my $theme (@themes)

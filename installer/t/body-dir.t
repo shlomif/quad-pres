@@ -11,6 +11,7 @@ use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd ();
 use IO::All qw/ io /;
 use HTML::T5 ();
+use Path::Tiny qw/ path tempdir tempfile cwd /;
 
 use lib './t/lib';
 use QpTest::Obj ();
@@ -38,15 +39,13 @@ sub calc_tidy
 sub perform_test
 {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    my $orig_dir = Cwd::getcwd();
-
-    chdir($io_dir);
-
     $test_idx++;
     my $theme = shift;
     my $dir   = shift;
 
-    my $obj = QpTest::Obj->new( { test_idx => $test_idx, theme => $theme } );
+    my $obj = QpTest::Obj->new(
+        { io_dir => path($io_dir), test_idx => $test_idx, theme => $theme } );
+    $obj->cd;
     my $test_dir = $obj->test_dir;
     my $pwd      = Cwd::getcwd();
 
@@ -98,7 +97,7 @@ EOF
         qr{\Q$body_str\E},
         "output file contains the right body tag - $test_idx.",
     );
-    chdir($orig_dir);
+    $obj->back;
 
     return;
 }

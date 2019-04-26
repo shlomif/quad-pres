@@ -12,7 +12,9 @@ use Test::More;
 
 use Path::Tiny qw/ path tempdir tempfile cwd /;
 
-has theme => (
+has [ 'io_dir', '_pwd' ] => ( is => 'rw' );
+has orig_dir => ( is => 'ro', default => sub { return cwd; } );
+has theme    => (
     is  => 'rw',
     isa => 'Str',
 );
@@ -33,6 +35,15 @@ has test_dir => (
     # other attributes
 );
 
+sub cd
+{
+    my $self = shift;
+
+    chdir( $self->io_dir );
+
+    return;
+}
+
 sub set_theme
 {
     my $self  = shift;
@@ -45,6 +56,15 @@ sub set_theme
     );
 
     #body ...
+
+    return;
+}
+
+sub back
+{
+    my $self = shift;
+
+    chdir( $self->orig_dir );
 
     return;
 }

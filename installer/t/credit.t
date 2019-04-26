@@ -29,14 +29,12 @@ sub perform_test
     my $theme  = shift;
     my $credit = shift;
 
-    my $orig_dir = Cwd::getcwd();
-
-    chdir($io_dir);
-
     # diag("Test No. $test_idx : Theme=$theme credit=$credit");
     $test_idx++;
 
-    my $obj = QpTest::Obj->new( { test_idx => $test_idx, theme => $theme } );
+    my $obj = QpTest::Obj->new(
+        { io_dir => path($io_dir), test_idx => $test_idx, theme => $theme } );
+    $obj->cd;
     my $test_dir   = $obj->test_dir;
     my $output_dir = "$test_dir-output";
 
@@ -47,7 +45,7 @@ sub perform_test
         "Running quadp setup was succesful." );
 
     $obj->set_theme;
-    my $tmpl_dir = "$orig_dir/t/lib/credit/template";
+    my $tmpl_dir = $obj->orig_dir . "/t/lib/credit/template";
 
     fcopy( "$tmpl_dir/Contents.pm", "$test_dir/Contents.pm", );
     foreach my $file ( glob("$tmpl_dir/src/*.html.wml") )
@@ -89,7 +87,7 @@ sub perform_test
     unlike( scalar( io->file( $output_dir . "/two.html" )->slurp ),
         $re, "No credit notice at the non-root-file." );
 
-    chdir($orig_dir);
+    $obj->back;
 
     return;
 }
