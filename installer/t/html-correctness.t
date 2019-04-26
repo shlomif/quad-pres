@@ -6,9 +6,7 @@ use warnings;
 use Test::More tests => 6;
 use Test::Differences qw/ eq_or_diff /;
 use File::Path qw/ mkpath rmtree /;
-use Cwd ();
-use IO::All qw/ io /;
-use Path::Tiny qw/ path tempdir tempfile cwd /;
+use Path::Tiny qw/ path tempdir tempfile /;
 use lib './t/lib';
 use QpTest::Obj ();
 
@@ -28,9 +26,6 @@ sub perform_test
     my $obj = QpTest::Obj->new(
         { io_dir => $io_dir, test_idx => ++$test_idx, theme => $theme } );
     $obj->cd;
-    my $test_dir = $obj->test_dir;
-
-    my $pwd = Cwd::getcwd();
 
     # TEST*$num_themes
     $obj->quadp_setup;

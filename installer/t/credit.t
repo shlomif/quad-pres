@@ -2,13 +2,13 @@
 
 use strict;
 use warnings;
+use autodie;
 use Test::More tests => 16;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
-use Path::Tiny qw/ path tempdir tempfile cwd /;
+use Path::Tiny qw/ path tempdir tempfile /;
 use lib './t/lib';
 use QpTest::Obj ();
-use Cwd         ();
 
 my $io_dir = path("t/data/in-out-credit")->absolute;
 rmtree($io_dir);
@@ -31,8 +31,6 @@ sub perform_test
         { io_dir => $io_dir, test_idx => ++$test_idx, theme => $theme } );
     $obj->cd;
     my $test_dir = $obj->test_dir;
-
-    my $pwd = Cwd::getcwd();
 
     # TEST:$n++;
     $obj->quadp_setup;
