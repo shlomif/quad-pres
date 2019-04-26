@@ -10,7 +10,6 @@ use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd ();
 use IO::All qw/ io /;
-use HTML::T5 ();
 use Path::Tiny qw/ path tempdir tempfile cwd /;
 
 use lib './t/lib';
@@ -29,11 +28,6 @@ my @dirs = (qw(ltr rtl));
 # TEST:$num_cfgs=$num_dirs*$num_themes;
 
 my $test_idx = 0;
-
-sub calc_tidy
-{
-    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
-}
 
 # TEST:$n=0;
 sub perform_test
@@ -64,13 +58,8 @@ EOF
     # TEST:$n++;
     $obj->quadp_render;
 
-    my $lint = calc_tidy;
-
-    $lint->parse( "$test_dir-output/index.html", $obj->slurp_index, );
-
     # TEST:$n++;
-    ok( !scalar( $lint->messages() ),
-        "HTML is valid for test No. " . $obj->test_idx );
+    $obj->tidy_check;
 
     my $body_str = "<body>";
     if ( $dir eq "rtl" )

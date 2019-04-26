@@ -5,7 +5,6 @@ use warnings;
 
 use MooX qw/ late /;
 
-use HTML::T5 ();
 use IO::All qw/ io /;
 use Cwd ();
 use Test::More;
@@ -44,6 +43,12 @@ has test_dir => (
 
     # other attributes
 );
+
+sub calc_tidy
+{
+    require HTML::T5;
+    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
+}
 
 sub cd
 {
@@ -122,5 +127,14 @@ sub quadp_render
     chdir( $self->io_dir );
 }
 
-1;
+sub tidy_check
+{
+    my $self = shift;
 
+    my $lint = calc_tidy;
+
+    $lint->parse( "output/index.html", $self->slurp_index, );
+
+    return ok( !scalar( $lint->messages() ), "HTML is valid ." );
+}
+1;

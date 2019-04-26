@@ -8,15 +8,9 @@ use Test::Differences qw/ eq_or_diff /;
 use File::Path qw/ mkpath rmtree /;
 use Cwd ();
 use IO::All qw/ io /;
-use HTML::T5 ();
 use Path::Tiny qw/ path tempdir tempfile cwd /;
 use lib './t/lib';
 use QpTest::Obj ();
-
-sub calc_tidy
-{
-    return HTML::T5->new( { input_xml => 1, output_xhtml => 1, } );
-}
 
 my $io_dir = path("t/data/in-out-html-correctness")->absolute;
 rmtree($io_dir);
@@ -53,12 +47,9 @@ EOF
     # TEST*$num_themes
     $obj->quadp_render;
 
-    my $lint = calc_tidy;
-
-    $lint->parse( "output/index.html", $obj->slurp_index, );
-
     # TEST*$num_themes
-    ok( !scalar( $lint->messages() ), "HTML is valid for theme '$theme'." );
+    $obj->tidy_check;
+
     $obj->back;
 }
 
