@@ -11,6 +11,8 @@ use Cwd ();
 use IO::All qw/ io /;
 use File::Spec ();
 
+use Path::Tiny qw/ path tempdir tempfile cwd /;
+
 my $io_dir_proto = "t/data/in-out-template-toolkit";
 my $io_dir       = File::Spec->rel2abs($io_dir_proto);
 rmtree($io_dir);
@@ -44,14 +46,14 @@ sub perform_test
     ok( !system( "quadp", "setup", $test_dir, "--dest-dir=./dest" ),
         "Running quadp setup was succesful." );
 
-    my $ini_fn = "$test_dir/quadpres.ini";
-    my @lines  = io->file($ini_fn)->getlines();
-
-    @lines =
-        ( map { /\Aupload_path=/ ? qq{tt_upload_path=[% ENV.mypath %]\n} : $_ }
-            @lines );
-
-    io->file($ini_fn)->print(@lines);
+    path("$test_dir/quadpres.ini")->edit_lines_raw(
+        sub {
+            $_ =
+                  /\Aupload_path=/
+                ? qq{tt_upload_path=[% ENV.mypath %]\n}
+                : $_;
+        }
+    );
 
     mkpath($output_dir);
     local $ENV{'mypath'} = "$pwd/$output_dir";

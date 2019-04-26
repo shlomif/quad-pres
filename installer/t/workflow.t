@@ -11,6 +11,8 @@ use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd ();
 use IO::All qw/ io /;
 
+use Path::Tiny qw/ path tempdir tempfile cwd /;
+
 my $io_dir = "t/data/in-out-workflow";
 rmtree($io_dir);
 mkpath($io_dir);
@@ -61,12 +63,11 @@ sub perform_test
     # TEST
     check_files("$test_dir-output");
 
-    my @l = io("$test_dir/quadpres.ini")->getlines();
-    foreach (@l)
-    {
-        s{\Aupload_path=.*\Z}{upload_path=$pwd/upload};
-    }
-    io("$test_dir/quadpres.ini")->print(@l);
+    path("$test_dir/quadpres.ini")->edit_lines_raw(
+        sub {
+            s{\Aupload_path=.*\Z}{upload_path=$pwd/upload};
+        }
+    );
 
     # TEST
     ok( !system("cd $test_dir && quadp upload -a"), "quapd upload succeeded", );

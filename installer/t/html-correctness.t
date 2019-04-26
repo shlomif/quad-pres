@@ -9,6 +9,7 @@ use File::Path qw/ mkpath rmtree /;
 use Cwd ();
 use IO::All qw/ io /;
 use HTML::T5 ();
+use Path::Tiny qw/ path tempdir tempfile cwd /;
 
 sub calc_tidy
 {
@@ -48,11 +49,11 @@ sub perform_test
     ok( !system( "quadp", "setup", $test_dir, "--dest-dir=$pwd/$output_dir" ),
         "Running quadp setup was succesful." );
 
-    my $wml_rc = io->file("$test_dir/.wmlrc");
-
-    my $text = $wml_rc->slurp();
-    $text =~ s{(-DTHEME=)[\w\-]+}{$1$theme};
-    $wml_rc->print($text);
+    path("$test_dir/.wmlrc")->edit_raw(
+        sub {
+            s{(-DTHEME=)[\w\-]+}{$1$theme};
+        }
+    );
 
     io->file("$test_dir/src/index.html.wml")->print(<<'EOF');
 #include 'template.wml'

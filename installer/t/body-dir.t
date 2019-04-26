@@ -11,6 +11,8 @@ use Cwd ();
 use IO::All qw/ io /;
 use HTML::T5 ();
 
+use Path::Tiny qw/ path tempdir tempfile cwd /;
+
 my $io_dir = "t/data/in-out-body-dir";
 rmtree($io_dir);
 mkpath($io_dir);
@@ -55,11 +57,11 @@ sub perform_test
         "setup for test $test_idx is successful.",
     );
 
-    my $wml_rc = io->file("$test_dir/.wmlrc");
-
-    my $text = $wml_rc->slurp();
-    $text =~ s{(-DTHEME=)[\w\-]+}{$1$theme};
-    $wml_rc->print($text);
+    path("$test_dir/.wmlrc")->edit_raw(
+        sub {
+            s{(-DTHEME=)[\w\-]+}{$1$theme};
+        }
+    );
 
     io()->file("$test_dir/src/index.html.wml")->print(<<"EOF");
 <set-var qp_body_dir="$dir" />
@@ -113,4 +115,3 @@ for my $theme (@themes)
         perform_test( $theme, $dir );
     }
 }
-

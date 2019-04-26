@@ -5,6 +5,7 @@ use warnings;
 use Test::More tests => 16;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
+use Path::Tiny qw/ path tempdir tempfile cwd /;
 use Cwd ();
 use IO::All qw/ io /;
 
@@ -42,12 +43,11 @@ sub perform_test
     ok( !system( "quadp", "setup", $test_dir, "--dest-dir=$pwd/$output_dir" ),
         "Running quadp setup was succesful." );
 
-    my $wml_rc = io->file("$test_dir/.wmlrc");
-
-    my $text = $wml_rc->slurp();
-    $text =~ s{(-DTHEME=)[\w\-]+}{$1$theme};
-    $wml_rc->print($text);
-
+    path("$test_dir/.wmlrc")->edit_raw(
+        sub {
+            s{(-DTHEME=)[\w\-]+}{$1$theme};
+        }
+    );
     my $tmpl_dir = "$orig_dir/t/lib/credit/template";
 
     fcopy( "$tmpl_dir/Contents.pm", "$test_dir/Contents.pm", );
@@ -60,10 +60,10 @@ sub perform_test
 
     if ( !$credit )
     {
-        my $fn = "template.wml";
-        io->file($fn)->print(
-            qq{<set-var qp_avoid_credit="yes" />\n\n},
-            io->file($fn)->getlines(),
+        path("template.wml")->edit_raw(
+            sub {
+                $_ = qq{<set-var qp_avoid_credit="yes" />\n\n} . $_;
+            }
         );
     }
 
