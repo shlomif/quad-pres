@@ -122,13 +122,7 @@ EOF
     my @wanted = set_lang_settings( $obj->test_dir, @params );
 
     $obj->quadp_render;
-    my $lint = calc_tidy;
-
-    $lint->parse( "output/index.html", $obj->slurp_index, );
-
-    ok( !scalar( $lint->messages() ),
-        "HTML is valid for test No. '$test_idx'." );
-
+    $obj->tidy_check;
     is(
         verify_lang_settings( @wanted, $obj->slurp_index ),
         0, "File for '$test_idx' has proper language encodings",
