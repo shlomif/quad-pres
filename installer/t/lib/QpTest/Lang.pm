@@ -2,16 +2,15 @@ package QpTest::Lang;
 
 use strict;
 use warnings;
+use autodie;
 
 use parent 'Exporter';
 
 our @EXPORT_OK = qw/ $io_dir perform_test /;
 
 use HTML::T5 ();
-use IO::All qw/ io /;
-use Cwd ();
 use Test::More;
-use Path::Tiny qw/ path tempdir tempfile cwd /;
+use Path::Tiny qw/ path /;
 use QpTest::Obj ();
 
 our $io_dir = path("t/data/in-out-lang-settings")->absolute;
@@ -42,7 +41,7 @@ sub set_lang_settings
     my $add_header = sub {
         my $filename = shift;
         my $header   = shift;
-        io->file($filename)->print( $header . io->file($filename)->all );
+        path($filename)->edit_raw( sub { $_ = $header . $_; } );
     };
 
     my $total_lang    = "en-US";
