@@ -1075,6 +1075,7 @@ sub perform_pack_command
 
     system( "tar", "-cf", $src_archive_name__base,
         io()->dir( $self->src_archive_dir() )->All_Files );
+    eval { unlink("$src_archive_name__base.gz"); };
     system( "gzip", "--best", "-n", $src_archive_name__base );
 
     return 0;
@@ -1145,7 +1146,10 @@ sub perform_render_all_in_one_page_command
         'mode'   => "server",
     );
 
-    mkdir($all_in_one_dir);
+    if ( !-d $all_in_one_dir )
+    {
+        mkdir($all_in_one_dir);
+    }
     my $all_fn = "$all_in_one_dir/index.html";
     open my $all_in_one_out_fh, ">", $all_fn;
 
