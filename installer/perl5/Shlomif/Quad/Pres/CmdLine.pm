@@ -33,10 +33,11 @@ use MooX qw/ late /;
 use lib do { `wml-params-conf --show-privlib` =~ s#[\r\n]+\z##r };
 use TheWML::Frontends::Wml::Runner ();
 
-has 'dest_dir'          => ( isa => 'Str',      'is' => 'rw' );
-has 'src_dir'           => ( isa => 'Str',      'is' => 'rw' );
-has 'main_files_mtimes' => ( isa => 'ArrayRef', 'is' => 'rw' );
-has 'getopt'            => (
+has '_cache_dir'        => ( 'is' => 'rw' );
+has 'dest_dir'          => ( isa  => 'Str', 'is' => 'rw' );
+has 'src_dir'           => ( isa  => 'Str', 'is' => 'rw' );
+has 'main_files_mtimes' => ( isa  => 'ArrayRef', 'is' => 'rw' );
+has 'getopt' => (
     isa     => "Getopt::Long::Parser",
     'is'    => "ro",
     lazy    => 1,
@@ -415,10 +416,12 @@ sub perform_render_command
 
     my $render_all            = 0;
     my $render_hard_disk_html = 0;
+    my $use_cache             = 0;
 
     $getopt->getoptionsfromarray(
         $cmd_line,
         'a|all!'        => \$render_all,
+        'cache!'        => \$use_cache,
         'hd|hard-disk!' => \$render_hard_disk_html,
     );
 
@@ -429,6 +432,13 @@ sub perform_render_command
     }
 
     $self->chdir_to_base();
+    if ($use_cache)
+    {
+        if ( my $basedir = $ENV{QUAD_PRES_CACHE_DIR} )
+        {
+            $self->_cache_dir( $basedir . "/qp-pages/" . getcwd() );
+        }
+    }
 
     eval { $self->_render_all_contents(); };
     my $error = $@;
@@ -589,6 +599,13 @@ sub _render_file
 
     my $wml_dir     = $path_man->get_wml_dir();
     my $modules_dir = $path_man->get_modules_dir();
+    my $cache       = $self->_cache_dir;
+
+    if ( $cache && -e "$cache/$filename" )
+    {
+        io->file($filename)->print( io->file("$cache/$filename")->all );
+        return;
+    }
 
     my $local_wml_dir = $ENV{"HOME"} . "/.Quad-Pres/lib/";
 
@@ -619,6 +636,13 @@ sub _render_file
         my $error = QuadPres::Exception::RenderFile->new();
         $error->{'src_filename'} = $filename;
         die $error;
+    }
+    if ($cache)
+    {
+        my $cfn = "$cache/$filename";
+
+        File::Path::mkpath( [ dirname($cfn) ] );
+        io->file($cfn)->print( io->file($output_filename)->all );
     }
 
     return;
