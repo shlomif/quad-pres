@@ -55,4 +55,4 @@ EOF
     }
 }
 chdir($SRC);
-exit( system( "prove", glob("t/*.t") ) );
+exit( system( "prove", glob("t/*.t") ) ? (-1) : 0 );
