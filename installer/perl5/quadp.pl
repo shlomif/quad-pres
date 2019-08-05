@@ -91,12 +91,15 @@ You can later edit these settings by editing the B<quadpres.ini> file.
 
 The synopsis is as follows:
 
-B<quadp> B<render> I<-a> [ I<--hd> | I<--hard-disk> ]
+B<quadp> B<render> I<-a> [ I<--hd> | I<--hard-disk> ] [ I<--cache> ]
 
 This command causes all the files to be rendered.
 
 If a I<--hd> or I<--hard-disk> is appended, it also renders a tree of files
 that are viewable from the hard disk without a web-server.
+
+If I<--cache> is given, uses the cache in the directory whose
+path is in the C<QUAD_PRES_CACHE_DIR> environment variable.
 
 =head2 CLEAR
 
