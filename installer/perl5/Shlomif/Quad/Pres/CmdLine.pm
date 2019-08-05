@@ -603,7 +603,7 @@ sub _render_file
 
     if ( $cache && -e "$cache/$filename" )
     {
-        io->file($filename)->print( io->file("$cache/$filename")->all );
+        io->file($output_filename)->print( io->file("$cache/$filename")->all );
         return;
     }
 
