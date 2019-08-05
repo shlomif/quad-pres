@@ -3,7 +3,7 @@ package Shlomif::Quad::Pres::CGI;
 use strict;
 use warnings;
 
-use parent 'Shlomif::Quad::Pres::Base';
+use parent 'QuadPres::Base';
 
 use CGI         ();
 use Contents    ();
