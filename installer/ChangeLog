@@ -1,3 +1,9 @@
+Version 0.28.1 - shlomif - 2019-08-05
+
+	* Fix run_test.pl 's exit code on failure.
+	* Fix broken deps.
+	* Remove old and unused test script.
+
 Version 0.28.0 - shlomif - 2019-08-05
 
 	* Add the --cache flag to quadp render.
