@@ -48,6 +48,7 @@ install:
     - set TZ=GMT
     - "%cpanm% --verbose Dist::Zilla::Plugin::Test::ChangesHasContent"
     - "%perl% CI-testing/continuous-integration-testing.pl install_deps"
+    - %perl% -E "use strict;use warnings;use autodie;$ENV{PERL_MM_USE_DEFAULT}=1;chdir($ENV{HOME});system(qw(git clone https://github.com/thewml/website-meta-language)) and die $!;chdir(qq($ENV{HOME}/website-meta-language)); mkdir('build');chdir('build'); system(qq(cmake .. && make && make install)) and die $!;"
 build: off
 test_script:
     - set HARNESS_BREAK=1
