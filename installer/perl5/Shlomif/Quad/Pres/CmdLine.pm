@@ -496,6 +496,8 @@ sub _render_all_contents_traverse_callback
 
     my $path_ref = $arguments{'path'};
     my $branch   = $arguments{'branch'};
+    my $dest_dir = $self->dest_dir;
+    my $src_dir  = $self->src_dir;
 
     my (@path);
 
@@ -508,12 +510,10 @@ sub _render_all_contents_traverse_callback
 
         my $is_dir = exists( $branch->{'subs'} );
 
-        my $src_dir = $self->src_dir();
-
         if ($is_dir)
         {
             # It is a directory
-            $filename = ( $self->dest_dir() . "/" . $p );
+            $filename = ( $dest_dir . "/" . $p );
             if ( !( -d $filename ) )
             {
                 mkdir($filename);
@@ -523,7 +523,7 @@ sub _render_all_contents_traverse_callback
         }
         else
         {
-            $filename     = ( $self->dest_dir() . "/" . $p );
+            $filename     = ( $dest_dir . "/" . $p );
             $src_filename = $src_dir . "/" . $p;
         }
         $src_filename .= ".wml";
@@ -568,8 +568,8 @@ sub _render_all_contents_traverse_callback
     {
         foreach my $image ( @{ $branch->{'images'} } )
         {
-            my $filename     = $self->dest_dir() . "/" . $p . "/" . $image;
-            my $src_filename = $self->src_dir() . "/" . $p . "/" . $image;
+            my $filename     = $dest_dir . "/" . $p . "/" . $image;
+            my $src_filename = $src_dir . "/" . $p . "/" . $image;
 
             my $src_mtime  = $self->_get_file_mtime($src_filename);
             my $dest_mtime = $self->_get_file_mtime($filename);
