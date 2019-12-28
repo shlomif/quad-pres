@@ -17,6 +17,8 @@ sub do_system
     }
 }
 
+my $ACTION = shift @ARGV;
+
 my $IS_WIN = ( $^O eq "MSWin32" );
 my $SEP    = $IS_WIN ? "\\" : '/';
 my $MAKE   = $IS_WIN ? 'gmake' : 'make';
@@ -27,17 +29,11 @@ if ($IS_WIN)
 {
     $cmake_gen = 'MSYS Makefiles';
 }
-my $cmd = shift @ARGV;
-
-# do_system({cmd => ["cd black-hole-solitaire/ && mkdir B && cd B && ../c-solver/Tatzer && make && $^X ../c-solver/run-tests.pl"]});
-
-# do_system({cmd => ["cd black-hole-solitaire/Games-Solitaire-BlackHole-Solver/ && dzil test --all"]});
 
 my @dzil_dirs = ( 'cpan/QuadPres', 'Task-QuadPres' );
 
-# my $CPAN = sprintf( '%scpanm', ( $IS_WIN ? '' : 'sudo ' ) );
 my $CPAN = sprintf( '%scpanm', ( 1 ? '' : 'sudo ' ) );
-if ( $cmd eq 'install_deps' )
+if ( $ACTION eq 'install_deps' )
 {
     foreach my $d (@dzil_dirs)
     {
@@ -53,7 +49,7 @@ if ( $cmd eq 'install_deps' )
         );
     }
 }
-elsif ( $cmd eq 'test' )
+elsif ( $ACTION eq 'test' )
 {
     foreach my $d (@dzil_dirs)
     {
@@ -71,5 +67,5 @@ elsif ( $cmd eq 'test' )
 }
 else
 {
-    die "Unknown command '$cmd'!";
+    die "Unknown action name '$ACTION'!";
 }
