@@ -1,5 +1,6 @@
 package Shlomif::Quad::Pres::CmdLine;
 
+use 5.014;
 use strict;
 use warnings;
 
@@ -186,7 +187,7 @@ sub real_run
         'man'      => \$man,
     ) or pod2usage(2);
 
-    pod2usage(1) if $help;
+    pod2usage(1)                                 if $help;
     pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
 
     my $command =

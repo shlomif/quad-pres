@@ -1,5 +1,6 @@
 package QpTest::Obj;
 
+use 5.014;
 use strict;
 use warnings;
 
@@ -12,8 +13,8 @@ use Test::More;
 use Path::Tiny qw/ path tempdir tempfile cwd /;
 
 has [ 'io_dir', '_pwd' ] => ( is => 'rw' );
-has orig_dir => ( is => 'ro', default => sub { return cwd; } );
-has theme    => (
+has orig_dir             => ( is => 'ro', default => sub { return cwd; } );
+has theme => (
     is  => 'rw',
     isa => 'Str',
 );
