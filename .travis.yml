@@ -7,7 +7,7 @@ dist: bionic
 os: linux
 before_install:
     - sudo apt-get update -qq
-    - sudo apt-get --no-install-recommends install -y ack-grep cmake cmake-data cpanminus libdb5.3-dev libgd-dev libperl-dev libxml2-dev lynx ninja-build perl python3-pip valgrind vim wml
+    - sudo apt-get --no-install-recommends install -y ack-grep cmake cmake-data cpanminus libdb5.3-dev libgd-dev libgdbm-dev libgdbm-compat-dev libperl-dev libxml2-dev lynx ninja-build perl python3-pip valgrind vim wml
 install:
     - which python3
     - cpanm local::lib
@@ -15,16 +15,16 @@ install:
     - perl -V
     - which cpanm
     - "install_deps_whose_tests_are_stalling() { cpanm --notest HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
+    # For wml
+    - cpanm Bit::Vector Carp::Always Class::XSAccessor GD Getopt::Long IO::All Image::Size Path::Tiny Term::ReadKey
+    - bash scripts/install-git-cmakey-program-system-wide.bash 'git' 'src' 'https://github.com/thewml/website-meta-language.git'
     - cpanm App::XML::DocBook::Builder Pod::Xhtml YAML::XS
     - cpanm HTML::T5
     - cpanm Class::XSAccessor File::Copy::Recursive File::Find::Object::Rule HTML::Widgets::NavMenu::EscapeHtml IO::All MooX MooX::late Path::Tiny QuadPres Task::QuadPres Text::VimColor Template Test::Trap XML::LibXML
     - cpanm Dist::Zilla Pod::Weaver::Section::Support
-    # For wml
-    - cpanm Bit::Vector Carp::Always Class::XSAccessor GD Getopt::Long IO::All Image::Size Term::ReadKey
     # For quadp
     - cpanm Class::XSAccessor Config::IniFiles HTML::Links::Localize
     - perl CI-testing/continuous-integration-testing.pl install_deps
-    - bash scripts/install-git-cmakey-program-system-wide.bash 'git' 'src' 'https://github.com/thewml/website-meta-language.git'
 perl:
     - "5.26"
 python:
