@@ -14,17 +14,8 @@ install:
     - eval "$(perl -Mlocal::lib=$HOME/perl_modules)"
     - perl -V
     - which cpanm
-    - "install_deps_whose_tests_are_stalling() { cpanm --notest HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
-    # For wml
-    - "install_wml_cpan_deps() { cpanm Bit::Vector Carp::Always Class::XSAccessor File::Which GD Getopt::Long IO::All Image::Size List::MoreUtils Path::Tiny Term::ReadKey ; } ; install_wml_cpan_deps ;"
-    - bash scripts/install-git-cmakey-program-system-wide.bash 'git' 'src' 'https://github.com/thewml/website-meta-language.git'
-    - cpanm App::XML::DocBook::Builder Pod::Xhtml YAML::XS
-    - cpanm HTML::T5
-    - cpanm Class::XSAccessor File::Copy::Recursive File::Find::Object::Rule HTML::Widgets::NavMenu::EscapeHtml IO::All MooX MooX::late Path::Tiny QuadPres Task::QuadPres Text::VimColor Template Test::Trap XML::LibXML
-    - cpanm Dist::Zilla Pod::Weaver::Section::Support
-    # For quadp
-    - cpanm Class::XSAccessor Config::IniFiles HTML::Links::Localize
-    - perl CI-testing/continuous-integration-testing.pl install_deps
+    - "install_deps_whose_tests_are_stalling() { cpan HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
+    # - "install_deps_whose_tests_are_stalling() { cpanm --notest HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
 perl:
     - "5.26"
 python:
