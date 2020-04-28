@@ -1,8 +1,8 @@
 package QuadPres::WriteContents;
 
+use 5.016;
 use strict;
 use warnings;
-
 use autodie;
 
 use MooX qw/ late /;

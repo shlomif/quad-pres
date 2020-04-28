@@ -1,5 +1,6 @@
 package QuadPres::VimIface;
 
+use 5.016;
 use strict;
 use warnings;
 

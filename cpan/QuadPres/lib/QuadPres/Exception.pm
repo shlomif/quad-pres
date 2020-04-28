@@ -1,5 +1,6 @@
 package QuadPres::Exception;
 
+use 5.016;
 use strict;
 use warnings;
 

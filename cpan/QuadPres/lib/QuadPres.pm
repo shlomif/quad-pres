@@ -1,5 +1,6 @@
 package QuadPres;
 
+use 5.016;
 use strict;
 use warnings;
 
@@ -810,7 +811,7 @@ sub traverse_tree
             {
                 $traverse_helper->(
                     [ @$path_ref, $sub_branch->{'url'} ],
-                    [ @$coords,   $new_coord ], $sub_branch,
+                    [ @$coords, $new_coord ], $sub_branch,
                 );
             }
             continue
