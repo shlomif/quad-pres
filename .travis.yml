@@ -14,8 +14,8 @@ install:
     - eval "$(perl -Mlocal::lib=$HOME/perl_modules)"
     - perl -V
     - which cpanm
-    - "install_deps_whose_tests_are_stalling() { cpan HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
-    # - "install_deps_whose_tests_are_stalling() { cpanm --notest HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
+    - "install_deps_whose_tests_are_stalling() { cpanm --verbose --no-interactive HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
+    # - "install_deps_whose_tests_are_stalling() { cpan HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
 perl:
     - "5.26"
 python:
