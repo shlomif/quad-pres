@@ -11,6 +11,8 @@ install:
     - which python3
     - cpanm local::lib
     - eval "$(perl -Mlocal::lib=$HOME/perl_modules)"
+    - perl -V
+    - which cpanm
     - cpanm App::XML::DocBook::Builder Pod::Xhtml YAML::XS
     - cpanm HTML::T5
     - cpanm Class::XSAccessor File::Copy::Recursive File::Find::Object::Rule HTML::Widgets::NavMenu::EscapeHtml IO::All MooX MooX::late Path::Tiny QuadPres Task::QuadPres Text::VimColor Template Test::Trap XML::LibXML
