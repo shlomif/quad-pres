@@ -14,6 +14,7 @@ install:
     - eval "$(perl -Mlocal::lib=$HOME/perl_modules)"
     - perl -V
     - which cpanm
+    - "install_deps_whose_tests_are_stalling() { cpanm --notest HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
     - cpanm App::XML::DocBook::Builder Pod::Xhtml YAML::XS
     - cpanm HTML::T5
     - cpanm Class::XSAccessor File::Copy::Recursive File::Find::Object::Rule HTML::Widgets::NavMenu::EscapeHtml IO::All MooX MooX::late Path::Tiny QuadPres Task::QuadPres Text::VimColor Template Test::Trap XML::LibXML
