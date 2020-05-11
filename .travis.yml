@@ -11,7 +11,7 @@ install:
     - eval "$(perl -Mlocal::lib=$HOME/perl_modules)"
     - perl -V
     - which cpanm
-    - "install_deps_whose_tests_are_stalling() { cpanm --verbose --no-interactive --reinstall HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
+    - "install_deps_whose_tests_are_stalling() { cpanm --verbose --no-interactive --reinstall HTTP::Daemon'@6.05' ; } ; install_deps_whose_tests_are_stalling ;"
     # - "install_deps_whose_tests_are_stalling() { cpan HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling ;"
 perl:
     - "5.26"
