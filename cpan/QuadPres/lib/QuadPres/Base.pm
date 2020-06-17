@@ -44,3 +44,27 @@ EOF
 1;
 
 __END__
+
+
+=encoding utf8
+
+=head1 NAME
+
+QuadPres::Base - base class
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head2 new()
+
+=head2 mk_accessors
+
+=head2 mk_acc_ref
+
+=head2
+
+=cut
+

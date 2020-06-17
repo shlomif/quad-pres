@@ -3,11 +3,12 @@ package QuadPres::VimIface;
 use 5.016;
 use strict;
 use warnings;
+use autodie;
 
 use Text::VimColor ();
 use Path::Tiny qw/ path /;
 
-sub is_newer
+sub _is_newer
 {
     my $file1 = shift;
     my $file2 = shift;
@@ -28,7 +29,7 @@ sub get_syntax_highlighted_html_from_file
 
     my $html_filename = "$filename.html-for-quad-pres";
 
-    if ( is_newer( $filename, $html_filename ) )
+    if ( _is_newer( $filename, $html_filename ) )
     {
         my $syntax = Text::VimColor->new(
             file           => $filename,
@@ -52,6 +53,32 @@ sub get_syntax_highlighted_html_from_file
 1;
 
 __END__
+
+=encoding utf8
+
+=head1 NAME
+
+QuadPres::VimIface - Vim syntax highlighting interface.
+
+=head1 SYNOPSIS
+
+    use QuadPres::VimIface ();
+    my $code = QuadPres::VimIface::get_syntax_highlighted_html_from_file({filename=>"foo.pl"});
+
+=head1 DESCRIPTION
+
+Vim syntax highlighting interface.
+
+=head1 FUNCTIONS
+
+=head2 get_syntax_highlighted_html_from_file({filename=>$filepath, filetype=>"c",});
+
+TBD.
+
+=head2
+
+=cut
+
 
 =head1 COPYRIGHT & LICENSE
 
