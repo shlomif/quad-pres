@@ -36,3 +36,26 @@ use vars qw(@ISA);
 @ISA = qw(QuadPres::Exception);
 
 1;
+
+=encoding utf8
+
+=head1 NAME
+
+QuadPres::Exception - exception class
+
+=head1 SYNOPSIS
+
+    use QuadPres::Exception ();
+
+    QuadPres::Exception->throw({text=>"error"});
+
+=head1 METHODS
+
+=head2 throw
+
+=head2 text
+
+Returns the text.
+
+=cut
+
