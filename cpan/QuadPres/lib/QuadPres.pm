@@ -856,10 +856,11 @@ sub get_breadcrumbs_trail
 
 1;
 
+__END__
+
 =head1 NAME
 
 QuadPres - a presentation / slides manager.
-
 
 =encoding utf8
 
