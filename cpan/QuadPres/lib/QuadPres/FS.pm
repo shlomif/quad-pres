@@ -100,3 +100,31 @@ sub make_dest_dir
 
 1;
 
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+QuadPres::FS - filesystem utils
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head2 gid
+
+=head2 group
+
+=head2 make_dest_dir($dest_dir)
+
+=head2 my_chown($dest_dir)
+
+=head2 set_group
+
+=head2
+
+=cut
+
