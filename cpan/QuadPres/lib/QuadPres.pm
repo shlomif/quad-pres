@@ -858,13 +858,11 @@ sub get_breadcrumbs_trail
 
 __END__
 
-=head1 NAME
-
-QuadPres - a presentation / slides manager.
-
 =encoding utf8
 
 =head1 NAME
+
+QuadPres - a presentation / slides manager.
 
 =head1 SYNOPSIS
 
