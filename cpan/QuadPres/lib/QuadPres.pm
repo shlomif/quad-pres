@@ -784,46 +784,52 @@ sub render
     return;
 }
 
-sub traverse_tree
+sub ref_traverse_tree
 {
     my $self     = shift;
     my $callback = shift;
 
     my $contents = $self->contents;
 
-    my $traverse_helper;
-    $traverse_helper = sub {
-        my $path_ref = shift;
-        my $coords   = shift;
-        my $branch   = shift;
+    (
+        sub {
+            my ( $path_ref, $coords, $branch ) = @_;
 
-        $callback->(
-            'path'   => $path_ref,
-            'branch' => $branch,
-            'coords' => $coords,
-        );
+            $callback->(
+                +{
+                    'path'   => $path_ref,
+                    'branch' => $branch,
+                    'coords' => $coords,
+                }
+            );
 
-        if ( exists( $branch->{'subs'} ) )
-        {
-            # Let's traverse all the directories
-            my $new_coord = 0;
-            foreach my $sub_branch ( @{ $branch->{'subs'} } )
+            if ( exists( $branch->{'subs'} ) )
             {
-                $traverse_helper->(
-                    [ @$path_ref, $sub_branch->{'url'} ],
-                    [ @$coords, $new_coord ], $sub_branch,
-                );
-            }
-            continue
-            {
-                $new_coord++;
+                # Let's traverse all the directories
+                my $new_coord = 0;
+                foreach my $sub_branch ( @{ $branch->{'subs'} } )
+                {
+                    __SUB__->(
+                        [ @$path_ref, $sub_branch->{'url'} ],
+                        [ @$coords, $new_coord ], $sub_branch,
+                    );
+                }
+                continue
+                {
+                    $new_coord++;
+                }
             }
         }
-    };
-
-    $traverse_helper->( [], [], $contents );
+    )->( [], [], $contents );
 
     return;
+}
+
+sub traverse_tree
+{
+    my ( $self, $cb ) = @_;
+
+    return $self->ref_traverse_tree( sub { return $cb->( %{ shift() } ); } );
 }
 
 sub get_breadcrumbs_trail
@@ -999,6 +1005,10 @@ TBD.
 TBD.
 
 =head2 traverse_tree
+
+TBD.
+
+=head2 ref_traverse_tree
 
 TBD.
 
