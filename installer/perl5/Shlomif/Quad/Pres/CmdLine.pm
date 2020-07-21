@@ -3,6 +3,7 @@ package Shlomif::Quad::Pres::CmdLine;
 use 5.014;
 use strict;
 use warnings;
+use autodie;
 
 use Scalar::Util qw(blessed);
 
@@ -248,7 +249,7 @@ sub perform_setup_command
         );
     }
 
-    if ( !mkdir($src_dir_name) )
+    if ( !path($src_dir_name)->mkpath() )
     {
         $error_class->throw(
             {
@@ -338,7 +339,7 @@ my \$cgi = Shlomif::Quad::Pres::CGI->new();
 EOF
     chmod 0755, $serve_filename;
 
-    mkdir("$src_dir_name/src");
+    path("$src_dir_name/src")->mkpath();
 
     my $template_dir = $self->path_man()->get_template_dir();
 
@@ -349,7 +350,7 @@ EOF
     # Create a file indicating that this is the root directory.
     # Regular named files may be present somewhere inside the ./src
     # directory for all we know.
-    mkdir("$src_dir_name/.quadpres");
+    path("$src_dir_name/.quadpres")->mkpath();
     path("$src_dir_name/.quadpres/is_root")->spew_raw('');
 
     print "Successfully Created $src_dir_name\n";
@@ -436,6 +437,10 @@ sub perform_render_command
     {
         $error_class->throw( { text => "Rendering Failed!" } );
     }
+    elsif ($error)
+    {
+        die $error;
+    }
 
     # $self->run_command(
     #     'command' => "$scripts_dir/Render_all_contents.pl",
@@ -504,7 +509,7 @@ sub _render_all_contents_traverse_callback
             $filename = ( $dest_dir . "/" . $p );
             if ( !( -d $filename ) )
             {
-                mkdir($filename);
+                path($filename)->mkpath();
             }
             $filename .= "/index.html";
             $src_filename = $src_dir . "/" . $p . "/index.html";
@@ -523,7 +528,7 @@ sub _render_all_contents_traverse_callback
             {
                 my $dir_name = $src_filename;
                 $dir_name =~ s/\/*index\.html\.wml$//;
-                mkdir($dir_name);
+                path($dir_name)->mkpath();
             }
             path("template.html.wml")->copy($src_filename);
         }
@@ -600,6 +605,7 @@ sub _render_file
         ? ()
         : ( "-I", $local_wml_dir );
 
+    File::Path::mkpath( [ dirname($output_filename) ] );
     my @command = (
         "-I", $wml_dir, @local_wml, "-DFILENAME=$filename",
         "--passoption=3,-I$modules_dir",
@@ -986,7 +992,7 @@ sub _traverse_pack_callback
             $filename = ( $self->src_archive_src_dir() . "/" . $p );
             if ( !( -d $filename ) )
             {
-                mkdir($filename);
+                path($filename)->mkpath();
             }
             my $target = "$filename/index.html.wml";
             copy( $src_dir . "/" . $p . "/index.html.wml", $target );
@@ -1046,8 +1052,8 @@ sub perform_pack_command
 
     File::Path::rmtree( [ $self->src_archive_dir() ], 0, 0 );
 
-    mkdir( $self->src_archive_dir() );
-    mkdir( $self->src_archive_dir() . "/.quadpres" );
+    path( $self->src_archive_dir() )->mkpath();
+    path( $self->src_archive_dir() . "/.quadpres" )->mkpath();
 
     # Copy the files from the root directory.
     foreach my $file (
@@ -1062,7 +1068,7 @@ sub perform_pack_command
         $self->_set_time($target);
     }
 
-    mkdir( $self->src_archive_src_dir() );
+    path( $self->src_archive_src_dir() )->mkpath();
 
     require Contents;
     my $contents = Contents::get_contents();
@@ -1110,7 +1116,6 @@ sub _calc_page_id
 
 sub perform_render_all_in_one_page_command
 {
-    use autodie;
     my $self = shift;
 
     my $cmd_line = $self->cmd_line();
@@ -1157,7 +1162,7 @@ sub perform_render_all_in_one_page_command
 
     if ( !-d $all_in_one_dir )
     {
-        mkdir($all_in_one_dir);
+        path($all_in_one_dir)->mkpath();
     }
     my $all_fn = "$all_in_one_dir/index.html";
     open my $all_in_one_out_fh, ">", $all_fn;

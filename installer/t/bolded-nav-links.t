@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+no autodie;
 
 use Test::More tests => 3;
 
@@ -22,7 +23,7 @@ sub perform_test
 
     chdir($io_dir);
 
-    $test_idx++;
+    ++$test_idx;
 
     my $test_dir   = "testhtml$test_idx";
     my $output_dir = "$test_dir-output";
@@ -36,7 +37,7 @@ sub perform_test
     my $tmpl_dir = "$orig_dir/t/lib/bolded-nav-links/template";
 
     fcopy( "$tmpl_dir/Contents.pm", "$test_dir/Contents.pm", );
-    rmtree("$test_dir/src");
+    rmtree( ["$test_dir/src"] );
     dircopy( "$tmpl_dir/src", "$test_dir/src" );
 
     # TEST
