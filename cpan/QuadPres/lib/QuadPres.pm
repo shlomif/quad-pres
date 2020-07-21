@@ -8,7 +8,7 @@ use utf8;
 
 use parent 'QuadPres::Base';
 
-use IO::All qw/ io /;
+use Path::Tiny qw/ path cwd /;
 use Data::Dumper  ();
 use QuadPres::Url ();
 use Carp          ();
@@ -145,11 +145,11 @@ sub get_document_base_text
 
     if ( -f $filename )
     {
-        return scalar( io->file($filename)->slurp );
+        return scalar( path($filename)->slurp_raw );
     }
     elsif ( ( -d $filename ) && ( -f $index_fn ) )
     {
-        return scalar( io->file($index_fn)->slurp );
+        return scalar( path($index_fn)->slurp_raw );
     }
     else
     {
