@@ -19,6 +19,7 @@ use HTML::Links::Localize ();
 use File::Glob ':glob';
 
 use IO::All qw/ io /;
+use Path::Tiny qw/ path /;
 
 use Shlomif::Quad::Pres::Path ();
 use QuadPres::Exception       ();
@@ -1185,31 +1186,16 @@ sub perform_render_all_in_one_page_command
         my $path_ref = $arguments{'path'};
         my $branch   = $arguments{'branch'};
 
-        my (@path);
-
-        @path = @{$path_ref};
+        my @path = @{$path_ref};
 
         my $p = join( "/", @path );
 
         {
-            my $filename;
-
             my $is_dir = exists( $branch->{'subs'} );
+            my $filename =
+                ( $dest_dir . "/" . $p ) . ( $is_dir ? "/index.html" : '' );
 
-            if ($is_dir)
-            {
-                # It is a directory
-                $filename = ( $dest_dir . "/" . $p );
-                $filename .= "/index.html";
-            }
-            else
-            {
-                $filename = ( $dest_dir . "/" . $p );
-            }
-
-            open my $in, "<", $filename;
-            local $/;
-            my $text = <$in>;
+            my $text = path($filename)->slurp_raw();
 
             if ( !$is_first )
             {
@@ -1296,7 +1282,6 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
                 s%(<table(?:\s+(?:class|style)="[^"]*"\s*)*) summary=""%$1%g;
 
             print {$all_in_one_out_fh} $text, qq{\n</section>\n};
-            close($in);
         }
         if ( exists( $branch->{'images'} ) )
         {
