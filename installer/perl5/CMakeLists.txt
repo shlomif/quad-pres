@@ -4,7 +4,7 @@ SET (d "quadp")
 ADD_CUSTOM_COMMAND(
     OUTPUT "${d}"
     COMMAND "${PERL_EXECUTABLE}"
-    ARGS "-E" "use IO::All; my $t = io->file(\"${s}\")->slurp; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#/usr/bin/perl#${PERL_EXECUTABLE}#g; io->file(\"${d}\")->print($t); chmod(0755, \"${d}\");"
+    ARGS "-E" "use Path::Tiny qw/ path /; my $t = path(\"${s}\")->slurp_raw; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#/usr/bin/perl#${PERL_EXECUTABLE}#g; path(\"${d}\")->spew_raw($t); chmod(0755, \"${d}\");"
     DEPENDS "${s}"
     VERBATIM
 )
@@ -21,7 +21,7 @@ SET (d "${CMAKE_CURRENT_BINARY_DIR}/Shlomif/Quad/Pres/Path.pm")
 ADD_CUSTOM_COMMAND(
     OUTPUT "${d}"
     COMMAND "${PERL_EXECUTABLE}"
-    ARGS "-E" "use IO::All; use File::Basename qw( dirname) ; use File::Path qw/ mkpath/ ; my $t = io->file(\"${s}\")->slurp; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#\\{QP_PKG_DATA_DIR\\}#${PKGDATADIR}#g; $t =~ s#/usr/bin/perl#${PATH_PERL}#g; mkpath([dirname(\"${d}\")]); io->file(\"${d}\")->print($t)"
+    ARGS "-E" "use Path::Tiny qw/ path /; use File::Basename qw( dirname) ; use File::Path qw/ mkpath/ ; my $t = path(\"${s}\")->slurp_raw; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#\\{QP_PKG_DATA_DIR\\}#${PKGDATADIR}#g; $t =~ s#/usr/bin/perl#${PATH_PERL}#g; mkpath([dirname(\"${d}\")]); path(\"${d}\")->spew_raw($t);"
     DEPENDS "${s}"
     VERBATIM
 )
