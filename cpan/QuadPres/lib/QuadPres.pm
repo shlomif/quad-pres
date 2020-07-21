@@ -8,7 +8,7 @@ use utf8;
 
 use parent 'QuadPres::Base';
 
-use Path::Tiny qw/ path cwd /;
+use Path::Tiny qw/ path /;
 use Data::Dumper  ();
 use QuadPres::Url ();
 use Carp          ();
