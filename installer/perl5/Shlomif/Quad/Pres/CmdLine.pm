@@ -488,14 +488,10 @@ sub _render_all_contents_traverse_callback
 {
     my ( $self, $args ) = @_;
 
-    my $path_ref = $args->{'path'};
+    my @path     = @{ $args->{'path'} };
     my $branch   = $args->{'branch'};
     my $dest_dir = $self->dest_dir;
     my $src_dir  = $self->src_dir;
-
-    my (@path);
-
-    @path = @{$path_ref};
 
     my $p = join( "/", @path );
 
@@ -969,9 +965,8 @@ sub _traverse_pack_callback
 {
     my ( $self, $args ) = @_;
 
-    my $path_ref = $args->{'path'};
-    my $branch   = $args->{'branch'};
-    my @path     = @{$path_ref};
+    my @path   = @{ $args->{'path'} };
+    my $branch = $args->{'branch'};
 
     my $p = join( "/", @path );
 
@@ -1100,13 +1095,16 @@ sub perform_pack_command
 
 sub _calc_page_id
 {
-    my $link_path_ref = shift;
+    my $link_path = shift;
 
-    my @link_path = @$link_path_ref;
-
-    return join( "--",
-        "page", @link_path,
-        ( ( @link_path && $link_path[-1] =~ s{\.html\z}{} ) ? "PAGE" : "DIR" )
+    return join(
+        "--", "page",
+        @$link_path,
+        (
+            ( @$link_path && $link_path->[-1] =~ s{\.html\z}{} )
+            ? "PAGE"
+            : "DIR"
+        )
     );
 }
 
@@ -1167,10 +1165,8 @@ sub perform_render_all_in_one_page_command
     my $_render_to_all_in_one = sub {
         my ($args) = @_;
 
-        my $path_ref = $args->{'path'};
-        my $branch   = $args->{'branch'};
-
-        my @path = @{$path_ref};
+        my @path   = @{ $args->{'path'} };
+        my $branch = $args->{'branch'};
 
         my $p = join( "/", @path );
 
