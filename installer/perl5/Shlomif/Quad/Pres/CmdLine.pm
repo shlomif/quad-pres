@@ -573,6 +573,11 @@ sub _render_all_contents_traverse_callback
     return;
 }
 
+sub _mkpath_dir
+{
+    return File::Path::mkpath( [ dirname( shift @_ ) ] );
+}
+
 sub _render_file
 {
     my ( $self, $args ) = @_;
@@ -602,7 +607,7 @@ sub _render_file
         ? ()
         : ( "-I", $local_wml_dir );
 
-    File::Path::mkpath( [ dirname($output_filename) ] );
+    _mkpath_dir($output_filename);
     my @command = (
         "-I", $wml_dir, @local_wml, "-DFILENAME=$filename",
         "--passoption=3,-I$modules_dir",
@@ -630,7 +635,7 @@ sub _render_file
     {
         my $cfn = "$cache/$filename";
 
-        File::Path::mkpath( [ dirname($cfn) ] );
+        _mkpath_dir($cfn);
         path($output_filename)->copy($cfn);
     }
 
@@ -957,7 +962,7 @@ sub perform_add_command
 sub copy_with_creating_dir
 {
     my ( $src_fn, $dest_fn ) = @_;
-    File::Path::mkpath( [ dirname($dest_fn) ] );
+    _mkpath_dir($dest_fn);
     return copy( $src_fn, $dest_fn );
 }
 
