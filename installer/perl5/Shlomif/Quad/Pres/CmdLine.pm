@@ -18,7 +18,6 @@ use Carp                  ();
 use HTML::Links::Localize ();
 use File::Glob ':glob';
 
-use IO::All qw/ io /;
 use Path::Tiny qw/ path /;
 
 use Shlomif::Quad::Pres::Path ();
@@ -271,7 +270,7 @@ sub perform_setup_command
         );
     }
 
-    io->file("$src_dir_name/quadpres.ini")->print( <<"EOF" );
+    path("$src_dir_name/quadpres.ini")->spew_raw( <<"EOF" );
 [quadpres]
 
 ; The destination direcory in which to place the rendered files.
@@ -305,10 +304,10 @@ upload_path=$args{upload_path}
 dest_dir=./hard-disk-html/
 EOF
 
-    io->file("$src_dir_name/.wmlrc")
-        ->print("-DROOT~src --passoption=2,-X3074 -DTHEME=shlomif-text\n");
+    path("$src_dir_name/.wmlrc")
+        ->spew_raw("-DROOT~src --passoption=2,-X3074 -DTHEME=shlomif-text\n");
 
-    io->file("$src_dir_name/Contents.pm")->print(
+    path("$src_dir_name/Contents.pm")->spew_raw(
         (
             "package Contents;\n\n",
             "use strict;\n\n",
@@ -332,14 +331,14 @@ EOF
         )
     );
 
-    io->file("$src_dir_name/template.wml")
-        ->print("\n\n#include \"quadpres_main.wml\"\n\n");
+    path("$src_dir_name/template.wml")
+        ->spew_raw("\n\n#include \"quadpres_main.wml\"\n\n");
 
     my $modules_dir = $self->path_man()->get_modules_dir();
 
     # Prepare the serve.pl file that can be used to serve it using a CGI;
     my $serve_filename = "$src_dir_name/serve.pl";
-    io->file($serve_filename)->print( <<"EOF" );
+    path($serve_filename)->spew_raw( <<"EOF" );
 #!/usr/bin/perl -w -I$modules_dir
 
 use strict;
@@ -364,7 +363,7 @@ EOF
     # Regular named files may be present somewhere inside the ./src
     # directory for all we know.
     mkdir("$src_dir_name/.quadpres");
-    io->file("$src_dir_name/.quadpres/is_root")->print('');
+    path("$src_dir_name/.quadpres/is_root")->spew_raw('');
 
     print "Successfully Created $src_dir_name\n";
 
@@ -539,9 +538,7 @@ sub _render_all_contents_traverse_callback
                 $dir_name =~ s/\/*index\.html\.wml$//;
                 mkdir($dir_name);
             }
-
-            io->file($src_filename)
-                ->print( io->file("template.html.wml")->all );
+            path("template.html.wml")->copy($src_filename);
         }
 
         {
@@ -605,7 +602,7 @@ sub _render_file
 
     if ( $cache && -e "$cache/$filename" )
     {
-        io->file($output_filename)->print( io->file("$cache/$filename")->all );
+        path("$cache/$filename")->copy($output_filename);
         return;
     }
 
@@ -644,7 +641,7 @@ sub _render_file
         my $cfn = "$cache/$filename";
 
         File::Path::mkpath( [ dirname($cfn) ] );
-        io->file($cfn)->print( io->file($output_filename)->all );
+        path($output_filename)->copy($cfn);
     }
 
     return;
@@ -1099,8 +1096,17 @@ sub perform_pack_command
         }
     );
 
+    my $files = path( $self->src_archive_dir() )->visit(
+        sub {
+            my ( $path, $state ) = @_;
+            return if $path->is_dir;
+            $state->{$path} = 1;
+        },
+        { recurse => 1 }
+    );
+
     system( "tar", "-cf", $src_archive_name__base,
-        io()->dir( $self->src_archive_dir() )->All_Files );
+        sort { $a cmp $b } keys %$files );
     eval { unlink("$src_archive_name__base.gz"); };
     system( "gzip", "--best", "-n", $src_archive_name__base );
 
