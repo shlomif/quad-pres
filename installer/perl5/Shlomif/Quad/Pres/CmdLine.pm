@@ -971,16 +971,14 @@ sub _traverse_pack_callback
     my $p = join( "/", @path );
 
     {
-        my ( $filename, $src_filename );
-
         my $is_dir = exists( $branch->{'subs'} );
 
         my $src_dir = $self->src_dir();
 
+        my $filename = ( $self->src_archive_src_dir() . "/" . $p );
         if ($is_dir)
         {
             # It is a directory
-            $filename = ( $self->src_archive_src_dir() . "/" . $p );
             if ( !( -d $filename ) )
             {
                 path($filename)->mkpath();
@@ -991,10 +989,8 @@ sub _traverse_pack_callback
         }
         else
         {
-            $filename     = ( $self->src_archive_src_dir() . "/" . $p );
-            $src_filename = $src_dir . "/" . $p;
             my $target = $filename . ".wml";
-            copy( $src_filename . ".wml", $target );
+            copy( "$src_dir/$p.wml", $target );
             $self->_set_time($target);
         }
     }
@@ -1003,13 +999,12 @@ sub _traverse_pack_callback
     {
         foreach my $image ( @{ $branch->{'images'} } )
         {
-            my $filename =
-                $self->src_archive_src_dir() . "/" . $p . "/" . $image;
-            my $src_filename = $self->src_dir() . "/" . $p . "/" . $image;
+            my $suf          = "/$p/$image";
+            my $filename     = $self->src_archive_src_dir() . $suf;
+            my $src_filename = $self->src_dir() . $suf;
 
             copy_with_creating_dir( $src_filename, $filename );
             $self->_set_time($filename);
-
         }
     }
 
@@ -1039,7 +1034,7 @@ sub perform_pack_command
     $self->_assign_src_dir();
 
     my $src_archive_name__base = $cfg->get_src_archive_path()
-        || ( $cfg->get_server_dest_dir() . "/" . "src.tar" );
+        || ( $cfg->get_server_dest_dir() . "/src.tar" );
 
     File::Path::rmtree( [ $self->src_archive_dir() ], 0, 0 );
 
@@ -1267,8 +1262,9 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
         {
             foreach my $image ( @{ $branch->{'images'} } )
             {
-                my $src_filename  = $dest_dir . "/" . $p . "/" . $image;
-                my $dest_filename = $all_in_one_dir . "/" . $p . "/" . $image;
+                my $suf           = "/$p/$image";
+                my $src_filename  = $dest_dir . $suf;
+                my $dest_filename = $all_in_one_dir . $suf;
 
                 my $src_mtime  = _get_file_mtime( undef, $src_filename );
                 my $dest_mtime = _get_file_mtime( undef, $dest_filename );
