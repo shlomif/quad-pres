@@ -20,9 +20,9 @@ use Path::Tiny qw/ cwd path /;
 use Shlomif::Quad::Pres::Path ();
 use QuadPres::Exception       ();
 use QuadPres::Config          ();
-use QuadPres                  ();
-use QuadPres::FS              ();
-use QuadPres::WriteContents   ();
+use QuadPres 0.30.0 ();
+use QuadPres::FS            ();
+use QuadPres::WriteContents ();
 
 use lib cwd()->stringify();
 
@@ -716,8 +716,8 @@ sub _render_all_contents
         'mode'   => "server",
     );
 
-    $quadpres_obj->traverse_tree(
-        sub { $self->_render_all_contents_traverse_callback( +{@_} ) } );
+    $quadpres_obj->ref_traverse_tree(
+        sub { $self->_render_all_contents_traverse_callback(shift) } );
 
     return;
 }
@@ -1070,9 +1070,9 @@ sub perform_pack_command
         'mode'   => "server",
     );
 
-    $quadpres_obj->traverse_tree(
+    $quadpres_obj->ref_traverse_tree(
         sub {
-            return $self->_traverse_pack_callback( +{@_} );
+            return $self->_traverse_pack_callback(shift);
         }
     );
 
@@ -1283,8 +1283,8 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
 
     };
 
-    $quadpres_obj->traverse_tree(
-        sub { return $_render_to_all_in_one->( +{@_} ); } );
+    $quadpres_obj->ref_traverse_tree(
+        sub { return $_render_to_all_in_one->(shift); } );
 
     print {$all_in_one_out_fh} "\n</body></html>\n";
     close($all_in_one_out_fh);
