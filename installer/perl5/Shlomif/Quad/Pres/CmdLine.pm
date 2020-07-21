@@ -4,8 +4,6 @@ use 5.014;
 use strict;
 use warnings;
 
-# use autodie;
-
 use Scalar::Util qw(blessed);
 
 use English qw( -no_match_vars );
@@ -203,17 +201,6 @@ sub real_run
     return $self->$callback();
 }
 
-sub get_dir_path
-{
-    my $dir = shift;
-    my $pwd = getcwd();
-
-    chdir($dir);
-    my $ret = getcwd();
-    chdir($pwd);
-    return $ret;
-}
-
 sub _get_cl_param
 {
     my ( $self, $args ) = @_;
@@ -383,7 +370,7 @@ sub chdir_to_base
     while ( !-e ".quadpres/is_root" )
     {
         chdir("..");
-        $levels_num++;
+        ++$levels_num;
         if ( getcwd() eq "/" )
         {
             $error_class->throw(
@@ -933,7 +920,7 @@ sub perform_add_command
         }
         $current_section = $next_section;
     }
-    my $last_component = $file_path->[$#$file_path];
+    my $last_component = $file_path->[-1];
     if ( $last_component !~ /\.wml$/ )
     {
         $error_class->throw(
@@ -982,10 +969,7 @@ sub _traverse_pack_callback
 
     my $path_ref = $arguments{'path'};
     my $branch   = $arguments{'branch'};
-
-    my (@path);
-
-    @path = @{$path_ref};
+    my @path     = @{$path_ref};
 
     my $p = join( "/", @path );
 
@@ -1026,7 +1010,6 @@ sub _traverse_pack_callback
                 $self->src_archive_src_dir() . "/" . $p . "/" . $image;
             my $src_filename = $self->src_dir() . "/" . $p . "/" . $image;
 
-            File::Path::mkpath( [ dirname($filename) ] );
             copy_with_creating_dir( $src_filename, $filename );
             $self->_set_time($filename);
 
@@ -1119,16 +1102,10 @@ sub _calc_page_id
 
     my @link_path = @$link_path_ref;
 
-    if ( @link_path && $link_path[-1] =~ s{\.html\z}{} )
-    {
-        push @link_path, "PAGE";
-    }
-    else
-    {
-        push @link_path, "DIR";
-    }
-
-    return join( "--", "page", @link_path );
+    return join( "--",
+        "page", @link_path,
+        ( ( @link_path && $link_path[-1] =~ s{\.html\z}{} ) ? "PAGE" : "DIR" )
+    );
 }
 
 sub perform_render_all_in_one_page_command
