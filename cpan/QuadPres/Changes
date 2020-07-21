@@ -1,5 +1,8 @@
 Revision history for QuadPres
 
+0.30.0       2020-07-21
+    - Add ref_traverse_tree()
+
 0.28.4       2020-07-21
     - Convert from IO-All to Path-Tiny
         - Using IO-All is discouraged.

@@ -1012,4 +1012,6 @@ TBD.
 
 TBD.
 
+Added in version 0.30.0.
+
 =cut
