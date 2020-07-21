@@ -71,7 +71,11 @@ sub _set_time
 {
     my ( $self, @paths ) = @_;
 
-    return utime( $TIMESTAMP, $TIMESTAMP, @paths );
+    foreach my $p (@paths)
+    {
+        path($p)->touchpath()->touch($TIMESTAMP);
+    }
+    return;
 }
 
 sub _init_cmd_line
