@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-no autodie;
+use autodie;
 
 use Test::More tests => 3;
 
