@@ -8,7 +8,8 @@ use parent 'QuadPres::Base';
 use CGI         ();
 use Contents    ();
 use MIME::Types ();
-use IO::All qw/ io /;
+use Path::Tiny qw/ path cwd /;
+
 use POSIX ();
 use English qw( -no_match_vars );
 use QuadPres::Config          ();
@@ -195,16 +196,16 @@ sub run
                 {
                     if ( !mkdir($dest_dir_path) )
                     {
-                        io->("./src/$file_path") > io('-');
+                        print path("./src/$file_path")->slurp_raw();
                         exit;
                     }
                 }
             }
 
             # if (-w "$dest_dir/$file_path")
-            io("./src/$file_path") > "$dest_dir/$file_path";
+            path("./src/$file_path")->copy("$dest_dir/$file_path");
         }
-        io("$dest_dir/$file_path") > io('-');
+        print path("$dest_dir/$file_path")->slurp_raw();
     }
     else
     {
@@ -246,7 +247,7 @@ sub run
                 # my_chown("$dest_dir/$file_path");
             };
         }
-        io("$dest_dir/$file_path") > io('-');
+        print path("$dest_dir/$file_path")->slurp_raw();
     }
 }
 

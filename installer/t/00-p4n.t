@@ -8,7 +8,9 @@ use Test::Differences qw/ eq_or_diff /;
 use File::Path qw/ rmtree /;
 use File::Copy::Recursive qw(dircopy);
 use Cwd ();
-use IO::All qw/ io /;
+
+use Path::Tiny qw/ path tempdir tempfile cwd /;
+
 use HTML::T5    ();
 use XML::LibXML ();
 
@@ -40,7 +42,7 @@ sub p4n
     my $lint = calc_tidy;
 
     my $fn = "all-in/index.html";
-    $lint->parse( $fn, io->file($fn)->utf8->all );
+    $lint->parse( $fn, path($fn)->slurp_utf8() );
 
     # TEST
     eq_or_diff( [ $lint->messages() ], [], "HTML is valid for all-in-one." );

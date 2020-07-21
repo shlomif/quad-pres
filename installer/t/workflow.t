@@ -9,8 +9,6 @@ use File::Path qw/ mkpath rmtree /;
 use List::Util qw/ all /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd ();
-use IO::All qw/ io /;
-
 use Path::Tiny qw/ path tempdir tempfile cwd /;
 
 my $io_dir = "t/data/in-out-workflow";
@@ -26,7 +24,7 @@ sub check_files
         (
             all
             {
-                ( io->file("$output_dir/$_")->all =~
+                ( path("$output_dir/$_")->slurp_raw() =~
                         m#<link rel="stylesheet" href="style\.css"# )
             }
             qw/index.html two.html/

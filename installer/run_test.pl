@@ -4,7 +4,8 @@ use strict;
 use warnings;
 
 use Cwd ();
-use IO::All qw / io /;
+use Path::Tiny qw/ path tempdir tempfile cwd /;
+
 use FindBin qw/ $Bin /;
 use File::Spec ();
 use File::Path qw / rmtree /;
@@ -41,7 +42,7 @@ foreach my $lang1 ( "", "he-IL" )
         {
             foreach my $char2 ( "", "iso-8859-8" )
             {
-                io->file("$SRC/t/lang-set-$test_idx.t")->print(<<"EOF");
+                path("$SRC/t/lang-set-$test_idx.t")->spew_raw(<<"EOF");
 use lib "./t/lib";
 
 use QpTest::Lang qw/ perform_test /;

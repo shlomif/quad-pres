@@ -8,7 +8,6 @@ use Test::More tests => 4;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd ();
-use IO::All qw/ io /;
 use Test::Trap
     qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
 use File::Spec ();

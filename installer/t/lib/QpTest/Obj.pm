@@ -6,7 +6,6 @@ use warnings;
 
 use MooX qw/ late /;
 
-use IO::All qw/ io /;
 use Cwd ();
 use Test::More;
 

@@ -8,7 +8,6 @@ use Test::More tests => 6;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd ();
-use IO::All qw/ io /;
 
 my $io_dir_proto = "t/data/in-out-gen-hd-html";
 my $io_dir       = File::Spec->rel2abs($io_dir_proto);

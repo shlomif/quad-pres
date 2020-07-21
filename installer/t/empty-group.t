@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 3;
-
+use Path::Tiny qw/ path tempdir tempfile cwd /;
 use QuadPres::FS ();
 
 my @inputs = ( undef, "", "     " );
@@ -32,8 +32,7 @@ sub my_test
 #    mydie("Warning was received");
 #};
 
-use IO::All qw / io /;
-io->file($filename)->print("");
+path($filename)->spew_raw("");
 
 for my $test_num ( keys @inputs )
 {

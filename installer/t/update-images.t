@@ -8,7 +8,7 @@ use Test::More tests => 4;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd ();
-use IO::All qw/ io /;
+use Path::Tiny qw/ path tempdir tempfile cwd /;
 
 my $io_dir = "t/data/in-out-update-images";
 rmtree($io_dir);
@@ -45,14 +45,14 @@ sub perform_test
     # To be sure that the timestamp is non-identical
     sleep(1);
 
-    "this_should_exist = 1;" >> io->file("$test_dir/src/test.js");
+    path("$test_dir/src/test.js")->append_raw("this_should_exist = 1;");
 
     # TEST
     ok( !system("cd $test_dir && quadp render -a"), "quadp render -a", );
 
     # TEST
     like(
-        scalar( io->file("$test_dir/rendered/test.js")->slurp ),
+        scalar( path("$test_dir/rendered/test.js")->slurp_raw ),
         qr{this_should_exist}, "Images are updated.",
     );
 

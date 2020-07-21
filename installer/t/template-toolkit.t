@@ -7,8 +7,7 @@ use Test::More tests => 5;
 
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
-use Cwd ();
-use IO::All qw/ io /;
+use Cwd        ();
 use File::Spec ();
 
 use Path::Tiny qw/ path tempdir tempfile cwd /;

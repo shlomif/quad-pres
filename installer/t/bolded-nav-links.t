@@ -8,7 +8,7 @@ use Test::More tests => 3;
 use File::Path qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
 use Cwd ();
-use IO::All qw/ io /;
+use Path::Tiny qw/ path tempdir tempfile cwd /;
 
 my $io_dir = "t/data/in-out-bolded-nav-links";
 rmtree($io_dir);
@@ -47,7 +47,7 @@ sub perform_test
 
     # TEST
     like(
-        scalar( io->file("$test_dir/rendered/finale/books.html")->slurp ),
+        scalar( path("$test_dir/rendered/finale/books.html")->slurp_raw() ),
         qr{<b>Next</b>}, "Next link was bolded",
     );
 
