@@ -7,17 +7,15 @@ use autodie;
 
 use Scalar::Util qw(blessed);
 
-use English qw( -no_match_vars );
 use Pod::Usage            (qw( pod2usage ));
-use Cwd                   (qw( getcwd ));
 use File::Copy            (qw( copy ));
 use File::Path            ();
-use File::Basename        (qw( dirname));
+use File::Basename        (qw( dirname ));
 use Carp                  ();
 use HTML::Links::Localize ();
 use File::Glob ':glob';
 
-use Path::Tiny qw/ path /;
+use Path::Tiny qw/ cwd path /;
 
 use Shlomif::Quad::Pres::Path ();
 use QuadPres::Exception       ();
@@ -26,7 +24,7 @@ use QuadPres                  ();
 use QuadPres::FS              ();
 use QuadPres::WriteContents   ();
 
-use lib getcwd();
+use lib cwd()->stringify();
 
 use MooX qw/ late /;
 
@@ -366,7 +364,7 @@ sub chdir_to_base
 {
     my $self = shift;
 
-    my $current_path = getcwd();
+    my $current_path = cwd();
     my @path         = split( /\//, $current_path );
 
     my $levels_num = 0;
@@ -376,7 +374,7 @@ sub chdir_to_base
     {
         chdir("..");
         ++$levels_num;
-        if ( getcwd() eq "/" )
+        if ( cwd() eq "/" )
         {
             $error_class->throw(
                 {
@@ -429,7 +427,7 @@ sub perform_render_command
     {
         if ( my $basedir = $ENV{QUAD_PRES_CACHE_DIR} )
         {
-            $self->_cache_dir( $basedir . "/qp-pages/" . getcwd() );
+            $self->_cache_dir( $basedir . "/qp-pages/" . cwd() );
         }
     }
 
@@ -488,11 +486,10 @@ sub _get_file_mtime
 
 sub _render_all_contents_traverse_callback
 {
-    my $self = shift;
-    my (%arguments) = (@_);
+    my ( $self, $args ) = @_;
 
-    my $path_ref = $arguments{'path'};
-    my $branch   = $arguments{'branch'};
+    my $path_ref = $args->{'path'};
+    my $branch   = $args->{'branch'};
     my $dest_dir = $self->dest_dir;
     my $src_dir  = $self->src_dir;
 
@@ -724,7 +721,7 @@ sub _render_all_contents
     );
 
     $quadpres_obj->traverse_tree(
-        sub { $self->_render_all_contents_traverse_callback(@_) } );
+        sub { $self->_render_all_contents_traverse_callback( +{@_} ) } );
 
     return;
 }
@@ -949,17 +946,14 @@ sub perform_add_command
             }
         );
     }
-    my $is_dir = ( -d $filename );
-    my $title  = "My Title";
     push @{ $current_section->{subs} },
         {
         url   => $last_component,
-        title => $title,
-        ( $is_dir ? ( subs => [] ) : () )
+        title => "My Title",
+        ( ( -d $filename ) ? ( subs => [] ) : () )
         };
 
-    my $writer = QuadPres::WriteContents->new( contents => $contents );
-    $writer->update_contents();
+    QuadPres::WriteContents->new( contents => $contents )->update_contents();
 
     return 0;
 }
@@ -973,12 +967,10 @@ sub copy_with_creating_dir
 
 sub _traverse_pack_callback
 {
-    my $self = shift;
+    my ( $self, $args ) = @_;
 
-    my (%arguments) = (@_);
-
-    my $path_ref = $arguments{'path'};
-    my $branch   = $arguments{'branch'};
+    my $path_ref = $args->{'path'};
+    my $branch   = $args->{'branch'};
     my @path     = @{$path_ref};
 
     my $p = join( "/", @path );
@@ -1085,7 +1077,7 @@ sub perform_pack_command
 
     $quadpres_obj->traverse_tree(
         sub {
-            return $self->_traverse_pack_callback(@_);
+            return $self->_traverse_pack_callback( +{@_} );
         }
     );
 
@@ -1173,10 +1165,10 @@ sub perform_render_all_in_one_page_command
 
     my $is_first              = 1;
     my $_render_to_all_in_one = sub {
-        my (%arguments) = (@_);
+        my ($args) = @_;
 
-        my $path_ref = $arguments{'path'};
-        my $branch   = $arguments{'branch'};
+        my $path_ref = $args->{'path'};
+        my $branch   = $args->{'branch'};
 
         my @path = @{$path_ref};
 
@@ -1295,7 +1287,8 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
 
     };
 
-    $quadpres_obj->traverse_tree($_render_to_all_in_one);
+    $quadpres_obj->traverse_tree(
+        sub { return $_render_to_all_in_one->( +{@_} ); } );
 
     print {$all_in_one_out_fh} "\n</body></html>\n";
     close($all_in_one_out_fh);
