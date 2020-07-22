@@ -31,10 +31,11 @@ use MooX qw/ late /;
 use lib do { `wml-params-conf --show-privlib` =~ s#[\r\n]+\z##r };
 use TheWML::Frontends::Wml::Runner ();
 
-has '_cache_dir'        => ( 'is' => 'rw' );
-has 'dest_dir'          => ( isa  => 'Str', 'is' => 'rw' );
-has 'src_dir'           => ( isa  => 'Str', 'is' => 'rw' );
-has 'main_files_mtimes' => ( isa  => 'ArrayRef', 'is' => 'rw' );
+has '_cache_dir'            => ( 'is' => 'rw' );
+has '_all_in_one_cache_dir' => ( 'is' => 'rw' );
+has 'dest_dir'              => ( isa  => 'Str', 'is' => 'rw' );
+has 'src_dir'               => ( isa  => 'Str', 'is' => 'rw' );
+has 'main_files_mtimes'     => ( isa  => 'ArrayRef', 'is' => 'rw' );
 has 'getopt' => (
     isa     => "Getopt::Long::Parser",
     'is'    => "ro",
@@ -392,6 +393,21 @@ sub chdir_to_base
     return 0;
 }
 
+sub _setup_cache
+{
+    my ( $self, $use_cache ) = @_;
+    if ($use_cache)
+    {
+        if ( my $basedir = $ENV{QUAD_PRES_CACHE_DIR} )
+        {
+            $self->_cache_dir( $basedir . "/qp-pages/" . cwd() );
+            $self->_all_in_one_cache_dir(
+                $basedir . "/qp-all-in-one/" . cwd() );
+        }
+    }
+    return;
+}
+
 sub perform_render_command
 {
     my $self = shift;
@@ -421,15 +437,9 @@ sub perform_render_command
         $error_class->throw(
             { text => "Don't know how to render anything but all yet.", } );
     }
+    $self->_setup_cache($use_cache);
 
     $self->chdir_to_base();
-    if ($use_cache)
-    {
-        if ( my $basedir = $ENV{QUAD_PRES_CACHE_DIR} )
-        {
-            $self->_cache_dir( $basedir . "/qp-pages/" . cwd() );
-        }
-    }
 
     eval { $self->_render_all_contents(); };
     my $error = $@;
@@ -1123,8 +1133,10 @@ sub perform_render_all_in_one_page_command
 
     my $all_in_one_dir;
     my $direction = 'ltr';
+    my $use_cache = 0;
     $getopt->getoptionsfromarray(
         $cmd_line,
+        'cache!'       => \$use_cache,
         'output-dir=s' => \$all_in_one_dir,
         'html-dir=s'   => \$direction,
     );
@@ -1132,6 +1144,7 @@ sub perform_render_all_in_one_page_command
     {
         $error_class->throw( { text => 'please specify an --output-dir.', } );
     }
+    $self->_setup_cache($use_cache);
 
     require Contents;
 
@@ -1158,8 +1171,27 @@ sub perform_render_all_in_one_page_command
     {
         path($all_in_one_dir)->mkpath();
     }
+    my $_cache_dir = $self->_all_in_one_cache_dir;
+    my $_cache_fn;
+    if ( defined $_cache_dir )
+    {
+        path($_cache_dir)->mkpath();
+        $_cache_fn = "$_cache_dir/all_in_one.html";
+    }
+    if ( !-d $all_in_one_dir )
+    {
+        path($all_in_one_dir)->mkpath();
+    }
     my $all_fn = "$all_in_one_dir/index.html";
-    open my $all_in_one_out_fh, ">", $all_fn;
+    my $all_in_one_out_fh;
+    if ( ( defined $_cache_fn ) && ( -f $_cache_fn ) )
+    {
+        copy( $_cache_fn, $all_fn );
+    }
+    else
+    {
+        open $all_in_one_out_fh, ">", $all_fn;
+    }
 
     my $is_first              = 1;
     my $_render_to_all_in_one = sub {
@@ -1170,6 +1202,7 @@ sub perform_render_all_in_one_page_command
 
         my $p = join( "/", @path );
 
+        if ( defined $all_in_one_out_fh )
         {
             my $is_dir = exists( $branch->{'subs'} );
             my $filename =
@@ -1287,8 +1320,16 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
     $quadpres_obj->ref_traverse_tree(
         sub { return $_render_to_all_in_one->(shift); } );
 
-    print {$all_in_one_out_fh} "\n</body></html>\n";
-    close($all_in_one_out_fh);
+    if ( defined $all_in_one_out_fh )
+    {
+        print {$all_in_one_out_fh} "\n</body></html>\n";
+        close($all_in_one_out_fh);
+
+        if ( defined $_cache_dir )
+        {
+            copy( $all_fn, $_cache_fn );
+        }
+    }
 
     return 0;
 }
