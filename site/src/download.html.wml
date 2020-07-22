@@ -9,7 +9,7 @@
 </define-tag>
 
 <p>
-<a href="quad-pres-0.28.1.tar.xz">Version 0.28.1</a>
+<a href="quad-pres-0.30.0.tar.xz">Version 0.30.0</a>
 </p>
 
 <h2>Development</h2>
@@ -27,6 +27,9 @@ To compile as an RPM, run the command <tt>rpm -tb</tt> on the archive.
 <h2>Old Versions</h2>
 
 <ul>
+<li>
+<a href="quad-pres-0.28.1.tar.xz">Version 0.28.1</a>
+</li>
 <li>
 <a href="quad-pres-0.26.0.tar.xz">Version 0.26.0</a>
 </li>
