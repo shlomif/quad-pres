@@ -73,12 +73,12 @@ binmode STDOUT, ":encoding(UTF-8)";
                         'title' => "Selection and its Usage",
                         'subs'  => [
                             {
-                                'url' => "red.html",
+                                'url'   => "red.html",
                                 'title' =>
                                     "Using the Red \"Paint Selection\" Button",
                             },
                             {
-                                'url' => "menu.html",
+                                'url'   => "menu.html",
                                 'title' =>
                                     "The \"&lt;Image&gt; -> Select\" Menu",
                             },
@@ -97,7 +97,7 @@ binmode STDOUT, ":encoding(UTF-8)";
                                         'title' => "Demo 1",
                                     },
                                     {
-                                        'url' => "demo_grad.html",
+                                        'url'   => "demo_grad.html",
                                         'title' =>
 "Demo : Using a Gradient as a Layer Mask",
                                     },
@@ -178,7 +178,7 @@ binmode STDOUT, ":encoding(UTF-8)";
                         'title' => "Blur",
                         'subs'  => [
                             {
-                                'url' => "answer.html",
+                                'url'   => "answer.html",
                                 'title' =>
                                     "Answer to how one can blur an image",
                             },

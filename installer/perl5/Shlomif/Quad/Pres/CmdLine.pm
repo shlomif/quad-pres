@@ -33,10 +33,10 @@ use TheWML::Frontends::Wml::Runner ();
 
 has '_cache_dir'            => ( 'is' => 'rw' );
 has '_all_in_one_cache_dir' => ( 'is' => 'rw' );
-has 'dest_dir'              => ( isa  => 'Str', 'is' => 'rw' );
-has 'src_dir'               => ( isa  => 'Str', 'is' => 'rw' );
+has 'dest_dir'              => ( isa  => 'Str',      'is' => 'rw' );
+has 'src_dir'               => ( isa  => 'Str',      'is' => 'rw' );
 has 'main_files_mtimes'     => ( isa  => 'ArrayRef', 'is' => 'rw' );
-has 'getopt' => (
+has 'getopt'                => (
     isa     => "Getopt::Long::Parser",
     'is'    => "ro",
     lazy    => 1,
