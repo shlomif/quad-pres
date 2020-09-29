@@ -811,7 +811,7 @@ sub ref_traverse_tree
                 {
                     __SUB__->(
                         [ @$path_ref, $sub_branch->{'url'} ],
-                        [ @$coords, $new_coord ], $sub_branch,
+                        [ @$coords,   $new_coord ], $sub_branch,
                     );
                 }
                 continue
