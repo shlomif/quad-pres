@@ -26,8 +26,7 @@ sub check_files
             {
                 ( path("$output_dir/$_")->slurp_raw() =~
                         m#<link rel="stylesheet" href="style\.css"# )
-            }
-            qw/index.html two.html/
+            } qw/index.html two.html/
         ),
         "The requested files exist in the output directory"
     );

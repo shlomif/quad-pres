@@ -46,7 +46,7 @@ has 'getopt'                => (
     },
 );
 has 'invocation_path' => ( isa => "ArrayRef", is => "rw" );
-has 'path_man'        => (
+has 'path_man' => (
     is      => 'ro',
     lazy    => 1,
     default => sub {
@@ -890,8 +890,7 @@ sub perform_add_command
     if ( $file_path->[0] ne "src" )
     {
         $error_class->throw(
-            { text => "Cannot add files outside the src directory", },
-        );
+            { text => "Cannot add files outside the src directory", }, );
     }
 
     # Remove "src" from the file path
