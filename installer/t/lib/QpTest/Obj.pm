@@ -13,7 +13,7 @@ use Path::Tiny qw/ path tempdir tempfile cwd /;
 
 has [ 'io_dir', '_pwd' ] => ( is => 'rw' );
 has orig_dir             => ( is => 'ro', default => sub { return cwd; } );
-has theme                => (
+has theme => (
     is  => 'rw',
     isa => 'Str',
 );
