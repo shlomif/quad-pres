@@ -570,11 +570,7 @@ sub _render_all_contents_traverse_callback
             my $filename     = $dest_dir . "/" . $p . "/" . $image;
             my $src_filename = $src_dir . "/" . $p . "/" . $image;
 
-            my $src_mtime  = $self->_get_file_mtime($src_filename);
-            my $dest_mtime = $self->_get_file_mtime($filename);
-
-            if (   ( !-e $filename )
-                || ( $src_mtime > $dest_mtime ) )
+            if ( should_update( $filename, ":", $src_filename ) )
             {
                 copy_with_creating_dir( $src_filename, $filename );
             }
