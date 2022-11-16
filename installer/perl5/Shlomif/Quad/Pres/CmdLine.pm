@@ -1306,11 +1306,10 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
                 }
             }
         }
-
+        return;
     };
 
-    $quadpres_obj->ref_traverse_tree(
-        sub { return $_render_to_all_in_one->(shift); } );
+    $quadpres_obj->ref_traverse_tree( $_render_to_all_in_one, );
 
     if ( defined $all_in_one_out_fh )
     {
