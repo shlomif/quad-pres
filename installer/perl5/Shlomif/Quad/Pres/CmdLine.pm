@@ -552,7 +552,7 @@ sub _render_all_contents_traverse_callback
                 )
             {
                 my $src_filename_modified = $src_filename;
-                $src_filename_modified =~ s/^(\.\/)?src\/*//;
+                $src_filename_modified =~ s#\A(\./)?src/*##;
                 $self->_render_file(
                     {
                         input_fn  => $src_filename_modified,
@@ -592,8 +592,8 @@ sub _render_file
     my $filename        = $args->{input_fn};
     my $output_filename = $args->{output_fn};
 
-    $filename =~ s{\.wml$}{};
-    $filename =~ s{/$}{/index.html};
+    $filename =~ s{\.wml\z}{};
+    $filename =~ s{/\z}{/index.html};
 
     my $path_man = Shlomif::Quad::Pres::Path->new();
 
@@ -673,7 +673,7 @@ sub _assign_src_dir
 
     my $src_dir = "./src/";
 
-    if ( $src_dir !~ /\/$/ )
+    if ( $src_dir !~ m#/\z# )
     {
         $src_dir .= "/";
     }
@@ -935,7 +935,7 @@ sub perform_add_command
         $current_section = $next_section;
     }
     my $last_component = $file_path->[-1];
-    if ( $last_component !~ /\.wml$/ )
+    if ( $last_component !~ /\.wml\z/ )
     {
         $error_class->throw(
             {
@@ -943,7 +943,7 @@ sub perform_add_command
             }
         );
     }
-    $last_component =~ s/\.wml$//;
+    $last_component =~ s/\.wml\z//;
     if ( ( grep { $_->{url} eq $last_component } @{ $current_section->{subs} } )
         || ( grep { $_ eq $last_component } @{ $current_section->{images} } ) )
     {
