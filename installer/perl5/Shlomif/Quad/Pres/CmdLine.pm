@@ -535,7 +535,7 @@ sub _render_all_contents_traverse_callback
             if ($is_dir)
             {
                 my $dir_name = $src_filename;
-                $dir_name =~ s/\/*index\.html\.wml$//;
+                $dir_name =~ s#/*index\.html\.wml\z##;
                 path($dir_name)->mkpath();
             }
             path("template.html.wml")->copy($src_filename);
@@ -699,7 +699,7 @@ sub _render_all_contents
 
     my $dest_dir = shift || $default_dest_dir;
 
-    if ( $dest_dir !~ /\/$/ )
+    if ( $dest_dir !~ m#/\z# )
     {
         $dest_dir .= "/";
     }
@@ -792,8 +792,8 @@ sub perform_upload_command
 
     # Split into the last component of the path and the main
     # path up to it.
-    $dest_dir =~ m{^(.*?)/([^/]*)/*$};
-    my ( $main_path, $last_component ) = ( $1, $2 );
+    my ( $main_path, $last_component ) =
+        ( $dest_dir =~ m{\A(.*?)/([^/]*)/*\z}ms );
 
     chdir($main_path);
     my @command;
