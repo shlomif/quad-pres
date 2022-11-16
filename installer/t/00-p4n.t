@@ -4,10 +4,10 @@ use strict;
 use warnings;
 
 use Test::More tests => 4;
-use Test::Differences qw/ eq_or_diff /;
-use File::Path qw/ rmtree /;
+use Test::Differences     qw/ eq_or_diff /;
+use File::Path            qw/ rmtree /;
 use File::Copy::Recursive qw(dircopy);
-use Cwd ();
+use Cwd                   ();
 
 use Path::Tiny qw/ path tempdir tempfile cwd /;
 

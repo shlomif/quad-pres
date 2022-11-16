@@ -5,11 +5,11 @@ use warnings;
 
 use Test::More tests => 7;
 
-use File::Path qw/ mkpath rmtree /;
-use List::Util qw/ all /;
+use File::Path            qw/ mkpath rmtree /;
+use List::Util            qw/ all /;
 use File::Copy::Recursive qw(dircopy fcopy);
-use Cwd ();
-use Path::Tiny qw/ path tempdir tempfile cwd /;
+use Cwd                   ();
+use Path::Tiny            qw/ path tempdir tempfile cwd /;
 
 my $io_dir = "t/data/in-out-workflow";
 rmtree($io_dir);

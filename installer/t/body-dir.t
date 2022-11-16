@@ -6,9 +6,9 @@ use autodie;
 
 use Test::More tests => 16;
 
-use File::Path qw/ mkpath rmtree /;
+use File::Path            qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
-use Path::Tiny qw/ path tempdir tempfile /;
+use Path::Tiny            qw/ path tempdir tempfile /;
 
 use lib './t/lib';
 use QpTest::Obj ();

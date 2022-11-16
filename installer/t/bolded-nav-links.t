@@ -6,10 +6,10 @@ use autodie;
 
 use Test::More tests => 3;
 
-use File::Path qw/ mkpath rmtree /;
+use File::Path            qw/ mkpath rmtree /;
 use File::Copy::Recursive qw(dircopy fcopy);
-use Cwd ();
-use Path::Tiny qw/ path tempdir tempfile cwd /;
+use Cwd                   ();
+use Path::Tiny            qw/ path tempdir tempfile cwd /;
 
 my $io_dir = "t/data/in-out-bolded-nav-links";
 rmtree($io_dir);

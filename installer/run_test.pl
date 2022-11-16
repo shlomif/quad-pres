@@ -3,10 +3,10 @@
 use strict;
 use warnings;
 
-use Cwd ();
+use Cwd        ();
 use Path::Tiny qw/ path tempdir tempfile cwd /;
 
-use FindBin qw/ $Bin /;
+use FindBin    qw/ $Bin /;
 use File::Spec ();
 use File::Path qw / rmtree /;
 

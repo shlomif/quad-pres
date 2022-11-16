@@ -5,8 +5,8 @@ use warnings;
 
 use Test::More tests => 6;
 use Test::Differences qw/ eq_or_diff /;
-use File::Path qw/ mkpath rmtree /;
-use Path::Tiny qw/ path tempdir tempfile /;
+use File::Path        qw/ mkpath rmtree /;
+use Path::Tiny        qw/ path tempdir tempfile /;
 use lib './t/lib';
 use QpTest::Obj ();
 

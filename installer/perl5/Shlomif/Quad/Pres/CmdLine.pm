@@ -7,10 +7,11 @@ use autodie;
 
 use Scalar::Util qw(blessed);
 
-use Pod::Usage            (qw( pod2usage ));
-use File::Copy            (qw( copy ));
-use File::Path            ();
-use File::Basename        (qw( dirname ));
+use Pod::Usage (qw( pod2usage ));
+use File::Copy (qw( copy ));
+use File::Path ();
+use File::Basename (qw( dirname ));
+use File::ShouldUpdate    qw( should_update should_update_multi );
 use Carp                  ();
 use HTML::Links::Localize ();
 use File::Glob ':glob';
@@ -20,9 +21,9 @@ use Path::Tiny qw/ cwd path /;
 use Shlomif::Quad::Pres::Path ();
 use QuadPres::Exception       ();
 use QuadPres::Config          ();
-use QuadPres 0.30.0 ();
-use QuadPres::FS            ();
-use QuadPres::WriteContents ();
+use QuadPres 0.30.0           ();
+use QuadPres::FS              ();
+use QuadPres::WriteContents   ();
 
 use lib cwd()->stringify();
 
@@ -1303,11 +1304,7 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
                 my $src_filename  = $dest_dir . $suf;
                 my $dest_filename = $all_in_one_dir . $suf;
 
-                my $src_mtime  = _get_file_mtime( undef, $src_filename );
-                my $dest_mtime = _get_file_mtime( undef, $dest_filename );
-
-                if (   ( !-e $dest_filename )
-                    || ( $src_mtime > $dest_mtime ) )
+                if ( should_update( $dest_filename, ":", $src_filename ) )
                 {
                     copy_with_creating_dir( $src_filename, $dest_filename );
                 }

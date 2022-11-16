@@ -9,7 +9,7 @@ use parent 'Exporter';
 our @EXPORT_OK = qw/ $io_dir perform_test /;
 
 use Test::More;
-use Path::Tiny qw/ path /;
+use Path::Tiny  qw/ path /;
 use QpTest::Obj ();
 
 our $io_dir = path("t/data/in-out-lang-settings")->absolute;
