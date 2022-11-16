@@ -986,7 +986,7 @@ sub _traverse_pack_callback
 
         my $src_dir = $self->src_dir();
 
-        my $filename = ( $self->src_archive_src_dir() . "/" . $p );
+        my $filename = ( $self->src_archive_src_dir() . "/$p" );
         if ($is_dir)
         {
             # It is a directory
@@ -995,12 +995,12 @@ sub _traverse_pack_callback
                 path($filename)->mkpath();
             }
             my $target = "$filename/index.html.wml";
-            copy( $src_dir . "/" . $p . "/index.html.wml", $target );
+            copy( "$src_dir/$p/index.html.wml", $target );
             $self->_set_time($target);
         }
         else
         {
-            my $target = $filename . ".wml";
+            my $target = "$filename.wml";
             copy( "$src_dir/$p.wml", $target );
             $self->_set_time($target);
         }
@@ -1053,15 +1053,15 @@ sub perform_pack_command
     path( $self->src_archive_dir() . "/.quadpres" )->mkpath();
 
     # Copy the files from the root directory.
-    foreach my $file (
+    foreach my $filename (
         sort { $a cmp $b }
         grep { -f $_ }
         map  { bsd_glob($_) }
-        qw(*.pm *.wml *.html quadpres.ini *.pl *.sh .quadpres/* .wmlrc)
+        qw( *.pm *.wml *.html quadpres.ini *.pl *.sh .quadpres/* .wmlrc )
         )
     {
-        my $target = $self->src_archive_dir() . "/$file";
-        copy( $file, $target );
+        my $target = $self->src_archive_dir() . "/$filename";
+        copy( $filename, $target );
         $self->_set_time($target);
     }
 
@@ -1202,7 +1202,7 @@ sub perform_render_all_in_one_page_command
         {
             my $is_dir = exists( $branch->{'subs'} );
             my $filename =
-                ( $dest_dir . "/" . $p ) . ( $is_dir ? "/index.html" : '' );
+                ( "$dest_dir/$p" . ( $is_dir ? "/index.html" : '' ) );
 
             my $text = path($filename)->slurp_raw();
 
