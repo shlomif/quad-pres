@@ -935,7 +935,7 @@ sub perform_add_command
         $current_section = $next_section;
     }
     my $last_component = $file_path->[-1];
-    if ( $last_component !~ /\.wml\z/ )
+    if ( $last_component !~ s/\.wml\z// )
     {
         $error_class->throw(
             {
@@ -943,7 +943,7 @@ sub perform_add_command
             }
         );
     }
-    $last_component =~ s/\.wml\z//;
+
     if ( ( grep { $_->{url} eq $last_component } @{ $current_section->{subs} } )
         || ( grep { $_ eq $last_component } @{ $current_section->{images} } ) )
     {
