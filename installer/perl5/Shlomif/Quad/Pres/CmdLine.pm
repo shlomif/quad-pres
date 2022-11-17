@@ -553,10 +553,10 @@ sub _render_all_contents_traverse_callback
 
     if ( exists( $branch->{'images'} ) )
     {
-        foreach my $image ( @{ $branch->{'images'} } )
+        foreach my $image_fn ( @{ $branch->{'images'} } )
         {
-            my $filename     = $dest_dir . "/" . $p . "/" . $image;
-            my $src_filename = $src_dir . "/" . $p . "/" . $image;
+            my $filename     = "$dest_dir/$p/$image_fn";
+            my $src_filename = "$src_dir/$p/$image_fn";
 
             if ( should_update( $filename, ":", $src_filename ) )
             {
@@ -994,9 +994,9 @@ sub _traverse_pack_callback
 
     if ( exists( $branch->{'images'} ) )
     {
-        foreach my $image ( @{ $branch->{'images'} } )
+        foreach my $image_fn ( @{ $branch->{'images'} } )
         {
-            my $suf          = "/$path/$image";
+            my $suf          = "/$path/$image_fn";
             my $filename     = $self->src_archive_src_dir() . $suf;
             my $src_filename = $self->src_dir() . $suf;
 
@@ -1280,9 +1280,9 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
         }
         if ( exists( $branch->{'images'} ) )
         {
-            foreach my $image ( @{ $branch->{'images'} } )
+            foreach my $image_fn ( @{ $branch->{'images'} } )
             {
-                my $suf           = "/$p/$image";
+                my $suf           = "/$p/$image_fn";
                 my $src_filename  = $dest_dir . $suf;
                 my $dest_filename = $all_in_one_dir . $suf;
 
