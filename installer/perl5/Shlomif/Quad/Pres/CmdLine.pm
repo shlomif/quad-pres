@@ -102,13 +102,13 @@ sub _register_cmd
     return;
 }
 
-_register_cmd('clear');
 _register_cmd( 'render',                 0, [qw(rend)] );
 _register_cmd( 'render_all_in_one_page', 0, [qw(all_in_one)] );
+_register_cmd('add');
+_register_cmd('clear');
+_register_cmd('pack');
 _register_cmd('setup');
 _register_cmd('upload');
-_register_cmd('add');
-_register_cmd('pack');
 
 sub run_command
 {
@@ -286,27 +286,32 @@ EOF
         ->spew_raw("-DROOT~src --passoption=2,-X3074 -DTHEME=shlomif-text\n");
 
     path("$src_dir_name/Contents.pm")->spew_raw(
-        (
-            "package Contents;\n\n",
-            "use strict;\n\n",
-            "my \$contents =\n",
-            "{\n",
-            "    'title' => \"My Lecture Title\",\n",
-            "    'subs' =>\n",
-            "    [\n",
-            "    ],\n",
-            "    'images' =>\n",
-            "    [\n",
-            "        'style.css',\n",
-            "    ],\n",
-            "};\n\n",
-            "sub get_contents\n",
-            "{\n",
-            "    return \$contents;\n",
-            "}\n",
-            "\n",
-            "1;\n"
-        )
+        <<"EOF"
+package Contents;
+
+use strict;
+use warnings;
+use autodie;
+
+my \$contents =
+{
+    'title' => \"My Lecture Title\",
+    'subs' =>
+    [
+    ],
+    'images' =>
+    [
+        'style.css',
+    ],
+};
+
+sub get_contents
+{
+    return \$contents;
+}
+
+1;
+EOF
     );
 
     path("$src_dir_name/template.wml")
