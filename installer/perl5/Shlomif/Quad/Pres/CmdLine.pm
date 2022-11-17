@@ -338,11 +338,13 @@ EOF
 
     path("$src_dir_name/src")->mkpath();
 
-    my $template_dir = $self->path_man()->get_template_dir();
+    my $template_dir_path_str = $self->path_man()->get_template_dir();
 
-    copy( "$template_dir/style.css", "$src_dir_name/src/style.css" );
-    copy( "$template_dir/template.html.wml",
-        "$src_dir_name/template.html.wml" );
+    copy( "$template_dir_path_str/style.css", "$src_dir_name/src/style.css" );
+    copy(
+        "$template_dir_path_str/template.html.wml",
+        "$src_dir_name/template.html.wml"
+    );
 
     # Create a file indicating that this is the root directory.
     # Regular named files may be present somewhere inside the ./src
@@ -360,7 +362,7 @@ sub chdir_to_base
     my $self = shift;
 
     my $current_path = cwd();
-    my @path         = split( /\//, $current_path );
+    my @path         = split( qr#/#, $current_path );
 
     my $levels_num = 0;
 
@@ -534,25 +536,23 @@ sub _render_all_contents_traverse_callback
             path("template.html.wml")->copy($src_filename);
         }
 
-        {
-            my $src_mtime  = $self->_get_file_mtime($src_filename);
-            my $dest_mtime = $self->_get_file_mtime($filename);
+        my $src_mtime  = $self->_get_file_mtime($src_filename);
+        my $dest_mtime = $self->_get_file_mtime($filename);
 
-            if (
-                ( !-e $filename )
-                || ( grep { $_ > $dest_mtime }
-                    ( @{ $self->main_files_mtimes() }, $src_mtime ) )
-                )
-            {
-                my $src_filename_modified = $src_filename;
-                $src_filename_modified =~ s#\A(\./)?src/*##;
-                $self->_render_file(
-                    {
-                        input_fn  => $src_filename_modified,
-                        output_fn => $filename,
-                    },
-                );
-            }
+        if (
+            ( !-e $filename )
+            || ( grep { $_ > $dest_mtime }
+                ( @{ $self->main_files_mtimes() }, $src_mtime ) )
+            )
+        {
+            my $src_filename_modified = $src_filename;
+            $src_filename_modified =~ s#\A(\./)?src/*##;
+            $self->_render_file(
+                {
+                    input_fn  => $src_filename_modified,
+                    output_fn => $filename,
+                },
+            );
         }
     }
 
