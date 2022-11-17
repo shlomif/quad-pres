@@ -320,7 +320,9 @@ EOF
 #!/usr/bin/perl -w -I$modules_dir
 
 use strict;
-use Shlomif::Quad::Pres::CGI;
+use warnings;
+
+use Shlomif::Quad::Pres::CGI ();
 
 my \$cgi = Shlomif::Quad::Pres::CGI->new();
 
@@ -358,7 +360,7 @@ sub chdir_to_base
     my $levels_num = 0;
 
     # Go to the base dir.
-    while ( !-e ".quadpres/is_root" )
+    while ( not -e ".quadpres/is_root" )
     {
         chdir("..");
         ++$levels_num;
