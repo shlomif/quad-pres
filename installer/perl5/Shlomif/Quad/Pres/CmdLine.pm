@@ -78,20 +78,6 @@ sub _set_time
     return;
 }
 
-sub _init_cmd_line
-{
-    my ( $self, $cmd_line ) = @_;
-
-    if ( !defined($cmd_line) )
-    {
-        $error_class->throw( { text => 'cmd_line not specified' } );
-    }
-
-    $self->cmd_line($cmd_line);
-
-    return;
-}
-
 sub gen_aliases
 {
     my $command = shift;
