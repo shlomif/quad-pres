@@ -976,17 +976,15 @@ sub _traverse_pack_callback
 {
     my ( $self, $args ) = @_;
 
-    my @path   = @{ $args->{'path'} };
+    my $path   = join( "/", @{ $args->{'path'} } );
     my $branch = $args->{'branch'};
-
-    my $p = join( "/", @path );
 
     {
         my $is_dir = exists( $branch->{'subs'} );
 
         my $src_dir = $self->src_dir();
 
-        my $filename = ( $self->src_archive_src_dir() . "/$p" );
+        my $filename = ( $self->src_archive_src_dir() . "/$path" );
         if ($is_dir)
         {
             # It is a directory
@@ -995,13 +993,13 @@ sub _traverse_pack_callback
                 path($filename)->mkpath();
             }
             my $target = "$filename/index.html.wml";
-            copy( "$src_dir/$p/index.html.wml", $target );
+            copy( "$src_dir/$path/index.html.wml", $target );
             $self->_set_time($target);
         }
         else
         {
             my $target = "$filename.wml";
-            copy( "$src_dir/$p.wml", $target );
+            copy( "$src_dir/$path.wml", $target );
             $self->_set_time($target);
         }
     }
@@ -1010,7 +1008,7 @@ sub _traverse_pack_callback
     {
         foreach my $image ( @{ $branch->{'images'} } )
         {
-            my $suf          = "/$p/$image";
+            my $suf          = "/$path/$image";
             my $filename     = $self->src_archive_src_dir() . $suf;
             my $src_filename = $self->src_dir() . $suf;
 
