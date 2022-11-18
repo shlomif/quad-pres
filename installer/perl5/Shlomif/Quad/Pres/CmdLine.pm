@@ -570,6 +570,8 @@ sub _mkpath_dir
     return File::Path::mkpath( [ dirname( shift @_ ) ] );
 }
 
+my $QUAD_PRES_QUIET = ( !!$ENV{"QUAD_PRES_QUIET"} );
+
 sub _render_file
 {
     my ( $self, $args ) = @_;
@@ -606,7 +608,7 @@ sub _render_file
         "-o", $output_filename, "src/$filename.wml"
     );
 
-    if ( !$ENV{"QUAD_PRES_QUIET"} )
+    if ( !$QUAD_PRES_QUIET )
     {
         print join( " ", 'wml', @command ), "\n";
     }
