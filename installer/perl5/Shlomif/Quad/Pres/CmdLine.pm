@@ -570,7 +570,10 @@ sub _mkpath_dir
     return File::Path::mkpath( [ dirname( shift @_ ) ] );
 }
 
-my $QUAD_PRES_QUIET = ( !!$ENV{"QUAD_PRES_QUIET"} );
+my $QUAD_PRES_NO_HOME_LIB = ( !!$ENV{"QUAD_PRES_NO_HOME_LIB"} );
+my $QUAD_PRES_QUIET       = ( !!$ENV{"QUAD_PRES_QUIET"} );
+
+my $HOME = $ENV{"HOME"};
 
 sub _render_file
 {
@@ -594,12 +597,12 @@ sub _render_file
         return;
     }
 
-    my $local_wml_dir = $ENV{"HOME"} . "/.Quad-Pres/lib/";
+    my $LOCAL_WML_DIR = "$HOME/.Quad-Pres/lib/";
 
     my @local_wml =
-        $ENV{"QUAD_PRES_NO_HOME_LIB"}
+        $QUAD_PRES_NO_HOME_LIB
         ? ()
-        : ( "-I", $local_wml_dir );
+        : ( "-I", $LOCAL_WML_DIR );
 
     _mkpath_dir($output_filename);
     my @command = (
