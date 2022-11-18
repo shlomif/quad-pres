@@ -450,11 +450,6 @@ sub perform_render_command
         die $error;
     }
 
-    # $self->run_command(
-    #     'command' => "$scripts_dir/Render_all_contents.pl",
-    #     'error_text' => "Rendering Failed!",
-    # );
-
     if ($render_hard_disk_html)
     {
         $self->_convert_to_hardisk();
@@ -501,59 +496,56 @@ sub _render_all_contents_traverse_callback
 
     my $p = join( "/", @path );
 
+    my ($src_filename);
+
+    my $is_dir   = exists( $branch->{'subs'} );
+    my $filename = "$dest_dir/$p";
+
+    if ($is_dir)
     {
-        my ( $filename, $src_filename );
+        # It is a directory
+        if ( !( -d $filename ) )
+        {
+            path($filename)->mkpath();
+        }
+        $filename .= "/index.html";
+        $src_filename = $src_dir . "/" . $p . "/index.html";
+    }
+    else
+    {
+        $src_filename = $src_dir . "/" . $p;
+    }
+    $src_filename .= ".wml";
 
-        my $is_dir = exists( $branch->{'subs'} );
-
+    # Automatically copy the template to the source filename
+    if ( !-e $src_filename )
+    {
         if ($is_dir)
         {
-            # It is a directory
-            $filename = ( $dest_dir . "/" . $p );
-            if ( !( -d $filename ) )
+            my $dir_name = $src_filename;
+            $dir_name =~ s#/*index\.html\.wml\z##;
+            path($dir_name)->mkpath();
+        }
+        path("template.html.wml")->copy($src_filename);
+    }
+
+    my $src_mtime  = $self->_get_file_mtime($src_filename);
+    my $dest_mtime = $self->_get_file_mtime($filename);
+
+    if (
+        ( !-e $filename )
+        || ( grep { $_ > $dest_mtime }
+            ( @{ $self->main_files_mtimes() }, $src_mtime ) )
+        )
+    {
+        my $src_filename_modified = $src_filename;
+        $src_filename_modified =~ s#\A(\./)?src/*##;
+        $self->_render_file(
             {
-                path($filename)->mkpath();
-            }
-            $filename .= "/index.html";
-            $src_filename = $src_dir . "/" . $p . "/index.html";
-        }
-        else
-        {
-            $filename     = ( $dest_dir . "/" . $p );
-            $src_filename = $src_dir . "/" . $p;
-        }
-        $src_filename .= ".wml";
-
-        # Automatically copy the template to the source filename
-        if ( !-e $src_filename )
-        {
-            if ($is_dir)
-            {
-                my $dir_name = $src_filename;
-                $dir_name =~ s#/*index\.html\.wml\z##;
-                path($dir_name)->mkpath();
-            }
-            path("template.html.wml")->copy($src_filename);
-        }
-
-        my $src_mtime  = $self->_get_file_mtime($src_filename);
-        my $dest_mtime = $self->_get_file_mtime($filename);
-
-        if (
-            ( !-e $filename )
-            || ( grep { $_ > $dest_mtime }
-                ( @{ $self->main_files_mtimes() }, $src_mtime ) )
-            )
-        {
-            my $src_filename_modified = $src_filename;
-            $src_filename_modified =~ s#\A(\./)?src/*##;
-            $self->_render_file(
-                {
-                    input_fn  => $src_filename_modified,
-                    output_fn => $filename,
-                },
-            );
-        }
+                input_fn  => $src_filename_modified,
+                output_fn => $filename,
+            },
+        );
     }
 
     if ( exists( $branch->{'images'} ) )
