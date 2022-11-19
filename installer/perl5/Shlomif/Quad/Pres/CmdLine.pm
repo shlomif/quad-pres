@@ -496,10 +496,9 @@ sub _render_all_contents_traverse_callback
 
     my $p = join( "/", @path );
 
-    my ($src_filename);
-
-    my $is_dir   = exists( $branch->{'subs'} );
-    my $filename = "$dest_dir/$p";
+    my $is_dir       = exists( $branch->{'subs'} );
+    my $filename     = "$dest_dir/$p";
+    my $src_filename = "$src_dir/$p";
 
     if ($is_dir)
     {
@@ -508,17 +507,13 @@ sub _render_all_contents_traverse_callback
         {
             path($filename)->mkpath();
         }
-        $filename .= "/index.html";
-        $src_filename = $src_dir . "/" . $p . "/index.html";
-    }
-    else
-    {
-        $src_filename = $src_dir . "/" . $p;
+        $filename     .= "/index.html";
+        $src_filename .= "/index.html";
     }
     $src_filename .= ".wml";
 
     # Automatically copy the template to the source filename
-    if ( !-e $src_filename )
+    if ( not -e $src_filename )
     {
         if ($is_dir)
         {
