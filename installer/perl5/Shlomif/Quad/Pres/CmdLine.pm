@@ -1260,7 +1260,10 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
 
             # Fix the internal links
             $text =~ s{(<a href=")([^"]+)(")}
-             {$1 . $fix_internal_link->($2) . $3}egms
+             {
+                 my ($s, $l, $e) = ($1, $2, $3);
+                 $s . $fix_internal_link->($l) . $e
+             }egms
                 ;
 
             my $div_tag = qq{<section class="page">\n};
