@@ -684,23 +684,18 @@ sub _render_all_contents
     $self->_assign_src_dir();
 
     $dest_dir ||= $default_dest_dir;
-
     if ( $dest_dir !~ m#/\z# )
     {
         $dest_dir .= "/";
     }
-
     $self->dest_dir($dest_dir);
 
-    my $group = $cfg->get_setgid_group();
-
+    my $group    = $cfg->get_setgid_group();
     my $fs_iface = QuadPres::FS->new( 'group' => $group );
 
     # Check if the destination directory exists and if not -
     # create it.
     $fs_iface->make_dest_dir($dest_dir);
-
-    my $render_all = 0;
 
     $self->main_files_mtimes(
         [
