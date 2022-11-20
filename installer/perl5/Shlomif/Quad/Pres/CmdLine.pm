@@ -614,9 +614,10 @@ sub _render_file
     my $ret = -1;
 
     eval { $ret = $self->_wml_obj->run_with_ARGV( { ARGV => [@command], } ); };
+    my $Err = $@;
 
     # If it failed.
-    if ( $@ or $ret != 0 )
+    if ( $Err or $ret != 0 )
     {
         # Clean-up the file so it will have to be regenerated
         my $error = QuadPres::Exception::RenderFile->new();
@@ -625,10 +626,10 @@ sub _render_file
     }
     if ($cache)
     {
-        my $cfn = "$cache/$filename";
+        my $cached_file_path = "$cache/$filename";
 
-        _mkpath_dir($cfn);
-        path($output_filename)->copy($cfn);
+        _mkpath_dir($cached_file_path);
+        path($output_filename)->copy($cached_file_path);
     }
 
     return;
@@ -670,7 +671,7 @@ sub _assign_src_dir
 
 sub _render_all_contents
 {
-    my $self = shift;
+    my ( $self, $dest_dir ) = @_;
 
     my $cfg = QuadPres::Config->new();
 
@@ -682,7 +683,7 @@ sub _render_all_contents
 
     $self->_assign_src_dir();
 
-    my $dest_dir = shift || $default_dest_dir;
+    $dest_dir ||= $default_dest_dir;
 
     if ( $dest_dir !~ m#/\z# )
     {
