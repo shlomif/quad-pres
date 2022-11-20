@@ -741,10 +741,8 @@ sub perform_clear_command
     # Go to the base dir.
     $self->chdir_to_base();
 
-    my $cfg = QuadPres::Config->new();
-
+    my $cfg      = QuadPres::Config->new();
     my $dest_dir = $cfg->get_server_dest_dir();
-
     File::Path::rmtree( [$dest_dir], 0, 0 );
 
     return 0;
@@ -792,10 +790,10 @@ sub perform_upload_command
     {
         my $cmd_line = $cfg->get_upload_cmdline();
         @command = split( /\s+/, $cmd_line );
-        foreach (@command)
+        foreach my $c (@command)
         {
-            s/\$\{local\}/$last_component/g;
-            s/\$\{remote_path\}/$upload_path/g;
+            $c =~ s/\$\{local\}/$last_component/g;
+            $c =~ s/\$\{remote_path\}/$upload_path/g;
         }
     }
     else
@@ -953,6 +951,35 @@ sub copy_with_creating_dir
     return copy( $src_fn, $dest_fn );
 }
 
+sub _traverse_pack_copy_branch
+{
+    my ( $self, $path, $branch, ) = @_;
+
+    my $is_dir = exists( $branch->{'subs'} );
+
+    my $src_dir = $self->src_dir();
+
+    my $filename = ( $self->src_archive_src_dir() . "/$path" );
+    if ($is_dir)
+    {
+        # It is a directory
+        if ( !( -d $filename ) )
+        {
+            path($filename)->mkpath();
+        }
+        my $target = "$filename/index.html.wml";
+        copy( "$src_dir/$path/index.html.wml", $target );
+        $self->_set_time($target);
+    }
+    else
+    {
+        my $target = "$filename.wml";
+        copy( "$src_dir/$path.wml", $target );
+        $self->_set_time($target);
+    }
+    return;
+}
+
 sub _traverse_pack_callback
 {
     my ( $self, $args ) = @_;
@@ -960,30 +987,7 @@ sub _traverse_pack_callback
     my $path   = join( "/", @{ $args->{'path'} } );
     my $branch = $args->{'branch'};
 
-    {
-        my $is_dir = exists( $branch->{'subs'} );
-
-        my $src_dir = $self->src_dir();
-
-        my $filename = ( $self->src_archive_src_dir() . "/$path" );
-        if ($is_dir)
-        {
-            # It is a directory
-            if ( !( -d $filename ) )
-            {
-                path($filename)->mkpath();
-            }
-            my $target = "$filename/index.html.wml";
-            copy( "$src_dir/$path/index.html.wml", $target );
-            $self->_set_time($target);
-        }
-        else
-        {
-            my $target = "$filename.wml";
-            copy( "$src_dir/$path.wml", $target );
-            $self->_set_time($target);
-        }
-    }
+    $self->_traverse_pack_copy_branch( $path, $branch, );
 
     if ( exists( $branch->{'images'} ) )
     {
