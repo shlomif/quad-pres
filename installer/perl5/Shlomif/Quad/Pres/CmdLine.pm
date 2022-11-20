@@ -1123,7 +1123,6 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
             $s . ($m =~ /$pivot/ ? $m : "$m $pivot") . $e%e;
         }
     }
-    $is_first = 0;
 
     # Remove the trailing stuff.
     $text =~ s{<nav>[\s\n\r]*<table class="page-nav-bar bottom".*}{}ms;
