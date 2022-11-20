@@ -1086,15 +1086,12 @@ sub _calc_page_id
 {
     my $link_path = shift;
 
-    return join(
-        "--", "page",
-        @$link_path,
-        (
-            ( @$link_path && $link_path->[-1] =~ s{\.html\z}{} )
-            ? "PAGE"
-            : "DIR"
-        )
+    my $ext = (
+        ( @$link_path and ( $link_path->[-1] =~ s{\.html\z}{} ) )
+        ? "PAGE"
+        : "DIR"
     );
+    return join( "--", "page", @$link_path, $ext, );
 }
 
 sub perform_render_all_in_one_page_command
