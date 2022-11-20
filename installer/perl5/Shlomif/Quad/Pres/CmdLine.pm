@@ -1094,6 +1094,109 @@ sub _calc_page_id
     return join( "--", "page", @$link_path, $ext, );
 }
 
+sub _render_to_all_in_one__helper
+{
+    my ( $self, $all_in_one_out_fh, $branch, $p, $dest_dir, $is_first,
+        $direction, $path_aref, )
+        = @_;
+
+    my @path     = @{$path_aref};
+    my $is_dir   = exists( $branch->{'subs'} );
+    my $filename = ( "$dest_dir/$p" . ( $is_dir ? "/index.html" : '' ) );
+
+    my $text = path($filename)->slurp_raw();
+
+    if ( !$is_first )
+    {
+        $text =~ s{.*?(<header)}{$1}ms;
+    }
+    else
+    {
+        $text =~ s{<link rel="(?:top|next|first|last)".*?/>}{}gms;
+        $text =~
+s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wonderful ad code. -->\E}{}ms;
+        if ( $direction eq 'rtl' )
+        {
+            my $pivot = qq#dir="$direction"#;
+            $text =~ s%(<html)([^>]+)(>)%
+            my ($s, $m, $e) = ($1, $2, $3);
+            $s . ($m =~ /$pivot/ ? $m : "$m $pivot") . $e%e;
+        }
+    }
+    $is_first = 0;
+
+    # Remove the trailing stuff.
+    $text =~ s{<nav>[\s\n\r]*<table class="page-nav-bar bottom".*}{}ms;
+
+    my $fix_internal_link = sub {
+        my $link_text = shift;
+
+        my $is_current_dir = $is_dir;
+
+        # Preserve absolute links to the outside world.
+        if ( $link_text =~ m{\A[\w\-\+]+:} )
+        {
+            return $link_text;
+        }
+
+        my @link_path = @path;
+
+        foreach my $component ( split( m{/}, $link_text ) )
+        {
+            if ( $component eq "." )
+            {
+                if ( !$is_current_dir )
+                {
+                    pop(@link_path);
+                    $is_current_dir = 1;
+                }
+            }
+            elsif ( $component eq ".." )
+            {
+                pop(@link_path);
+            }
+            else
+            {
+                if ( !$is_current_dir )
+                {
+                    pop(@link_path);
+                    $is_current_dir = 1;
+                }
+
+                push @link_path, $component;
+            }
+        }
+
+        return "#" . _calc_page_id( [@link_path] );
+    };
+
+    # Fix the internal links
+    $text =~ s{(<a href=")([^"]+)(")}
+    {
+        my ($s, $l, $e) = ($1, $2, $3);
+        $s . $fix_internal_link->($l) . $e
+    }egms
+        ;
+
+    my $div_tag = qq{<section class="page">\n};
+
+    my $id_attr = qq{ id="} . _calc_page_id( [@path] ) . qq{"};
+
+    if ( $text !~ s{(<body[^>]*>)}{$1$div_tag}ms )
+    {
+        $text = $div_tag . $text;
+    }
+
+    $text =~ s{<h1>}{<h2$id_attr>};
+    $text =~ s{</h1>}{</h2>};
+    $text =~ s%</?main>%%g;
+    $text =~ s%(<table(?:\s+(?:class|style)="[^"]*"\s*)*) summary=""%$1%g;
+
+    print {$all_in_one_out_fh} $text, qq{\n</section>\n};
+
+    return;
+}
+
 sub perform_render_all_in_one_page_command
 {
     my $self = shift;
@@ -1123,13 +1226,11 @@ sub perform_render_all_in_one_page_command
     $self->_setup_cache($use_cache);
 
     require Contents;
-
     my $contents = Contents::get_contents();
 
     my $cfg = QuadPres::Config->new();
 
     my $dest_dir = $cfg->get_server_dest_dir();
-
     if ( $dest_dir !~ m{/\z} )
     {
         $dest_dir .= "/";
@@ -1154,10 +1255,6 @@ sub perform_render_all_in_one_page_command
         path($_cache_dir)->mkpath();
         $_cache_fn = "$_cache_dir/all_in_one.html";
     }
-    if ( !-d $all_in_one_dir )
-    {
-        path($all_in_one_dir)->mkpath();
-    }
     my $all_fn = "$all_in_one_dir/index.html";
     my $all_in_one_out_fh;
     if ( ( defined $_cache_fn ) && ( -f $_cache_fn ) )
@@ -1180,100 +1277,9 @@ sub perform_render_all_in_one_page_command
 
         if ( defined $all_in_one_out_fh )
         {
-            my $is_dir = exists( $branch->{'subs'} );
-            my $filename =
-                ( "$dest_dir/$p" . ( $is_dir ? "/index.html" : '' ) );
-
-            my $text = path($filename)->slurp_raw();
-
-            if ( !$is_first )
-            {
-                $text =~ s{.*?(<header)}{$1}ms;
-            }
-            else
-            {
-                $text =~ s{<link rel="(?:top|next|first|last)".*?/>}{}gms;
-                $text =~
-s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wonderful ad code. -->\E}{}ms;
-                if ( $direction eq 'rtl' )
-                {
-                    my $pivot = qq#dir="$direction"#;
-                    $text =~ s%(<html)([^>]+)(>)%
-                        my ($s, $m, $e) = ($1, $2, $3);
-                    $s . ($m =~ /$pivot/ ? $m : "$m $pivot") . $e%e;
-                }
-            }
+            $self->_render_to_all_in_one__helper( $all_in_one_out_fh, $branch,
+                $p, $dest_dir, $is_first, $direction, \@path, );
             $is_first = 0;
-
-            # Remove the trailing stuff.
-            $text =~ s{<nav>[\s\n\r]*<table class="page-nav-bar bottom".*}{}ms;
-
-            my $fix_internal_link = sub {
-                my $link_text = shift;
-
-                my $is_current_dir = $is_dir;
-
-                # Preserve absolute links to the outside world.
-                if ( $link_text =~ m{\A[\w\-\+]+:} )
-                {
-                    return $link_text;
-                }
-
-                my @link_path = @path;
-
-                foreach my $component ( split( m{/}, $link_text ) )
-                {
-                    if ( $component eq "." )
-                    {
-                        if ( !$is_current_dir )
-                        {
-                            pop(@link_path);
-                            $is_current_dir = 1;
-                        }
-                    }
-                    elsif ( $component eq ".." )
-                    {
-                        pop(@link_path);
-                    }
-                    else
-                    {
-                        if ( !$is_current_dir )
-                        {
-                            pop(@link_path);
-                            $is_current_dir = 1;
-                        }
-
-                        push @link_path, $component;
-                    }
-                }
-
-                return "#" . _calc_page_id( [@link_path] );
-            };
-
-            # Fix the internal links
-            $text =~ s{(<a href=")([^"]+)(")}
-             {
-                 my ($s, $l, $e) = ($1, $2, $3);
-                 $s . $fix_internal_link->($l) . $e
-             }egms
-                ;
-
-            my $div_tag = qq{<section class="page">\n};
-
-            my $id_attr = qq{ id="} . _calc_page_id( [@path] ) . qq{"};
-
-            if ( $text !~ s{(<body[^>]*>)}{$1$div_tag}ms )
-            {
-                $text = $div_tag . $text;
-            }
-
-            $text =~ s{<h1>}{<h2$id_attr>};
-            $text =~ s{</h1>}{</h2>};
-            $text =~ s%</?main>%%g;
-            $text =~
-                s%(<table(?:\s+(?:class|style)="[^"]*"\s*)*) summary=""%$1%g;
-
-            print {$all_in_one_out_fh} $text, qq{\n</section>\n};
         }
         if ( exists( $branch->{'images'} ) )
         {
