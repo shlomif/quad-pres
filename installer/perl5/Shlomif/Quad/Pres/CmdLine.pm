@@ -1247,7 +1247,7 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
                     }
                 }
 
-                return "#" . _calc_page_id( \@link_path );
+                return "#" . _calc_page_id( [@link_path] );
             };
 
             # Fix the internal links
@@ -1260,7 +1260,7 @@ s{\Q<!-- Beginning of Project Wonderful ad code: -->\E.*\Q<!-- End of Project Wo
 
             my $div_tag = qq{<section class="page">\n};
 
-            my $id_attr = qq{ id="} . _calc_page_id( \@path ) . qq{"};
+            my $id_attr = qq{ id="} . _calc_page_id( [@path] ) . qq{"};
 
             if ( $text !~ s{(<body[^>]*>)}{$1$div_tag}ms )
             {
