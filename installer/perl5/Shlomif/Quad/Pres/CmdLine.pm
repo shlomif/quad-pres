@@ -550,7 +550,7 @@ sub _render_all_contents_traverse_callback
 
             if ( should_update( $filename, ":", $src_filename ) )
             {
-                copy_with_creating_dir( $src_filename, $filename );
+                eval { copy_with_creating_dir( $src_filename, $filename ); };
             }
         }
     }
@@ -584,6 +584,7 @@ sub _render_file
     my $modules_dir = $path_man->get_modules_dir();
     my $cache       = $self->_cache_dir;
 
+    _mkpath_dir($output_filename);
     if ( $cache && -e "$cache/$filename" )
     {
         path("$cache/$filename")->copy($output_filename);
@@ -597,7 +598,6 @@ sub _render_file
         ? ()
         : ( "-I", $LOCAL_WML_DIR );
 
-    _mkpath_dir($output_filename);
     my @command = (
         "-I", $wml_dir, @local_wml, "-DFILENAME=$filename",
         "--passoption=3,-I$modules_dir",
@@ -995,8 +995,10 @@ sub _traverse_pack_callback
             my $filename     = $self->src_archive_src_dir() . $suf;
             my $src_filename = $self->src_dir() . $suf;
 
-            copy_with_creating_dir( $src_filename, $filename );
-            $self->_set_time($filename);
+            eval {
+                copy_with_creating_dir( $src_filename, $filename );
+                $self->_set_time($filename);
+            };
         }
     }
 
@@ -1288,7 +1290,9 @@ sub perform_render_all_in_one_page_command
 
                 if ( should_update( $dest_filename, ":", $src_filename ) )
                 {
-                    copy_with_creating_dir( $src_filename, $dest_filename );
+                    eval {
+                        copy_with_creating_dir( $src_filename, $dest_filename );
+                    };
                 }
             }
         }
