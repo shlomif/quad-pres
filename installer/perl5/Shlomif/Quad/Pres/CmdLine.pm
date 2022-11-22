@@ -947,7 +947,7 @@ sub copy_with_creating_dir
 {
     my ( $src_fn, $dest_fn ) = @_;
     _mkpath_dir($dest_fn);
-    return copy( $src_fn, $dest_fn );
+    return path( $src_fn, )->copy($dest_fn);
 }
 
 sub _traverse_pack_copy_branch
