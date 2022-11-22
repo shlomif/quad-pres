@@ -8,7 +8,6 @@ use autodie;
 use Scalar::Util qw(blessed);
 
 use Pod::Usage (qw( pod2usage ));
-use File::Copy (qw( copy ));
 use File::Path ();
 use File::Basename (qw( dirname ));
 use File::ShouldUpdate    qw( should_update should_update_multi );
@@ -973,7 +972,7 @@ sub _traverse_pack_copy_branch
     else
     {
         my $target = "$filename.wml";
-        copy( "$src_dir/$path.wml", $target );
+        path("$src_dir/$path.wml")->copy($target);
         $self->_set_time($target);
     }
     return;
@@ -1043,7 +1042,7 @@ sub perform_pack_command
         )
     {
         my $target = $self->src_archive_dir() . "/$filename";
-        copy( $filename, $target );
+        path($filename)->copy($target);
         $self->_set_time($target);
     }
 
@@ -1257,7 +1256,7 @@ sub perform_render_all_in_one_page_command
     my $all_in_one_out_fh;
     if ( ( defined $_cache_fn ) && ( -f $_cache_fn ) )
     {
-        copy( $_cache_fn, $all_fn );
+        path($_cache_fn)->copy($all_fn);
     }
     else
     {
@@ -1305,7 +1304,7 @@ sub perform_render_all_in_one_page_command
 
         if ( defined $_cache_dir )
         {
-            copy( $all_fn, $_cache_fn );
+            path($all_fn)->copy($_cache_fn);
         }
     }
 
