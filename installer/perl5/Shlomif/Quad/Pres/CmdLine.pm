@@ -336,15 +336,14 @@ my \$cgi = Shlomif::Quad::Pres::CGI->new();
 EOF
     chmod 0755, $serve_filename;
 
-    path("$src_dir_name/src")->mkpath();
+    my $src = path("$src_dir_name/src");
+    $src->mkpath();
 
     my $template_dir_path_str = $self->path_man()->get_template_dir();
 
-    copy( "$template_dir_path_str/style.css", "$src_dir_name/src/style.css" );
-    copy(
-        "$template_dir_path_str/template.html.wml",
-        "$src_dir_name/template.html.wml"
-    );
+    path("$template_dir_path_str/style.css")->copy( $src->child("style.css") );
+    path( "$template_dir_path_str/template.html.wml", )
+        ->copy("$src_dir_name/template.html.wml");
 
     # Create a file indicating that this is the root directory.
     # Regular named files may be present somewhere inside the ./src
@@ -968,7 +967,7 @@ sub _traverse_pack_copy_branch
             path($filename)->mkpath();
         }
         my $target = "$filename/index.html.wml";
-        copy( "$src_dir/$path/index.html.wml", $target );
+        path("$src_dir/$path/index.html.wml")->copy($target);
         $self->_set_time($target);
     }
     else
