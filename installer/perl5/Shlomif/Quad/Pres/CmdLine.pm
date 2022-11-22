@@ -8,8 +8,7 @@ use autodie;
 use Scalar::Util qw(blessed);
 
 use Pod::Usage (qw( pod2usage ));
-use File::Path ();
-use File::Basename (qw( dirname ));
+use File::Path            ();
 use File::ShouldUpdate    qw( should_update should_update_multi );
 use Carp                  ();
 use HTML::Links::Localize ();
@@ -560,7 +559,7 @@ sub _render_all_contents_traverse_callback
 
 sub _mkpath_dir
 {
-    return File::Path::mkpath( [ dirname( shift @_ ) ] );
+    return path( shift @_ )->parent->mkdir();
 }
 
 my $QUAD_PRES_NO_HOME_LIB = ( !!$ENV{"QUAD_PRES_NO_HOME_LIB"} );
