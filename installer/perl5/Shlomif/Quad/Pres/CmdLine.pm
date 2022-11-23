@@ -8,7 +8,6 @@ use autodie;
 use Scalar::Util qw(blessed);
 
 use Pod::Usage (qw( pod2usage ));
-use File::Path            ();
 use File::ShouldUpdate    qw( should_update should_update_multi );
 use Carp                  ();
 use HTML::Links::Localize ();
@@ -747,7 +746,7 @@ sub perform_clear_command
 
     my $cfg      = QuadPres::Config->new();
     my $dest_dir = $cfg->get_server_dest_dir();
-    File::Path::rmtree( [$dest_dir], 0, 0 );
+    path($dest_dir)->remove_tree();
 
     return 0;
 }
@@ -1036,8 +1035,7 @@ sub perform_pack_command
     my $src_archive_name__base = $cfg->get_src_archive_path()
         || ( $cfg->get_server_dest_dir() . "/src.tar" );
 
-    File::Path::rmtree( [ $self->src_archive_dir() ], 0, 0 );
-
+    path( $self->src_archive_dir() )->remove_tree();
     path( $self->src_archive_dir() )->mkpath();
     path( $self->src_archive_dir() . "/.quadpres" )->mkpath();
 
