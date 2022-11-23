@@ -550,6 +550,13 @@ sub _render_all_contents_traverse_callback
             if ( should_update( $filename, ":", $src_filename ) )
             {
                 eval { copy_with_creating_dir( $src_filename, $filename ); };
+                if (0)
+                {
+                    if ( my $E = $@ )
+                    {
+                        warn $E;
+                    }
+                }
             }
         }
     }
