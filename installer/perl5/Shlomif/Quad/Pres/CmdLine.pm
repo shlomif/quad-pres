@@ -481,6 +481,20 @@ sub _get_file_mtime
     return ( stat($path) )[9];
 }
 
+sub _iterate_branch_images
+{
+    my ( $self, $branch, $cb ) = @_;
+
+    if ( exists( $branch->{'images'} ) )
+    {
+        foreach my $image_fn ( @{ $branch->{'images'} } )
+        {
+            $cb->( $image_fn, );
+        }
+    }
+    return;
+}
+
 sub _render_all_contents_traverse_callback
 {
     my ( $self, $args ) = @_;
@@ -539,10 +553,10 @@ sub _render_all_contents_traverse_callback
         );
     }
 
-    if ( exists( $branch->{'images'} ) )
-    {
-        foreach my $image_fn ( @{ $branch->{'images'} } )
-        {
+    $self->_iterate_branch_images(
+        $branch,
+        sub {
+            my ($image_fn)   = @_;
             my $filename     = "$dest_dir/$p/$image_fn";
             my $src_filename = "$src_dir/$p/$image_fn";
 
@@ -557,8 +571,9 @@ sub _render_all_contents_traverse_callback
                     }
                 }
             }
-        }
-    }
+            return;
+        },
+    );
 
     return;
 }
@@ -992,10 +1007,10 @@ sub _traverse_pack_callback
 
     $self->_traverse_pack_copy_branch( $path, $branch, );
 
-    if ( exists( $branch->{'images'} ) )
-    {
-        foreach my $image_fn ( @{ $branch->{'images'} } )
-        {
+    $self->_iterate_branch_images(
+        $branch,
+        sub {
+            my ($image_fn)   = @_;
             my $suf          = "/$path/$image_fn";
             my $filename     = $self->src_archive_src_dir() . $suf;
             my $src_filename = $self->src_dir() . $suf;
@@ -1004,8 +1019,9 @@ sub _traverse_pack_callback
                 copy_with_creating_dir( $src_filename, $filename );
                 $self->_set_time($filename);
             };
-        }
-    }
+            return;
+        },
+    );
 
     return;
 }
@@ -1284,10 +1300,10 @@ sub perform_render_all_in_one_page_command
                 $p, $dest_dir, $is_first, $direction, \@path, );
             $is_first = 0;
         }
-        if ( exists( $branch->{'images'} ) )
-        {
-            foreach my $image_fn ( @{ $branch->{'images'} } )
-            {
+        $self->_iterate_branch_images(
+            $branch,
+            sub {
+                my ($image_fn)    = @_;
                 my $suf           = "/$p/$image_fn";
                 my $src_filename  = $dest_dir . $suf;
                 my $dest_filename = $all_in_one_dir . $suf;
@@ -1298,8 +1314,9 @@ sub perform_render_all_in_one_page_command
                         copy_with_creating_dir( $src_filename, $dest_filename );
                     };
                 }
-            }
-        }
+                return;
+            },
+        );
         return;
     };
 
