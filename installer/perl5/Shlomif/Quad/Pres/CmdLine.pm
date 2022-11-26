@@ -5,10 +5,10 @@ use strict;
 use warnings;
 use autodie;
 
-use Scalar::Util qw(blessed);
+use Scalar::Util qw( blessed );
 
 use Pod::Usage (qw( pod2usage ));
-use File::ShouldUpdate    qw( should_update should_update_multi );
+use File::ShouldUpdate    qw( should_update );
 use Carp                  ();
 use HTML::Links::Localize ();
 use File::Glob ':glob';
@@ -89,18 +89,19 @@ my %registered_commands;
 
 sub _register_cmd
 {
-    my $command  = shift;
-    my $callback = shift || "perform_${command}_command";
-    my $aliases  = shift || [];
+    my $command = shift;
+    my $aliases = shift || [];
 
     %cmd_aliases = ( %cmd_aliases, gen_aliases( $command, $aliases ) );
+    my $callback = "perform_${command}_command";
     $registered_commands{$command} = $callback;
 
     return;
 }
 
-_register_cmd( 'render',                 0, [qw(rend)] );
-_register_cmd( 'render_all_in_one_page', 0, [qw(all_in_one)] );
+_register_cmd( 'render',                 [qw(rend)] );
+_register_cmd( 'render_all_in_one_page', [qw(all_in_one)] );
+
 _register_cmd('add');
 _register_cmd('clear');
 _register_cmd('pack');
