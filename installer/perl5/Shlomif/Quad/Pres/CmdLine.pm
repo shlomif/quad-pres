@@ -320,10 +320,12 @@ EOF
     # Prepare the serve.pl file that can be used to serve it using a CGI;
     my $serve_filename = "$src_dir_name/serve.pl";
     path($serve_filename)->spew_raw( <<"EOF" );
-#!/usr/bin/perl -w -I$modules_dir
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
+
+use lib '${modules_dir}';
 
 use Shlomif::Quad::Pres::CGI ();
 
