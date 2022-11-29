@@ -29,4 +29,5 @@ perl:
     - "5.26"
 python:
     - "3.6"
-script: perl CI-testing/continuous-integration-testing.pl test
+script:
+    - perl CI-testing/continuous-integration-testing.pl test
