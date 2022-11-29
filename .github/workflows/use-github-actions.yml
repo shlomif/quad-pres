@@ -1,0 +1,163 @@
+jobs:
+    test-fc-solve:
+        runs-on: ubuntu-latest
+        steps:
+        -   uses: actions/checkout@v2
+        -   run: sudo apt-get update -qq
+        -   run: sudo apt-get --no-install-recommends install -y eatmydata
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; sudo apt-get update -qq
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; sudo apt-get --no-install-recommends install
+                -y ack-grep cmake cmake-data cpanminus libdb5.3-dev libgd-dev libgdbm-dev
+                libgdbm-compat-dev libperl-dev libxml2-dev lynx ninja-build perl python3-pip
+                valgrind vim wml
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; which python3
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; cpanm local::lib
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; eval "$(perl -Mlocal::lib=$HOME/perl_modules)"
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; perl -V
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; which cpanm
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; install_deps_whose_tests_are_stalling() { cpanm
+                --notest HTTP::Daemon ; } ; install_deps_whose_tests_are_stalling
+                ;
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; install_wml_cpan_deps() { cpanm Bit::Vector Carp::Always
+                Class::XSAccessor File::Which GD Getopt::Long IO::All Image::Size
+                List::MoreUtils Path::Tiny Term::ReadKey ; } ; install_wml_cpan_deps
+                ;
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; bash scripts/install-git-cmakey-program-system-wide.bash
+                'git' 'src' 'https://github.com/thewml/website-meta-language.git'
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; cpanm App::XML::DocBook::Builder Pod::Xhtml YAML::XS
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; cpanm HTML::T5
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; cpanm Class::XSAccessor File::Copy::Recursive
+                File::Find::Object::Rule HTML::Widgets::NavMenu::EscapeHtml IO::All
+                MooX MooX::late Path::Tiny QuadPres Task::QuadPres Text::VimColor
+                Template Test::Trap XML::LibXML
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; cpanm Dist::Zilla Pod::Weaver::Section::Support
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; cpanm Class::XSAccessor Config::IniFiles HTML::Links::Localize
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; perl CI-testing/continuous-integration-testing.pl
+                install_deps
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; p
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; e
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; r
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; l
+        -   run: 'local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ;  '
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; C
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; I
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; -
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; e
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; s
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; i
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; n
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; g
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; /
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; c
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; o
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; n
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; i
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; n
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; u
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; o
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; u
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; s
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; -
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; i
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; n
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; e
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; g
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; r
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; a
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; i
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; o
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; n
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; -
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; e
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; s
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; i
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; n
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; g
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; .
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; p
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; l
+        -   run: 'local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ;  '
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; e
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; s
+        -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
+                } ; local_lib_shim ; t
+name: use-github-actions
+'on':
+- push
