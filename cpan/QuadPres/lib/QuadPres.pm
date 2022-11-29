@@ -8,10 +8,10 @@ use utf8;
 
 use parent 'QuadPres::Base';
 
-use Path::Tiny qw/ path /;
-use Data::Dumper  ();
-use QuadPres::Url ();
-use Carp          ();
+use Path::Tiny                         qw/ path /;
+use Data::Dumper                       ();
+use QuadPres::Url                      ();
+use Carp                               ();
 use HTML::Widgets::NavMenu::EscapeHtml qw(escape_html);
 
 my $navigation_style_class = "nav";
@@ -27,7 +27,7 @@ __PACKAGE__->mk_acc_ref(
             mode
             navigation_bar
             stage_idx
-            )
+        )
     ]
 );
 

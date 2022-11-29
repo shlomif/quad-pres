@@ -16,7 +16,7 @@ __PACKAGE__->mk_acc_ref(
             is_dir
             mode
             url
-            )
+        )
     ]
 );
 

@@ -6,7 +6,7 @@ use warnings;
 use autodie;
 
 use Text::VimColor ();
-use Path::Tiny qw/ path /;
+use Path::Tiny     qw/ path /;
 
 sub _is_newer
 {
