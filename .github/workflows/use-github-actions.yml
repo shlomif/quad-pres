@@ -4,6 +4,7 @@ jobs:
         steps:
         -   uses: actions/checkout@v2
         -   run: sudo apt-get update -qq
+        -   run: sudo apt-get -y remove libgd3 nginx
         -   run: sudo apt-get --no-install-recommends install -y eatmydata
         -   run: local_lib_shim() { eval "$(perl -Mlocal::lib=$HOME/perl_modules)";
                 } ; local_lib_shim ; sudo apt-get update -qq
