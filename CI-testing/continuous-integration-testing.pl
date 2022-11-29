@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use autodie;
 
+use Path::Tiny qw/ path tempdir tempfile cwd /;
+
 sub do_system
 {
     my ($args) = @_;
@@ -20,7 +22,7 @@ sub do_system
 my $ACTION = shift @ARGV;
 
 my $IS_WIN = ( $^O eq "MSWin32" );
-my $SEP    = $IS_WIN ? "\\" : '/';
+my $SEP    = $IS_WIN ? "\\"    : '/';
 my $MAKE   = $IS_WIN ? 'gmake' : 'make';
 local $ENV{WMLOPTS} //= "-q";
 
@@ -55,10 +57,11 @@ elsif ( $ACTION eq 'test' )
     {
         do_system( { cmd => ["cd $d && (dzil smoke --release --author)"] } );
     }
+    path("./installer/B")->remove_tree();
     do_system(
         {
             cmd => [
-                      "cd installer/ && mkdir B && cd B && cmake .. "
+                      "cd installer/ && mkdir B && cd B && cmake "
                     . ( defined($cmake_gen) ? qq#-G "$cmake_gen"# : "" )
                     . " .. && $MAKE && $MAKE check"
             ]
