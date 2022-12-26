@@ -11,7 +11,7 @@ use Pod::Usage (qw( pod2usage ));
 use File::ShouldUpdate    qw( should_update );
 use Carp                  ();
 use HTML::Links::Localize ();
-use File::Glob ':glob';
+use File::Glob            qw( bsd_glob );
 
 use Path::Tiny qw/ cwd path /;
 

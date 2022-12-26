@@ -53,6 +53,7 @@ Upload the rendered slides to a remote server.
 
 Runs several commands delimited by semicolons (";") and fails on the first
 failure.
+
 =back
 
 =head1 COMMANDS
