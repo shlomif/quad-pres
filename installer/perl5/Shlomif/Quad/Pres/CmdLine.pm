@@ -591,6 +591,13 @@ my $QUAD_PRES_QUIET       = ( !!$ENV{"QUAD_PRES_QUIET"} );
 
 my $HOME = $ENV{"HOME"};
 
+my $LOCAL_WML_DIR = "$HOME/.Quad-Pres/lib/";
+
+my @LOCAL_WML =
+    $QUAD_PRES_NO_HOME_LIB
+    ? ()
+    : ( "-I", $LOCAL_WML_DIR );
+
 sub _render_file
 {
     my ( $self, $args ) = @_;
@@ -614,15 +621,8 @@ sub _render_file
         return;
     }
 
-    my $LOCAL_WML_DIR = "$HOME/.Quad-Pres/lib/";
-
-    my @local_wml =
-        $QUAD_PRES_NO_HOME_LIB
-        ? ()
-        : ( "-I", $LOCAL_WML_DIR );
-
     my @command = (
-        "-I", $wml_dir, @local_wml, "-DFILENAME=$filename",
+        "-I", $wml_dir, @LOCAL_WML, "-DFILENAME=$filename",
         "--passoption=3,-I$modules_dir",
         "-o", $output_filename, "src/$filename.wml"
     );
