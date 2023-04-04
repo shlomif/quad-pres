@@ -49,6 +49,8 @@ L<http://www.shlomifish.org/quad-pres/>
 
 =pkg Path::Tiny
 
+=pkg QuadPres
+
 =pkg Template
 
 =pkg Test::Trap
