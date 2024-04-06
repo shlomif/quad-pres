@@ -1,4 +1,6 @@
-#!/usr/bin/perl -I{QP_MODULES_DIR}
+#!/usr/bin/perl
+
+use lib q#{QP_MODULES_DIR}#;
 
 use strict;
 use warnings;

@@ -1,14 +1,14 @@
 # see - http://www.cmake.org/Wiki/CMake_FAQ#Is_there_an_option_to_produce_more_.27verbose.27_compiling.3F
 # SET(CMAKE_VERBOSE_MAKEFILE ON)
+
 cmake_minimum_required(VERSION 3.6)
+
 project("quad-pres")
 
 INCLUDE ("${CMAKE_SOURCE_DIR}/cmake/shlomif_common_bootstrap.cmake")
 SHLOMIF_COMMON_SETUP("${private_mod_path}")
 
-
 SET (PKGDATADIR "${DATADIR}/quad-pres")
-
 SET (PATH_PERL "${PKGDATADIR}/perl5")
 
 add_subdirectory(perl5)

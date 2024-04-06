@@ -24,28 +24,21 @@ sub _init
 
 sub get_modules_dir
 {
-    my $self = shift;
-
     return $modules_dir;
 }
 
 sub get_scripts_dir
 {
-    my $self = shift;
-
     return $scripts_dir;
 }
 
 sub get_template_dir
 {
-    my $self = shift;
     return $template_dir;
 }
 
 sub get_wml_dir
 {
-    my $self = shift;
-
     return $wml_dir;
 }
 

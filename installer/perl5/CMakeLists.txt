@@ -21,7 +21,7 @@ SET (d "${CMAKE_CURRENT_BINARY_DIR}/Shlomif/Quad/Pres/Path.pm")
 ADD_CUSTOM_COMMAND(
     OUTPUT "${d}"
     COMMAND "${PERL_EXECUTABLE}"
-    ARGS "-E" "use Path::Tiny qw/ path /; use File::Basename qw( dirname) ; use File::Path qw/ mkpath/ ; my $t = path(\"${s}\")->slurp_raw; $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#\\{QP_PKG_DATA_DIR\\}#${PKGDATADIR}#g; $t =~ s#/usr/bin/perl#${PATH_PERL}#g; mkpath([dirname(\"${d}\")]); path(\"${d}\")->spew_raw($t);"
+    ARGS "-E" "use Path::Tiny qw/ path /; my $t = path(\"${s}\")->slurp_raw(); $t =~ s#\\{QP_MODULES_DIR\\}#${PATH_PERL}#g; $t =~ s#\\{QP_PKG_DATA_DIR\\}#${PKGDATADIR}#g; $t =~ s#/usr/bin/perl#${PERL_EXECUTABLE}#g; path(\"${d}\")->touchpath()->spew_raw($t);"
     DEPENDS "${s}"
     VERBATIM
 )
