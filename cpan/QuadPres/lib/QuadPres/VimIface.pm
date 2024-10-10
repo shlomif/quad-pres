@@ -5,21 +5,9 @@ use strict;
 use warnings;
 use autodie;
 
-use Text::VimColor ();
-use Path::Tiny     qw/ path /;
-
-sub _is_newer
-{
-    my $file1 = shift;
-    my $file2 = shift;
-    my @stat1 = stat($file1);
-    my @stat2 = stat($file2);
-    if ( !@stat2 )
-    {
-        return 1;
-    }
-    return ( $stat1[9] >= $stat2[9] );
-}
+use File::ShouldUpdate qw/ should_update /;
+use Text::VimColor     ();
+use Path::Tiny         qw/ path /;
 
 sub get_syntax_highlighted_html_from_file
 {
@@ -29,7 +17,7 @@ sub get_syntax_highlighted_html_from_file
 
     my $html_filename = "$filename.html-for-quad-pres";
 
-    if ( _is_newer( $filename, $html_filename ) )
+    if ( should_update( $html_filename, ":", $filename, ) )
     {
         my $syntax = Text::VimColor->new(
             file           => $filename,
@@ -73,9 +61,12 @@ Vim syntax highlighting interface.
 
 =head2 get_syntax_highlighted_html_from_file({filename=>$filepath, filetype=>"c",});
 
-TBD.
+C<< $args->{filename} >> is the source filename .
+C<< $args->{filename} . ".html-for-quad-pres" >> is used as a cache file.
+C<< $args->{filetype} >> is an optional filetype syntax specifier.
 
-=head2
+Returns the syntax highlighted HTML5 / XHTML5 markup as a string (without prefix and suffix
+markup).
 
 =cut
 
