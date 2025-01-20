@@ -246,7 +246,7 @@ sub perform_setup_command
         );
     }
 
-    path("$src_dir_name/quadpres.ini")->spew_raw( <<"EOF" );
+    path("$src_dir_name/quadpres.ini")->spew_raw(<<"EOF");
 [quadpres]
 
 ; The destination direcory in which to place the rendered files.
@@ -319,7 +319,7 @@ EOF
 
     # Prepare the serve.pl file that can be used to serve it using a CGI;
     my $serve_filename = "$src_dir_name/serve.pl";
-    path($serve_filename)->spew_raw( <<"EOF" );
+    path($serve_filename)->spew_raw(<<"EOF");
 #!/usr/bin/env perl
 
 use strict;
